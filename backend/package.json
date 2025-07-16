@@ -32,6 +32,7 @@
   },
   "dependencies": {
     "express": "^5.1.0",
+    "express-xss-sanitizer": "^2.0.0",
     "mongoose": "^8.16.3"
   }
 }
