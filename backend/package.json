@@ -1,0 +1,37 @@
+{
+  "name": "game-journal-backend",
+  "version": "1.0.0",
+  "main": "server.js",
+  "type": "module",
+  "scripts": {
+    "dev": "tsx --watch src/server.ts",
+    "check": "tsc --watch --noEmit",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsc && node dist/server.js"
+  },
+  "keywords": [
+    "node",
+    "express",
+    "mongoose",
+    "typescript",
+    "backend",
+    "api"
+  ],
+  "author": "Ednan Rogério Frizzera Filho",
+  "license": "MIT",
+  "description": "Backend for the Game Journal application, providing RESTful APIs and database interactions.",
+  "devDependencies": {
+    "@tsconfig/node22": "^22.0.2",
+    "@types/express": "^5.0.3",
+    "@types/morgan": "^1.9.10",
+    "@types/node": "^24.0.14",
+    "dotenv": "^17.2.0",
+    "morgan": "^1.10.0",
+    "tsx": "^4.20.3",
+    "typescript": "^5.8.3"
+  },
+  "dependencies": {
+    "express": "^5.1.0",
+    "mongoose": "^8.16.3"
+  }
+}
