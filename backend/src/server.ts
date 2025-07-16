@@ -15,7 +15,7 @@ const serverStart = async () => {
   try {
     await dbConnect(MONGO_URI);
     server.listen(PORT, () => {
-      console.log(`[system] server is running on port ${PORT}`);
+      console.log(`[system] server is running on port ${PORT}...`);
     });
   } catch (error) {
     console.error('[system] error connecting to MongoDB:', error);
