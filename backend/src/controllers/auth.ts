@@ -1,5 +1,7 @@
 import { Request, Response } from 'express';
 
+// Use _req or _res to avoid unused variable warnings when unused!
+
 const register = (req: Request, res: Response) => {
   console.log('register route hit');
 };

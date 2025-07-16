@@ -1,5 +1,5 @@
 import express from 'express';
-import xss from 'express-xss-sanitizer';
+import { xss } from 'express-xss-sanitizer';
 import authController from '../controllers/auth.js';
 
 const router = express.Router();
