@@ -23,7 +23,7 @@ const createJournalEntry = async (req: Request, res: Response) => {
 
   const newJournalEntry = await JournalEntry.create(journalData);
 
-  res.status(StatusCodes.CREATED).json({status: 'success', data: { journalEntry: newJournalEntry } });
+  return res.status(StatusCodes.CREATED).json({status: 'success', data: { journalEntry: newJournalEntry } });
 };
 
 const updateJournalEntry = (req: Request, res: Response) => {
