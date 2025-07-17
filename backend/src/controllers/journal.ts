@@ -2,8 +2,14 @@ import { Request, Response } from 'express';
 import { StatusCodes} from 'http-status-codes';
 import JournalEntry from '../models/JournalEntry.js';
 
-const getJournalEntries = (req: Request, res: Response) => {
-  res.status(200).json({ message: 'get journal entries' });
+const getJournalEntries = async (req: Request, res: Response) => {
+  if (!req.user?.userId) {
+    return res.status(StatusCodes.UNAUTHORIZED).json({ error: 'User not authenticated' });
+  }
+
+  const entries = await JournalEntry.find({ createdBy: req.user.userId });
+
+  return res.status(StatusCodes.OK).json({status: 'success', data: { journalEntries: entries } });
 };
 
 const getJournalEntry = (req: Request, res: Response) => {
