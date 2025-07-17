@@ -12,7 +12,7 @@
   },
   "include": [
     "src/**/*",
-    "types/**/*"
+    "src/**/*.d.ts"
   ],
   "exclude": [
     "node_modules"

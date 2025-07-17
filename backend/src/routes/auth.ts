@@ -7,6 +7,6 @@ const { register, login, logout } = authController;
 
 router.post('/register', xss(), register);
 router.post('/login', xss(), login);
-router.get('/logout', xss(), logout);
+router.get('/logout',  logout);
 
 export default router;

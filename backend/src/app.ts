@@ -1,6 +1,8 @@
 import express from 'express';
 import morgan from 'morgan';
 
+import authentication from './middleware/authentication.js';
+
 import authRoutes from './routes/auth.js';
 import journalRoutes from './routes/journal.js';
 
@@ -14,6 +16,6 @@ app.use(morgan('tiny'));
 // Routes
 
 app.use('/api/v1/auth', authRoutes);
-app.use('/api/v1/journal', journalRoutes);
+app.use('/api/v1/journal', authentication, journalRoutes);
 
 export default app;
