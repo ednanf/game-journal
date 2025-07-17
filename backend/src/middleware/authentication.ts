@@ -6,7 +6,6 @@ import HttpError from '../errors/HttpError.js';
 // Define a type for your JWT payload
 interface UserPayload extends JwtPayload {
   userId: string;
-  username: string;
 }
 
 const authentication = async (req: Request, _res: Response, next: NextFunction) => {
