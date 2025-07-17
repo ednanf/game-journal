@@ -1,4 +1,4 @@
-import { Request, Response } from 'express';
+import { Request, Response, NextFunction } from 'express';
 import { StatusCodes } from 'http-status-codes';
 import HttpError from '../errors/HttpError.js';
 import comparePasswords from '../utils/comparePasswords.js';
@@ -6,7 +6,7 @@ import User from '../models/User.js';
 
 // Use _req or _res to avoid unused variable warnings when unused!
 
-const register = async (req: Request, res: Response) => {
+const register = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const user = await User.create({ ...req.body });
     const token = user.createJWT();
@@ -14,9 +14,9 @@ const register = async (req: Request, res: Response) => {
     res.status(StatusCodes.CREATED).json({ token, user: user.username });
   } catch (error) {
     if (error instanceof Error) {
-      res.status(StatusCodes.BAD_REQUEST).json({ error: error.message });
+      next(new HttpError(StatusCodes.BAD_REQUEST, error.message));
     } else {
-      res.status(StatusCodes.BAD_REQUEST).json({ error: 'Unknow error occurred' });
+      next(new HttpError(StatusCodes.INTERNAL_SERVER_ERROR, 'An unexpected error occurred'));
     }
   }
 };
@@ -51,8 +51,13 @@ const logout = (_req: Request, res: Response) => {
   res.status(StatusCodes.OK).json({ message: 'User logged out successfully' });
 };
 
+// TODO: Implement user deletion - it should delete associated data as well
+
+const deleteUser = async (req: Request, res: Response) => {};
+
 export default {
   register,
   login,
   logout,
+  deleteUser,
 };
