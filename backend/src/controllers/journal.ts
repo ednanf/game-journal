@@ -79,8 +79,23 @@ const updateJournalEntry = async (req: Request, res: Response) => {
   });
 };
 
-const deleteJournalEntry = (req: Request, res: Response) => {
-  res.status(200).json({ message: 'delete journal entry' });
+const deleteJournalEntry = async (req: Request, res: Response) => {
+  const userId = req.user?.userId;
+  const entryId = req.params.id;
+
+  const entryToDelete = await JournalEntry.findOneAndDelete({
+    _id: entryId,
+    createdBy: userId,
+  });
+
+  if (!entryToDelete) {
+    throw new HttpError(
+      StatusCodes.NOT_FOUND,
+      `Entry with id ${entryId} not found or you do not have access to it`,
+    );
+  }
+
+  return res.status(StatusCodes.OK).json({ status: 'success' });
 };
 
 export default {
