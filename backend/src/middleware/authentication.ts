@@ -24,7 +24,7 @@ const authentication = async (req: Request, _res: Response, next: NextFunction) 
     const payload = jwt.verify(token, process.env.JWT_SECRET as string) as UserPayload;
 
     // Attach the user information to the request object
-    req.user = { userId: payload.userId, name: payload.username };
+    req.user = { userId: payload.userId };
 
     next();
   } catch (error) {

@@ -11,9 +11,17 @@ const getJournalEntry = (req: Request, res: Response) => {
 };
 
 const createJournalEntry = async (req: Request, res: Response) => {
-  req.body.createdBy = req.params.userId;
-  const contents = req.body;
-  const newJournalEntry = await JournalEntry.create(contents);
+  if (!req.user?.userId) {
+    return res.status(400).json({ error: 'User not authenticated' });
+  }
+
+  // Don't modify req.body, create a new object
+  const journalData = {
+    ...req.body,
+    createdBy: req.user.userId
+  };
+
+  const newJournalEntry = await JournalEntry.create(journalData);
 
   res.status(StatusCodes.CREATED).json({status: 'success', data: { journalEntry: newJournalEntry } });
 };
