@@ -9,12 +9,36 @@ export interface IUser extends Document {
   passwordHash: string;
   createdAt: Date;
   updatedAt: Date;
+
+  createJWT(): string;
+
+  comparePassword(candidatePassword: string): Promise<boolean>;
 }
 
 const userSchema = new Schema<IUser>({
-  username: { type: String, required: true, unique: true, maxlength: 50 },
-  email: { type: String, required: true, unique: true, maxlength: 100 },
-  passwordHash: { type: String, required: true },
+  username: {
+    type: String,
+    required: [true, 'An username is required'],
+    unique: [true, 'Username already exists'],
+    minLength: 3,
+    maxlength: 50,
+  },
+  email: {
+    type: String,
+    required: [true, 'An email is required'],
+    unique: [true, 'An account with this email already exists'],
+    match: [
+      /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+      'Please, provide a valid email address.',
+    ],
+    maxlength: 100,
+  },
+  passwordHash: {
+    type: String,
+    required: [true, 'Password is required'],
+    minLength: 6,
+    maxlength: 255,
+  },
   createdAt: { type: Date, default: Date.now },
   updatedAt: { type: Date, default: Date.now },
 });
