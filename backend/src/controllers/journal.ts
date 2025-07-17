@@ -1,10 +1,11 @@
 import { Request, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
+import HttpError from '../errors/HttpError.js';
 import JournalEntry from '../models/JournalEntry.js';
 
 const getJournalEntries = async (req: Request, res: Response) => {
   if (!req.user?.userId) {
-    return res.status(StatusCodes.UNAUTHORIZED).json({ error: 'User not authenticated' });
+    throw new HttpError(StatusCodes.UNAUTHORIZED, 'User not authenticated');
   }
 
   const entries = await JournalEntry.find({ createdBy: req.user.userId });
@@ -22,7 +23,10 @@ const getJournalEntry = async (req: Request, res: Response) => {
   const entry = await JournalEntry.findOne({ _id: entryId, createdBy: userId });
 
   if (!entry) {
-    return res.status(StatusCodes.NOT_FOUND).json({ error: `Entry with id ${entryId} not found` });
+    throw new HttpError(
+      StatusCodes.UNAUTHORIZED,
+      `Entry with id ${entryId} not found or you do not have access to it`,
+    );
   }
 
   return res.status(StatusCodes.OK).json({ status: 'success', data: entry });
@@ -30,7 +34,7 @@ const getJournalEntry = async (req: Request, res: Response) => {
 
 const createJournalEntry = async (req: Request, res: Response) => {
   if (!req.user?.userId) {
-    return res.status(400).json({ error: 'User not authenticated' });
+    throw new HttpError(StatusCodes.UNAUTHORIZED, 'User not authenticated');
   }
 
   // Don't modify req.body, create a new object
@@ -63,10 +67,16 @@ const updateJournalEntry = async (req: Request, res: Response) => {
   );
 
   if (!updatedEntry) {
-    return res.status(StatusCodes.NOT_FOUND).json({ error: `Entry with id ${entryId} not found` });
+    throw new HttpError(
+      StatusCodes.UNAUTHORIZED,
+      `Entry with id ${entryId} not found or you do not have access to it`,
+    );
   }
 
-  return res.status(StatusCodes.OK).json({status: 'success', data: updatedEntry });
+  return res.status(StatusCodes.OK).json({
+    status: 'success',
+    data: updatedEntry,
+  });
 };
 
 const deleteJournalEntry = (req: Request, res: Response) => {
