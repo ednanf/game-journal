@@ -1,8 +1,8 @@
 import { Schema, model, Document, Types } from 'mongoose';
 
-export interface IEntry extends Document {
+export interface IJournalEntry extends Document {
   user: Types.ObjectId;
-  gameName: string;
+  gameTitle: string;
   platform: string;
   status: 'started' | 'completed' | 'dropped' | 'note';
   coverUrl?: string;
@@ -11,10 +11,10 @@ export interface IEntry extends Document {
   updatedAt: Date;
 }
 
-const entrySchema = new Schema<IEntry>({
+const journalEntrySchema = new Schema<IJournalEntry>({
   user: { type: Schema.Types.ObjectId, ref: 'User', required: true },
-  gameName: { type: String, required: true, maxlength: 100 },
-  platform: { type: String, required: true, maxlength: 50 },
+  gameTitle: { type: String, required: [true, "Please, provide a title"], maxlength: 100 },
+  platform: { type: String, required: [true, "Please, provide a platform"], maxlength: 50 },
   status: {
     type: String,
     required: true,
@@ -26,4 +26,4 @@ const entrySchema = new Schema<IEntry>({
   updatedAt: { type: Date, default: Date.now },
 });
 
-export default model<IEntry>('Entry', entrySchema);
+export default model<IJournalEntry>('JournalEntry', journalEntrySchema);
