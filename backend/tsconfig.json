@@ -5,6 +5,7 @@
   "checkJs": true,
   "compilerOptions": {
     "outDir": "dist",
+    "rootDir": "src",
     "noImplicitAny": true,
     "noImplicitReturns": true,
     "esModuleInterop": true
