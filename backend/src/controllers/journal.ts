@@ -12,8 +12,17 @@ const getJournalEntries = async (req: Request, res: Response) => {
   return res.status(StatusCodes.OK).json({status: 'success', data: { journalEntries: entries } });
 };
 
-const getJournalEntry = (req: Request, res: Response) => {
-  res.status(200).json({ message: 'get journal entry' });
+const getJournalEntry = async (req: Request, res: Response) => {
+  const userId = req.user?.userId;
+  const entryId = req.params.id;
+
+  const entry = await JournalEntry.findOne({_id: entryId, createdBy: userId });
+
+  if (!entry) {
+    return res.status(StatusCodes.NOT_FOUND).json({ error: `Entry with id ${entryId} not found` });
+  }
+
+  return res.status(StatusCodes.OK).json({status: 'success', data: entry});
 };
 
 const createJournalEntry = async (req: Request, res: Response) => {
