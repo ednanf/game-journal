@@ -5,3 +5,19 @@
     box-sizing: border-box;
     font-family: 'Inter', sans-serif;
 }
+
+:root {
+    --color-primary: #4a90e2;
+    --color-secondary: #50e3c2;
+    --color-background: #f5f7fa;
+    --color-text: #333333;
+    --color-border: #e0e0e0;
+}
+
+.dark-mode {
+    --color-primary: #1a73e8;
+    --color-secondary: #34a853;
+    --color-background: #121212;
+    --color-text: #e0e0e0;
+    --color-border: #333333;
+}
