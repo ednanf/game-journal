@@ -18,7 +18,7 @@ export interface IUser extends Document {
 const userSchema = new Schema<IUser>({
   username: {
     type: String,
-    required: [true, 'An username is required'],
+    required: [true, 'A username is required'],
     unique: [true, 'Username already exists'],
     minLength: 3,
     maxlength: 50,
