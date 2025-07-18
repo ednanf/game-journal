@@ -3,6 +3,7 @@ import { StatusCodes } from 'http-status-codes';
 import HttpError from '../errors/HttpError.js';
 import comparePasswords from '../utils/comparePasswords.js';
 import User from '../models/User.js';
+import JournalEntry from '../models/JournalEntry.js';
 
 // Use _req or _res to avoid unused variable warnings when unused!
 
@@ -51,9 +52,32 @@ const logout = (_req: Request, res: Response) => {
   res.status(StatusCodes.OK).json({ message: 'User logged out successfully' });
 };
 
-// TODO: Implement user deletion - it should delete associated data as well
+const deleteUser = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const userId = req.user?.userId;
+    if (!userId) {
+      // noinspection ExceptionCaughtLocallyJS
+      throw new HttpError(StatusCodes.UNAUTHORIZED, 'User is not authenticated');
+    }
 
-const deleteUser = async (req: Request, res: Response) => {};
+    console.log(req.user);
+
+    // Delete user
+    const user = await User.findByIdAndDelete(userId);
+    if (!user) {
+      // noinspection ExceptionCaughtLocallyJS
+      throw new HttpError(StatusCodes.NOT_FOUND, 'User not found');
+    }
+
+    // Delete all associated journal entries
+    await JournalEntry.deleteMany({ createdBy: userId });
+
+    res.status(StatusCodes.OK).json({ message: 'User deleted successfully' });
+  } catch (error) {
+    // If there's an error, pass it to the next middleware
+    next(error);
+  }
+};
 
 export default {
   register,
