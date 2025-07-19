@@ -1,3 +1,9 @@
+/* Google Fonts imports: */
+@import url('https://fonts.googleapis.com/css?family=Bungee&display=swap');
+@import url('https://fonts.googleapis.com/css?family=Nunito:400,700&display=swap');
+@import url('https://fonts.googleapis.com/css?family=Quicksand:400,700&display=swap');
+
+/* Reset styles */
 * {
     margin: 0;
     padding: 0;
@@ -6,18 +12,73 @@
     font-family: 'Inter', sans-serif;
 }
 
-:root {
-    --color-primary: #4a90e2;
-    --color-secondary: #50e3c2;
-    --color-background: #f5f7fa;
-    --color-text: #333333;
-    --color-border: #e0e0e0;
+/* Headings */
+h1, h2, h3, .heading {
+    font-family: 'Nunito', Arial, sans-serif;
+    font-weight: 700;
 }
 
-.dark-mode {
-    --color-primary: #1a73e8;
-    --color-secondary: #34a853;
-    --color-background: #121212;
-    --color-text: #e0e0e0;
-    --color-border: #333333;
+/* Body text */
+body, p, .body, .main-content {
+    font-family: 'Quicksand', Arial, sans-serif;
+    font-weight: 400;
+    line-height: 1.7;
+}
+
+:root {
+    --color-bg-light: #EEF2FB;
+    --color-surface-light: #F7FAFC;
+    --color-text-primary-light: #243047;
+    --color-text-secondary-light: #6C7A96;
+    --color-divider-light: #E0E3EA;
+    --color-accent-cyan-light: #00BFEF;
+    --color-accent-green-light: #23D160;
+    --color-accent-purple-light: #7C3AED;
+    --color-accent-magenta-light: #E13C89;
+    --color-accent-yellow-light: #FFD93D;
+    --color-icon-inactive-light: #B0B8C1;
+    --color-icon-active-light: #00BFEF;
+
+    /* Semantic mapping - light theme */
+    --color-bg: var(--color-bg-light);
+    --color-surface: var(--color-surface-light);
+    --color-text-primary: var(--color-text-primary-light);
+    --color-text-secondary: var(--color-text-secondary-light);
+    --color-divider: var(--color-divider-light);
+    --color-accent-cyan: var(--color-accent-cyan-light);
+    --color-accent-green: var(--color-accent-green-light);
+    --color-accent-purple: var(--color-accent-purple-light);
+    --color-accent-magenta: var(--color-accent-magenta-light);
+    --color-accent-yellow: var(--color-accent-yellow-light);
+    --color-icon-inactive: var(--color-icon-inactive-light);
+    --color-icon-active: var(--color-icon-active-light);
+}
+
+[data-theme="dark"] {
+    --color-bg-dark: #202738;
+    --color-surface-dark: #293248;
+    --color-text-primary-dark: #FFFFFF;
+    --color-text-secondary-dark: #B6C2E1;
+    --color-divider-dark: #393E46;
+    --color-accent-cyan-dark: #00CFFF;
+    --color-accent-green-dark: #57F287;
+    --color-accent-purple-dark: #A259FF;
+    --color-accent-magenta-dark: #FF4C9B;
+    --color-accent-yellow-dark: #FFE156;
+    --color-icon-inactive-dark: #B0B8C1;
+    --color-icon-active-dark: #00CFFF;
+
+    /* Semantic mapping - dark theme */
+    --color-bg: var(--color-bg-dark);
+    --color-surface: var(--color-surface-dark);
+    --color-text-primary: var(--color-text-primary-dark);
+    --color-text-secondary: var(--color-text-secondary-dark);
+    --color-divider: var(--color-divider-dark);
+    --color-accent-cyan: var(--color-accent-cyan-dark);
+    --color-accent-green: var(--color-accent-green-dark);
+    --color-accent-purple: var(--color-accent-purple-dark);
+    --color-accent-magenta: var(--color-accent-magenta-dark);
+    --color-accent-yellow: var(--color-accent-yellow-dark);
+    --color-icon-inactive: var(--color-icon-inactive-dark);
+    --color-icon-active: var(--color-icon-active-dark);
 }
