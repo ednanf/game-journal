@@ -1,0 +1,37 @@
+{
+  "name": "game-journal-backend",
+  "version": "1.0.0",
+  "description": "Backend for Game Journal web application",
+  "main": "server.js",
+  "type": "module",
+  "scripts": {
+    "dev": "node --env-file=.env --import tsx --watch src/server.ts",
+    "check": "tsc --watch --noEmit",
+    "lint": "eslint 'src/**/*.{ts,tsx}'",
+    "lint:fix": "eslint 'src/**/*.{ts,tsx}' --fix",
+    "build": "tsc",
+    "start": "node dist/server.js"
+  },
+  "keywords": [
+    "backend",
+    "typescript",
+    "nodejs",
+    "express",
+    "mongodb",
+    "mern"
+  ],
+  "author": "Ednan Rogério Frizzera Filho",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^5.1.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.8.3",
+    "@typescript-eslint/eslint-plugin": "^7.18.0",
+    "@typescript-eslint/parser": "^7.18.0",
+    "eslint": "^8.57.1",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-config-airbnb-typescript": "^18.0.0",
+    "eslint-plugin-import": "^2.32.0"
+  }
+}
