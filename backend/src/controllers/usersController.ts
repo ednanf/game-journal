@@ -1,17 +1,8 @@
 import { Request, Response } from 'express';
-
-interface ApiResponse {
-  status: 'success' | 'error';
-  data: {
-    user?: string;
-    token?: string;
-    message?: string;
-    error?: string;
-  };
-}
+import { ApiResponse, RegisterUserSuccess } from '../types/api.js';
 
 const registerUser = async (req: Request, res: Response) => {
-  const response: ApiResponse = {
+  const response: ApiResponse<RegisterUserSuccess> = {
     status: 'success',
     data: {
       user: 'newUser',
