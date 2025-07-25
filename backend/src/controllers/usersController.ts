@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import { ApiResponse, RegisterUserSuccess } from '../types/api.js';
 
-const registerUser = async (req: Request, res: Response) => {
+const registerUser = async (req: Request, res: Response): Promise<void> => {
   const response: ApiResponse<RegisterUserSuccess> = {
     status: 'success',
     data: {
