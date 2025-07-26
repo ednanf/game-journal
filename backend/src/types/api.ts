@@ -33,9 +33,8 @@ export interface DeleteUserSuccess {
   message: string;
 }
 
-// Journal entry-related API response types
+// This interface contains fields that the frontend needs to display.
 // This is the response structure, not the model structure!
-// It should onl contain the fields that the frontend needs to display
 export interface JournalEntryResponse {
   title: string;
   platform: string;
@@ -44,6 +43,8 @@ export interface JournalEntryResponse {
   createdAt: string;
   updatedAt: string;
 }
+
+// Journal entry-related API response types
 
 export interface GetJournalEntriesSuccess {
   entries: JournalEntryResponse[];

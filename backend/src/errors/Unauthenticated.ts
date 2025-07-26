@@ -2,7 +2,7 @@ import { StatusCodes } from 'http-status-codes';
 import HttpError from './HttpError.js';
 
 // Custom errors class for Unauthenticated (HTTP 401)
-// This errors is thrown when a user tries to access a resource that requires authentication but is not authenticated.
+// This error is thrown when a user tries to access a resource that requires authentication but is not authenticated.
 class Unauthenticated extends HttpError {
   constructor(message: string) {
     super(StatusCodes.UNAUTHORIZED, message);

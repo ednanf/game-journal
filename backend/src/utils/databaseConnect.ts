@@ -1,6 +1,9 @@
 import mongoose from 'mongoose';
 import { DatabaseError } from '../errors/index.js';
 
+// Connect to MongoDB using Mongoose
+// Throws DatabaseError if connection fails or MONGODB_URI is not set
+// Returns a promise that resolves when the connection is successful
 const databaseConnect = async (uri: string | undefined): Promise<void> => {
   if (!uri) {
     throw new DatabaseError(
