@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import { DatabaseError } from '../error/index.js';
+import { DatabaseError } from '../errors/index.js';
 
 const databaseConnect = async (uri: string | undefined): Promise<void> => {
   if (!uri) {
@@ -13,7 +13,7 @@ const databaseConnect = async (uri: string | undefined): Promise<void> => {
     console.log('[system] successfully connected to MongoDB...');
   } catch (error) {
     throw new DatabaseError(
-      `[system] failed to connect to MongoDB: ${error instanceof Error ? error.message : 'Unknown error'}`,
+      `[system] failed to connect to MongoDB: ${error instanceof Error ? error.message : 'Unknown errors'}`,
     );
   }
 };
