@@ -23,6 +23,7 @@
   "author": "Ednan Rogério Frizzera Filho",
   "license": "MIT",
   "dependencies": {
+    "bcryptjs": "^3.0.2",
     "express": "^5.1.0",
     "http-status-codes": "^2.3.0",
     "mongoose": "^8.16.5"
