@@ -34,36 +34,35 @@ export interface DeleteUserSuccess {
 }
 
 // Journal entry-related API response types
-export interface JournalEntry {
-  _id: string;
+// This is the response structure, not the model structure!
+// It should onl contain the fields that the frontend needs to display
+export interface JournalEntryResponse {
   title: string;
   platform: string;
   status: 'started' | 'completed' | 'dropped';
   rating: number;
   createdAt: string;
   updatedAt: string;
-  createdBy: string; // User ID of the creator
-  __v: number; // Version key for Mongoose documents
 }
 
 export interface GetJournalEntriesSuccess {
-  entries: JournalEntry[];
+  entries: JournalEntryResponse[];
   message: string;
   totalCount?: number; // You'll probably want pagination info
 }
 
 export interface GetJournalEntrySuccess {
-  entry: JournalEntry;
+  entry: JournalEntryResponse;
   message: string;
 }
 
 export interface CreateJournalEntrySuccess {
-  entry: JournalEntry;
+  entry: JournalEntryResponse;
   message: string;
 }
 
 export interface PatchJournalEntrySuccess {
-  entry: JournalEntry;
+  entry: JournalEntryResponse;
   message: string;
 }
 
