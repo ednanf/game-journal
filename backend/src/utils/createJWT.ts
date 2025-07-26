@@ -16,6 +16,13 @@ const createJWT = (payload: Record<string, unknown>) => {
     throw new JWTConfigurationError('JWT_LIFETIME is not defined in environment variables');
   }
 
+  // Validate the JWT_LIFETIME format
+  if (!/^\d+[smhdwy]$/.test(jwtLifetime)) {
+    throw new JWTConfigurationError(
+      `JWT_LIFETIME format invalid: ${jwtLifetime}. Expected format like '30d', '1h', '15m'`,
+    );
+  }
+
   const options: SignOptions = {
     algorithm: 'HS256', // HMAC SHA-256 for signing
     expiresIn: jwtLifetime as StringValue, // Lifetime of the token, e.g., '1h', '2d'
