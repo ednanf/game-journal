@@ -1,5 +1,5 @@
-// This file defines a custom error class that extends the built-in Error class.
-// It allows for creating custom error types with a specific name and stack trace.
+// This file defines a custom errors class that extends the built-in Error class.
+// It allows for creating custom errors types with a specific name and stack trace.
 
 class CustomError extends Error {
   constructor(message: string) {
