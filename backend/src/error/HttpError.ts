@@ -3,6 +3,8 @@
 
 import CustomError from './CustomError.js';
 
+// Custom HTTP error class for handling HTTP errors in web applications.
+// It includes an HTTP status code and a message, allowing for more specific error handling in web applications.
 class HttpError extends CustomError {
   public readonly code: number;
 

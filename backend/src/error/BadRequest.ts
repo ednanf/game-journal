@@ -1,6 +1,9 @@
 import { StatusCodes } from 'http-status-codes';
 import HttpError from './HttpError.js';
 
+// Custom error class for Bad Request.
+// This class extends HttpError and sets the status code to 400.
+// It is used to indicate that the request sent by the client is invalid or malformed.
 class BadRequest extends HttpError {
   constructor(message: string) {
     super(StatusCodes.BAD_REQUEST, message);
