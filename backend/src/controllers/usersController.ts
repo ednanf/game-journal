@@ -1,8 +1,14 @@
 import { Request, Response, NextFunction } from 'express';
 import { StatusCodes } from 'http-status-codes';
+import comparePasswords from '../utils/comparePasswords.js';
 import User, { IUserDocument } from '../models/User.js';
-import type { ApiResponse, RegisterUserSuccess } from '../types/api.js';
-import { BadRequestError, ConflictError, InternalServerError } from '../errors/index.js';
+import type { ApiResponse, RegisterUserSuccess, LoginUserSuccess } from '../types/api.js';
+import {
+  BadRequestError,
+  ConflictError,
+  InternalServerError,
+  UnauthorizedError,
+} from '../errors/index.js';
 
 // TODO: Implement user controller functions
 // TODO: Ensure error handling is in place - both mongoose errors and http errors - review with copilot
@@ -65,11 +71,53 @@ const registerUser = async (req: Request, res: Response, next: NextFunction): Pr
   }
 };
 
-const loginUser = async (req: Request, res: Response) => {
-  res.status(200).json({
-    status: 'success',
-    data: { message: 'User logged in successfully' },
-  });
+const loginUser = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+  const { email, password } = req.body;
+
+  try {
+    // Validate email and password presence
+    if (!email || !password) {
+      const fieldErrors: Record<'email' | 'password', string | undefined> = {
+        email: !email ? 'An email is required' : undefined,
+        password: !password ? 'Password is required' : undefined,
+      };
+
+      next(new BadRequestError(JSON.stringify(fieldErrors)));
+      return;
+    }
+
+    // Find user by email
+    const user: IUserDocument | null = await User.findOne({ email });
+    if (!user) {
+      // Generic error message for security reasons
+      next(new UnauthorizedError('Invalid email or password'));
+      return;
+    }
+
+    // Compare provided password with stored hashed password
+    const isPasswordValid: boolean = await comparePasswords(password, user.password);
+    if (!isPasswordValid) {
+      // Generic error message for security reasons
+      next(new UnauthorizedError('Invalid email or password'));
+      return;
+    }
+
+    // If the user is found and the password matches, create a JWT
+    const token: string = await user.createJWT();
+
+    const response: ApiResponse<LoginUserSuccess> = {
+      status: 'success',
+      data: {
+        message: 'User logged in successfully',
+        user: user.email,
+        token,
+      },
+    };
+
+    res.status(StatusCodes.OK).json({ response });
+  } catch (error) {
+    next(error);
+  }
 };
 
 const logoutUser = async (req: Request, res: Response) => {
