@@ -2,9 +2,12 @@
 // It allows for creating custom errors types with a specific name and stack trace.
 
 class CustomError extends Error {
-  constructor(message: string) {
+  statusCode: number = 500; // Default to Internal Server Error
+
+  constructor(message: string, statusCode: number = 500) {
     super(message);
     this.name = new.target.name;
+    this.statusCode = statusCode;
 
     // Set the prototype explicitly to ensure instanceof works correctly
     Object.setPrototypeOf(this, new.target.prototype);
