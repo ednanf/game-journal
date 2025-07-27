@@ -14,14 +14,15 @@ export interface ApiError {
 
 // User-related API response types
 export interface RegisterUserSuccess {
+  message: string;
   user: string;
   token: string;
-  message: string;
 }
 
 export interface LoginUserSuccess {
-  token: string;
   message: string;
+  user: string;
+  token: string;
 }
 
 export interface LogoutUserSuccess {
