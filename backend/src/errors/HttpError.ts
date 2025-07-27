@@ -9,8 +9,8 @@ class HttpError extends CustomError {
   public readonly statusCode: number;
 
   constructor(statusCode: number, message: string) {
-    super(message);
-    this.statusCode = statusCode;
+    super(message); // Call the parent constructor with the message
+    this.statusCode = statusCode; // Set the status code for the HTTP error
   }
 }
 
