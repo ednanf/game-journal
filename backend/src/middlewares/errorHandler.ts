@@ -16,7 +16,7 @@ const errorHandler = (err: any, _req: Request, res: Response, _next: NextFunctio
       },
     };
 
-    res.status(err.statusCode).json(response); // HttpError already has statusCode
+    res.status(err.statusCode).json(response); // uses the status code from the HttpError
     return;
   }
 
