@@ -2,7 +2,7 @@ import jwt, { Secret, SignOptions } from 'jsonwebtoken';
 import { StringValue } from 'ms';
 import { JWTConfigurationError } from '../errors/index.js';
 
-// This function creates a JSON Web Token (JWT) using the provided payload.
+// Creates a JSON Web Token (JWT) using the provided payload.
 // It reads the JWT secret and lifetime from environment variables.
 // If the secret or lifetime is not defined, it throws a JWTConfigurationError.
 const createJWT = (payload: Record<string, unknown>) => {

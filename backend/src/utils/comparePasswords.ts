@@ -1,6 +1,6 @@
 import bcrypt from 'bcryptjs';
 
-// Compare a candidate password with a hashed password.
+// Compares a candidate password with a hashed password.
 const comparePasswords = async (
   candidatePassword: string,
   hashedPassword: string,
