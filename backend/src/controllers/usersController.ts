@@ -2,7 +2,7 @@ import { Request, Response, NextFunction } from 'express';
 import { StatusCodes } from 'http-status-codes';
 import User, { IUserDocument } from '../models/User.js';
 import type { ApiResponse, RegisterUserSuccess } from '../types/api.js';
-import { BadRequestError, ConflictError, DatabaseError } from '../errors/index.js';
+import { BadRequestError, ConflictError, InternalServerError } from '../errors/index.js';
 
 // TODO: Implement user controller functions
 // TODO: Ensure error handling is in place - both mongoose errors and http errors - review with copilot
@@ -51,15 +51,17 @@ const registerUser = async (req: Request, res: Response, next: NextFunction): Pr
         (err: { message: string }): string => err.message,
       );
       next(new BadRequestError(messages.join(' ')));
+      return;
     }
 
     // Duplicate email handling
     if (isMongoDuplicateError(error) && error.keyPattern?.email) {
       next(new ConflictError('Email already in use.'));
+      return;
     }
 
     // Generic fallback for other errors
-    next(new DatabaseError('An unexpected error occurred. Please try again later.'));
+    next(new InternalServerError('An unexpected error occurred. Please try again later.'));
   }
 };
 
