@@ -9,7 +9,6 @@ export interface GenericSuccess {
 }
 
 export interface ApiError {
-  error: string;
   message: string;
 }
 
