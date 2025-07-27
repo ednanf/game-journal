@@ -1,7 +1,8 @@
-import { Request, Response } from 'express';
+import { Request, Response, NextFunction } from 'express';
 import { StatusCodes } from 'http-status-codes';
 import User, { IUserDocument } from '../models/User.js';
 import type { ApiError, ApiResponse, RegisterUserSuccess } from '../types/api.js';
+import { BadRequestError, ConflictError, DatabaseError } from '../errors/index.js';
 
 // TODO: Implement user controller functions
 // TODO: Ensure error handling is in place - both mongoose errors and http errors - review with copilot
@@ -26,7 +27,7 @@ function isMongoDuplicateError(
   return typeof error === 'object' && error !== null && (error as any).code === 11000;
 }
 
-const registerUser = async (req: Request, res: Response): Promise<void> => {
+const registerUser = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   try {
     const user: IUserDocument = await User.create({ ...req.body });
     const token: string = await user.createJWT(); // Uses the user model's method to create a JWT
@@ -49,33 +50,16 @@ const registerUser = async (req: Request, res: Response): Promise<void> => {
       const messages: string[] = Object.values(error.errors).map(
         (err: { message: string }): string => err.message,
       );
-      const response: ApiResponse<ApiError> = {
-        status: 'error',
-        data: { message: messages.join(', ') },
-      };
-
-      res.status(StatusCodes.BAD_REQUEST).json(response);
-      return;
+      return next(new BadRequestError(messages.join(' ')));
     }
 
     // Duplicate email handling
     if (isMongoDuplicateError(error) && error.keyPattern?.email) {
-      const response: ApiResponse<ApiError> = {
-        status: 'error',
-        data: { message: 'Email already in use.' },
-      };
-
-      res.status(StatusCodes.CONFLICT).json(response);
-      return;
+      return next(new ConflictError('Email already in use.'));
     }
 
     // Generic fallback for other errors
-    const response: ApiResponse<ApiError> = {
-      status: 'error',
-      data: { message: 'An unexpected error occurred. Please try again later.' },
-    };
-
-    res.status(StatusCodes.INTERNAL_SERVER_ERROR).json(response);
+    next(new DatabaseError('An unexpected error occurred. Please try again later.'));
   }
 };
 
