@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import { StatusCodes } from 'http-status-codes';
 import User, { IUserDocument } from '../models/User.js';
-import type { ApiError, ApiResponse, RegisterUserSuccess } from '../types/api.js';
+import type { ApiResponse, RegisterUserSuccess } from '../types/api.js';
 import { BadRequestError, ConflictError, DatabaseError } from '../errors/index.js';
 
 // TODO: Implement user controller functions
@@ -50,12 +50,12 @@ const registerUser = async (req: Request, res: Response, next: NextFunction): Pr
       const messages: string[] = Object.values(error.errors).map(
         (err: { message: string }): string => err.message,
       );
-      return next(new BadRequestError(messages.join(' ')));
+      next(new BadRequestError(messages.join(' ')));
     }
 
     // Duplicate email handling
     if (isMongoDuplicateError(error) && error.keyPattern?.email) {
-      return next(new ConflictError('Email already in use.'));
+      next(new ConflictError('Email already in use.'));
     }
 
     // Generic fallback for other errors
