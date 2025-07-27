@@ -1,4 +1,4 @@
-import { Schema, model, HydratedDocument, models } from 'mongoose';
+import mongoose, { Schema, model, HydratedDocument } from 'mongoose';
 import validator from 'validator';
 import hashPassword from '../utils/hashPassword.js';
 import comparePasswords from '../utils/comparePasswords.js';
@@ -25,18 +25,18 @@ const userSchema = new Schema<IUserDocument>(
       unique: true,
       lowercase: true,
       trim: true,
-      minlength: [5, 'Email must be at least 5 characters long'],
+      minlength: [5, 'Email must be at least 5 characters long.'],
       validate: {
         validator(email: string) {
           return validator.isEmail(email);
         },
-        message: 'Please provide a valid email address',
+        message: 'Please provide a valid email address.',
       },
     },
     password: {
       type: String,
       required: true,
-      minlength: [6, 'Password must be at least 6 characters long'],
+      minlength: [6, 'Password must be at least 6 characters long.'],
     },
   },
   { timestamps: true },
@@ -71,6 +71,6 @@ userSchema.methods.comparePassword = async function compareUserPassword(
  *
  * models.User checks if the model already exists before creating a new one.
  */
-const User = models.User || model<IUserDocument>('User', userSchema);
+const User = mongoose.models.User || model<IUserDocument>('User', userSchema);
 
 export default User;
