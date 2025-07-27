@@ -4,12 +4,12 @@ import databaseConnect from './utils/databaseConnect.js';
 
 const { PORT = 3000, MONGODB_URI } = process.env;
 
-const server = http.createServer(app);
+const server: http.Server = http.createServer(app);
 
-const serverStart = async () => {
+const serverStart: () => Promise<void> = async (): Promise<void> => {
   try {
     await databaseConnect(MONGODB_URI);
-    server.listen(PORT, () => {
+    server.listen(PORT, (): void => {
       console.log(`[system] server is running on port ${PORT}...`);
     });
   } catch (error) {
@@ -18,7 +18,7 @@ const serverStart = async () => {
   }
 };
 
-serverStart().catch((error) => {
+serverStart().catch((error: unknown): never => {
   console.error('[system] errors starting the server:', error);
   process.exit(1);
 });
