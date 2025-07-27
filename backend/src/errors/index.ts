@@ -8,3 +8,4 @@ export { default as UnauthenticatedError } from './UnauthenticatedError.js';
 export { default as DatabaseError } from './DatabaseError.js';
 export { default as JWTConfigurationError } from './JWTConfigurationError.js';
 export { default as ConflictError } from './ConflictError.js';
+export { default as InternalServerError } from './InternalServerError.js';

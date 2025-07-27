@@ -6,11 +6,11 @@ import CustomError from './CustomError.js';
 // Custom HTTP errors class for handling HTTP errors in web applications.
 // It includes an HTTP status code and a message, allowing for more specific errors handling in web applications.
 class HttpError extends CustomError {
-  public readonly code: number;
+  public readonly statusCode: number;
 
-  constructor(code: number, message: string) {
+  constructor(statusCode: number, message: string) {
     super(message);
-    this.code = code;
+    this.statusCode = statusCode;
   }
 }
 
