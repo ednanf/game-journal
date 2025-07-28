@@ -16,10 +16,6 @@ import {
   NotFoundError,
 } from '../errors/index.js';
 
-// TODO: Implement user controller functions
-// TODO: Ensure error handling is in place - both mongoose errors and http errors - review with copilot
-// TODO: Create user routes in Postman
-
 // Type guards for proper error handling
 function isMongooseValidationError(error: unknown): error is {
   name: string;
@@ -54,7 +50,6 @@ const registerUser = async (req: Request, res: Response, next: NextFunction): Pr
 
     res.status(StatusCodes.CREATED).json(response);
   } catch (error) {
-    // Mongoose validation error handling
     if (isMongooseValidationError(error)) {
       const messages: string[] = Object.values(error.errors).map(
         (err: { message: string }): string => err.message,
@@ -63,13 +58,11 @@ const registerUser = async (req: Request, res: Response, next: NextFunction): Pr
       return;
     }
 
-    // Duplicate email handling
     if (isMongoDuplicateError(error) && error.keyPattern?.email) {
       next(new ConflictError('Email already in use.'));
       return;
     }
 
-    // Generic fallback for other errors
     next(new InternalServerError('An unexpected error occurred. Please try again later.'));
   }
 };
@@ -78,7 +71,6 @@ const loginUser = async (req: Request, res: Response, next: NextFunction): Promi
   const { email, password } = req.body;
 
   try {
-    // Validate email and password presence
     if (!email || !password) {
       const fieldErrors: Record<'email' | 'password', string | undefined> = {
         email: !email ? 'An email is required' : undefined,
@@ -89,18 +81,14 @@ const loginUser = async (req: Request, res: Response, next: NextFunction): Promi
       return;
     }
 
-    // Find user by email
     const user: IUserDocument | null = await User.findOne({ email });
     if (!user) {
-      // Generic error message for security reasons
       next(new UnauthorizedError('Invalid email or password'));
       return;
     }
 
-    // Compare provided password with stored hashed password
     const isPasswordValid: boolean = await comparePasswords(password, user.password);
     if (!isPasswordValid) {
-      // Generic error message for security reasons
       next(new UnauthorizedError('Invalid email or password'));
       return;
     }
