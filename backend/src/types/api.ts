@@ -33,7 +33,8 @@ export interface DeleteUserSuccess {
   message: string;
 }
 
-// This interface contains fields that the frontend needs to display.
+// Data Transfer Object (DTO) for journal entries.
+// It maps the database model to the API response structure.
 // This is the response structure, not the model structure!
 export interface JournalEntryResponse {
   title: string;
