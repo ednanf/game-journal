@@ -6,7 +6,8 @@ import type {
   ApiResponse,
   RegisterUserSuccess,
   LoginUserSuccess,
-  GenericSuccess,
+  LogoutUserSuccess,
+  DeleteUserSuccess,
 } from '../types/api.js';
 import {
   BadRequestError,
@@ -112,7 +113,7 @@ const loginUser = async (req: Request, res: Response, next: NextFunction): Promi
 };
 
 const logoutUser = async (_req: Request, res: Response) => {
-  const response: ApiResponse<GenericSuccess> = {
+  const response: ApiResponse<LogoutUserSuccess> = {
     status: 'success',
     data: { message: 'User logged out successfully' },
   };
@@ -136,7 +137,7 @@ const deleteUser = async (req: Request, res: Response, next: NextFunction) => {
 
     // TODO: Implement journal entry deletion logic after creating journal entry model
 
-    const response: ApiResponse<GenericSuccess> = {
+    const response: ApiResponse<DeleteUserSuccess> = {
       status: 'success',
       data: {
         message: 'User deleted successfully',
