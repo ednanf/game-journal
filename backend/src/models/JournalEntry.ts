@@ -1,7 +1,7 @@
-import { Schema, model, Document, Types } from 'mongoose';
+import mongoose, { Schema, model, Document } from 'mongoose';
 
 export interface IJournalEntry extends Document {
-  createdBy: Types.ObjectId;
+  createdBy: mongoose.ObjectId;
   title: string;
   platform: string;
   status: 'started' | 'completed' | 'dropped';
@@ -12,7 +12,11 @@ export interface IJournalEntry extends Document {
 
 const journalEntrySchema = new Schema<IJournalEntry>(
   {
-    createdBy: { type: Schema.Types.ObjectId, required: true, ref: 'User' },
+    createdBy: {
+      type: mongoose.Types.ObjectId,
+      required: [true, 'User ID is required'],
+      ref: 'User',
+    },
     title: {
       type: String,
       required: [true, 'Title is required'],
@@ -40,4 +44,7 @@ const journalEntrySchema = new Schema<IJournalEntry>(
   { timestamps: true },
 );
 
-export const JournalEntry = model<IJournalEntry>('JournalEntry', journalEntrySchema);
+const JournalEntry =
+  mongoose.models.JournalEntry || model<IJournalEntry>('JournalEntry', journalEntrySchema);
+
+export default JournalEntry;
