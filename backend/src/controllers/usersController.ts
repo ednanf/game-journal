@@ -123,7 +123,7 @@ const loginUser = async (req: Request, res: Response, next: NextFunction): Promi
   }
 };
 
-const logoutUser = async (req: Request, res: Response) => {
+const logoutUser = async (_req: Request, res: Response) => {
   const response: ApiResponse<GenericSuccess> = {
     status: 'success',
     data: { message: 'User logged out successfully' },
