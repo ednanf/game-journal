@@ -10,10 +10,8 @@ const {
   deleteJournalEntry,
 } = journalEntriesController;
 
-router.get('/', getJournalEntries);
-router.get('/:id', getJournalEntryById);
-router.post('/', createJournalEntry);
-router.patch('/:id', updateJournalEntry);
-router.delete('/:id', deleteJournalEntry);
+router.route('/').get(getJournalEntries).post(createJournalEntry);
+
+router.route('/:id').get(getJournalEntryById).patch(updateJournalEntry).delete(deleteJournalEntry);
 
 export default router;
