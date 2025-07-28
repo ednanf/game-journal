@@ -47,24 +47,24 @@ export interface JournalEntryResponse {
 // Journal entry-related API response types
 
 export interface GetJournalEntriesSuccess {
-  entries: JournalEntryResponse[];
   message: string;
+  entries: JournalEntryResponse[];
   totalCount?: number; // You'll probably want pagination info
 }
 
 export interface GetJournalEntrySuccess {
-  entry: JournalEntryResponse;
   message: string;
+  entry: JournalEntryResponse;
 }
 
 export interface CreateJournalEntrySuccess {
-  entry: JournalEntryResponse;
   message: string;
+  entry: JournalEntryResponse;
 }
 
 export interface PatchJournalEntrySuccess {
-  entry: JournalEntryResponse;
   message: string;
+  entry: JournalEntryResponse;
 }
 
 export interface DeleteJournalEntrySuccess {
