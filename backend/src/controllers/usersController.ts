@@ -2,12 +2,18 @@ import { Request, Response, NextFunction } from 'express';
 import { StatusCodes } from 'http-status-codes';
 import comparePasswords from '../utils/comparePasswords.js';
 import User, { IUserDocument } from '../models/User.js';
-import type { ApiResponse, RegisterUserSuccess, LoginUserSuccess } from '../types/api.js';
+import type {
+  ApiResponse,
+  RegisterUserSuccess,
+  LoginUserSuccess,
+  GenericSuccess,
+} from '../types/api.js';
 import {
   BadRequestError,
   ConflictError,
   InternalServerError,
   UnauthorizedError,
+  NotFoundError,
 } from '../errors/index.js';
 
 // TODO: Implement user controller functions
@@ -20,7 +26,7 @@ function isMongooseValidationError(error: unknown): error is {
   errors: Record<string, { message: string }>;
 } {
   // Check if the error is an object (and not null) and has a 'name' property equal to 'ValidationError'
-  // (error as any).name is necessary because we can't access .name on unknown without first proving it exists
+  // (error as any).name is necessary because I can't access .name on unknown without first proving it exists
   return typeof error === 'object' && error !== null && (error as any).name === 'ValidationError';
 }
 
@@ -28,7 +34,7 @@ function isMongoDuplicateError(
   error: unknown,
 ): error is { code: number; keyPattern?: Record<string, any> } {
   // Check if the error is an object (and not null) and has a 'code' property equal to 11000
-  // (error as any).code is necessary because we can't access .code on unknown without first proving it exists
+  // (error as any).code is necessary because I can't access .code on unknown without first proving it exists
   // 11000 is the MongoDB error code for duplicate key errors
   return typeof error === 'object' && error !== null && (error as any).code === 11000;
 }
@@ -114,24 +120,47 @@ const loginUser = async (req: Request, res: Response, next: NextFunction): Promi
       },
     };
 
-    res.status(StatusCodes.OK).json({ response });
+    res.status(StatusCodes.OK).json(response);
   } catch (error) {
     next(error);
   }
 };
 
-const logoutUser = async (req: Request, res: Response) => {
-  res.status(200).json({
+const logoutUser = async (_req: Request, res: Response) => {
+  const response: ApiResponse<GenericSuccess> = {
     status: 'success',
     data: { message: 'User logged out successfully' },
-  });
+  };
+  res.status(StatusCodes.OK).json(response);
 };
 
-const deleteUser = async (req: Request, res: Response) => {
-  res.status(200).json({
-    status: 'success',
-    data: { message: 'User deleted successfully' },
-  });
+const deleteUser = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const userId: string | undefined = req.user?.userId;
+    if (!userId) {
+      next(new UnauthorizedError('User not authenticated'));
+      return;
+    }
+
+    const userToDelete: IUserDocument | null = await User.findByIdAndDelete(userId);
+    if (!userToDelete) {
+      next(new NotFoundError(`User with ID ${userId} not found`));
+      return;
+    }
+
+    // TODO: Implement journal entry deletion logic after creating journal entry model
+
+    const response: ApiResponse<GenericSuccess> = {
+      status: 'success',
+      data: {
+        message: 'User deleted successfully',
+      },
+    };
+
+    res.status(StatusCodes.OK).json(response);
+  } catch (error) {
+    next(error);
+  }
 };
 
 export { registerUser, loginUser, logoutUser, deleteUser };
