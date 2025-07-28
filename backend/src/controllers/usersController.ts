@@ -23,7 +23,7 @@ function isMongooseValidationError(error: unknown): error is {
   errors: Record<string, { message: string }>;
 } {
   // Check if the error is an object (and not null) and has a 'name' property equal to 'ValidationError'
-  // (error as any).name is necessary because I can't access .name on unknown without first proving it exists
+  // (error as any).name is necessary because we can't access .name on unknown without first proving it exists
   return typeof error === 'object' && error !== null && (error as any).name === 'ValidationError';
 }
 
@@ -31,15 +31,17 @@ function isMongoDuplicateError(
   error: unknown,
 ): error is { code: number; keyPattern?: Record<string, any> } {
   // Check if the error is an object (and not null) and has a 'code' property equal to 11000
-  // (error as any).code is necessary because I can't access .code on unknown without first proving it exists
+  // (error as any).code is necessary because we can't access .code on unknown without first proving it exists
   // 11000 is the MongoDB error code for duplicate key errors
   return typeof error === 'object' && error !== null && (error as any).code === 11000;
 }
 
 const registerUser = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   try {
+    // Mongoose creates a new user and assigns a unique _id (our userId).
+    // This _id is the single source of truth for user identity in our system.
     const user: IUserDocument = await User.create({ ...req.body });
-    const token: string = await user.createJWT(); // Uses the user model's method to create a JWT
+    const token: string = await user.createJWT(); // Uses the user model's to create a JWT adding _id as userId
     const response: ApiResponse<RegisterUserSuccess> = {
       status: 'success',
       data: {
@@ -49,6 +51,8 @@ const registerUser = async (req: Request, res: Response, next: NextFunction): Pr
       },
     };
 
+    // Send the JWT (with userId inside) to the client.
+    // The client will present this token as proof of identity on future requests.
     res.status(StatusCodes.CREATED).json(response);
   } catch (error) {
     if (isMongooseValidationError(error)) {

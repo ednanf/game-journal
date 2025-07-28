@@ -51,6 +51,8 @@ userSchema.pre('save', async function hashPasswordBeforeSave() {
 
 // Add methods to the user schema
 userSchema.methods.createJWT = async function createUserJWT(payload: Record<string, unknown> = {}) {
+  // Package the user's MongoDB _id as userId into the JWT payload.
+  // This is the ONLY place we embed userId into the token.
   // eslint-disable-next-line no-underscore-dangle
   return createJWT({ userId: this._id, ...payload });
 };

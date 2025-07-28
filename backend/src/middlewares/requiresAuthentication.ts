@@ -43,7 +43,8 @@ const requiresAuthentication = (req: Request, _res: Response, next: NextFunction
       return;
     }
 
-    // If the token is valid, attach the user information to the request object
+    // Extract userId from the verified JWT payload and attach it to req.user.
+    // This is the ONLY way downstream code should access user identity—never trust the client directly.
     req.user = { userId: payload.userId };
     next();
   } catch (error) {
