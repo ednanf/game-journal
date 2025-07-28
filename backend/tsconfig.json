@@ -3,7 +3,7 @@
     // modern features, safe for most runtimes
     "target": "ES2020",
     // ESM output
-    "module": "ESNext",
+    "module": "NodeNext",
     // resolves ESM + .ts extensions properly
     "moduleResolution": "NodeNext",
     "rootDir": "./src",
