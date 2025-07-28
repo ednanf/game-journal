@@ -54,9 +54,6 @@ const registerUser = async (req: Request, res: Response, next: NextFunction): Pr
 
     res.status(StatusCodes.CREATED).json(response);
   } catch (error) {
-    // Log the error for debugging purposes
-    console.error('Error registering user:', error);
-
     // Mongoose validation error handling
     if (isMongooseValidationError(error)) {
       const messages: string[] = Object.values(error.errors).map(
@@ -126,11 +123,12 @@ const loginUser = async (req: Request, res: Response, next: NextFunction): Promi
   }
 };
 
-const logoutUser = async (_req: Request, res: Response) => {
+const logoutUser = async (req: Request, res: Response) => {
   const response: ApiResponse<GenericSuccess> = {
     status: 'success',
     data: { message: 'User logged out successfully' },
   };
+
   res.status(StatusCodes.OK).json(response);
 };
 
