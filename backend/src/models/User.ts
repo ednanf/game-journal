@@ -51,8 +51,8 @@ userSchema.pre('save', async function hashPasswordBeforeSave() {
 
 // Add methods to the user schema
 userSchema.methods.createJWT = async function createUserJWT(payload: Record<string, unknown> = {}) {
-  // Prevent userId from being overwritten
-  return createJWT({ userId: this.id, ...payload });
+  // eslint-disable-next-line no-underscore-dangle
+  return createJWT({ userId: this._id, ...payload });
 };
 
 userSchema.methods.comparePassword = async function compareUserPassword(
