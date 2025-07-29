@@ -41,7 +41,7 @@ const registerUser = async (req: Request, res: Response, next: NextFunction): Pr
     // Mongoose creates a new user and assigns a unique _id (our userId).
     // This _id is the single source of truth for user identity in our system.
     const user: IUserDocument = await User.create({ ...req.body });
-    const token: string = await user.createJWT(); // Uses the user model's to create a JWT adding _id as userId
+    const token: string = await user.createJWT(); // Uses the user model to create a JWT adding _id as userId
     const response: ApiResponse<RegisterUserSuccess> = {
       status: 'success',
       data: {
