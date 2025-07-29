@@ -50,7 +50,7 @@ export interface JournalEntryResponse {
 export interface GetJournalEntriesSuccess {
   message: string;
   entries: JournalEntryResponse[];
-  totalCount?: number; // You'll probably want pagination info
+  nextCursor: string | null;
 }
 
 export interface GetJournalEntrySuccess {
