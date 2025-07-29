@@ -1,6 +1,7 @@
 import mongoose, { Schema, model, Document } from 'mongoose';
 
 export interface IJournalEntry extends Document {
+  _id: mongoose.Types.ObjectId;
   createdBy: mongoose.ObjectId;
   title: string;
   platform: string;
