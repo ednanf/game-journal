@@ -18,7 +18,6 @@ const createJournalEntry = async (
   next: NextFunction,
 ): Promise<void> => {
   if (!req.user?.userId) {
-    // Don’t let the function keep running after an error!
     next(
       new UnauthenticatedError('User not authenticated. Please log in to create a journal entry.'),
     );
