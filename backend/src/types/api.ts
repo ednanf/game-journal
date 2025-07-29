@@ -86,5 +86,4 @@ export interface PatchJournalEntrySuccess {
 
 export interface DeleteJournalEntrySuccess {
   message: string;
-  deletedId: string;
 }
