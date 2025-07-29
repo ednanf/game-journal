@@ -10,9 +10,11 @@ import {
   PatchJournalEntrySuccess,
   CreateJournalEntryDTO,
   PatchJournalEntryDTO,
+  DeleteJournalEntrySuccess,
 } from '../types/api.js';
-import { BadRequestError, NotFoundError, UnauthenticatedError } from '../errors/index.js';
+import { BadRequestError, NotFoundError } from '../errors/index.js';
 import performCursorPagination from '../utils/performCursorPagination.js';
+import requireUserIdCheck from '../utils/requireUserIdCheck.js';
 
 // Convert a JournalEntry model to a JournalEntryResponseDTO
 const toJournalEntryResponseDTO = (entry: IJournalEntry): JournalEntryResponseDTO => ({
@@ -32,13 +34,8 @@ const getJournalEntries = async (
   res: Response,
   next: NextFunction,
 ): Promise<void> => {
-  // Check if the user is authenticated
-  if (!req.user?.userId) {
-    next(
-      new UnauthenticatedError('User not authenticated. Please log in to view journal entries.'),
-    );
-    return;
-  }
+  const userId: string | undefined = requireUserIdCheck(req, next);
+  if (!userId) return; // Clean exit if userId is not found
 
   // Pull the limit and cursor from the query parameters
   // The frontend should send these parameters!!
@@ -56,7 +53,7 @@ const getJournalEntries = async (
       JournalEntry,
       limit,
       cursor as string | undefined,
-      { createdBy: req.user.userId }, // Filter by the authenticated user!
+      { createdBy: userId }, // Filter by the authenticated user!
     );
 
     // If no documents are found, return an empty array with a message
@@ -96,13 +93,8 @@ const getJournalEntryById = async (
   res: Response,
   next: NextFunction,
 ): Promise<void> => {
-  const userId: string | undefined = req.user?.userId;
-  if (!userId) {
-    next(
-      new UnauthenticatedError('User not authenticated. Please log in to view journal entries.'),
-    );
-    return;
-  }
+  const userId: string | undefined = requireUserIdCheck(req, next);
+  if (!userId) return; // Clean exit if userId is not found
 
   const entryId: string = req.params.id; // Validated by the route middleware
 
@@ -134,12 +126,8 @@ const createJournalEntry = async (
   res: Response,
   next: NextFunction,
 ): Promise<void> => {
-  if (!req.user?.userId) {
-    next(
-      new UnauthenticatedError('User not authenticated. Please log in to create a journal entry.'),
-    );
-    return;
-  }
+  const userId: string | undefined = requireUserIdCheck(req, next);
+  if (!userId) return; // Clean exit if userId is not found
 
   try {
     // Validate and construct the data
@@ -152,7 +140,7 @@ const createJournalEntry = async (
 
     const newJournalEntry = await JournalEntry.create({
       ...journalEntryData,
-      createdBy: req.user.userId,
+      createdBy: userId,
     });
 
     // Map the DB model to the API response Data Transfer Object
@@ -177,13 +165,8 @@ const updateJournalEntry = async (
   res: Response,
   next: NextFunction,
 ): Promise<void> => {
-  const userId: string | undefined = req.user?.userId;
-  if (!userId) {
-    next(
-      new UnauthenticatedError('User not authenticated. Please log in to edit journal entries.'),
-    );
-    return;
-  }
+  const userId: string | undefined = requireUserIdCheck(req, next);
+  if (!userId) return; // Clean exit if userId is not found
 
   const entryId: string = req.params.id; // Validated by the route middleware
 
@@ -224,8 +207,33 @@ const updateJournalEntry = async (
   }
 };
 
-const deleteJournalEntry = async (req: Request, res: Response) => {
-  res.status(200).json({ message: `Delete journal entry with ID ${req.params.id}` });
+const deleteJournalEntry = async (req: Request, res: Response, next: NextFunction) => {
+  const userId: string | undefined = requireUserIdCheck(req, next);
+  if (!userId) return; // Clean exit if userId is not found
+
+  const entryId: string = req.params.id; // Validated by the route middleware
+
+  try {
+    const deletedJournalEntry = await JournalEntry.findOneAndDelete({
+      _id: entryId,
+      createdBy: userId,
+    });
+    if (!deletedJournalEntry) {
+      next(new NotFoundError(`No journal entry found with id: ${entryId}`));
+      return;
+    }
+
+    const response: ApiResponse<DeleteJournalEntrySuccess> = {
+      status: 'success',
+      data: {
+        message: `Journal entry deleted successfully.`,
+      },
+    };
+
+    res.status(StatusCodes.OK).json(response);
+  } catch (error) {
+    next(error);
+  }
 };
 
 export default {
