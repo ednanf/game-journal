@@ -1,16 +1,37 @@
 import { Request, Response, NextFunction } from 'express';
 import { StatusCodes } from 'http-status-codes';
-import JournalEntry from '../models/JournalEntry.js';
+import JournalEntry, { IJournalEntry } from '../models/JournalEntry.js';
 import {
   ApiResponse,
   CreateJournalEntrySuccess,
-  JournalEntryResponse,
+  JournalEntryResponseDTO,
   GetJournalEntriesSuccess,
+  GetJournalEntrySuccess,
+  PatchJournalEntrySuccess,
+  CreateJournalEntryDTO,
+  PatchJournalEntryDTO,
 } from '../types/api.js';
-import { BadRequestError, UnauthenticatedError } from '../errors/index.js';
+import { BadRequestError, NotFoundError, UnauthenticatedError } from '../errors/index.js';
 import performCursorPagination from '../utils/performCursorPagination.js';
 
-const getJournalEntries = async (req: Request, res: Response, next: NextFunction) => {
+// Convert a JournalEntry model to a JournalEntryResponseDTO
+const toJournalEntryResponseDTO = (entry: IJournalEntry): JournalEntryResponseDTO => ({
+  // eslint-disable-next-line no-underscore-dangle
+  id: entry._id.toString(),
+  createdBy: entry.createdBy.toString(),
+  title: entry.title,
+  platform: entry.platform,
+  status: entry.status,
+  rating: entry.rating ?? 5,
+  createdAt: entry.createdAt.toISOString(),
+  updatedAt: entry.updatedAt.toISOString(),
+});
+
+const getJournalEntries = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+): Promise<void> => {
   // Check if the user is authenticated
   if (!req.user?.userId) {
     next(
@@ -53,14 +74,7 @@ const getJournalEntries = async (req: Request, res: Response, next: NextFunction
     }
 
     // Map the DB entries to the API response structure
-    const journalEntries: JournalEntryResponse[] = documents.map((entry) => ({
-      title: entry.title,
-      platform: entry.platform,
-      status: entry.status,
-      rating: entry.rating ?? 5,
-      createdAt: entry.createdAt.toISOString(),
-      updatedAt: entry.updatedAt.toISOString(),
-    }));
+    const journalEntries = documents.map(toJournalEntryResponseDTO);
 
     const response: ApiResponse<GetJournalEntriesSuccess> = {
       status: 'success',
@@ -77,8 +91,42 @@ const getJournalEntries = async (req: Request, res: Response, next: NextFunction
   }
 };
 
-const getJournalEntryById = async (req: Request, res: Response) => {
-  res.status(200).json({ message: `Get journal entry with ID ${req.params.id}` });
+const getJournalEntryById = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+): Promise<void> => {
+  const userId: string | undefined = req.user?.userId;
+  if (!userId) {
+    next(
+      new UnauthenticatedError('User not authenticated. Please log in to view journal entries.'),
+    );
+    return;
+  }
+
+  const entryId: string = req.params.id; // Validated by the route middleware
+
+  try {
+    const journalEntry = await JournalEntry.findOne({ _id: entryId, createdBy: userId });
+    if (!journalEntry) {
+      next(new NotFoundError('Journal entry not found.'));
+      return;
+    }
+
+    const entry: JournalEntryResponseDTO = toJournalEntryResponseDTO(journalEntry);
+
+    const response: ApiResponse<GetJournalEntrySuccess> = {
+      status: 'success',
+      data: {
+        message: 'Journal entry retrieved successfully.',
+        entry,
+      },
+    };
+
+    res.status(StatusCodes.OK).json(response);
+  } catch (error) {
+    next(error);
+  }
 };
 
 const createJournalEntry = async (
@@ -94,23 +142,21 @@ const createJournalEntry = async (
   }
 
   try {
-    // Map the user ID to the correct field
-    const journalEntryData = {
-      ...req.body,
-      createdBy: req.user.userId,
+    // Validate and construct the data
+    const journalEntryData: CreateJournalEntryDTO = {
+      title: req.body.title,
+      platform: req.body.platform,
+      status: req.body.status,
+      rating: req.body.rating,
     };
 
-    const newJournalEntry = await JournalEntry.create(journalEntryData);
+    const newJournalEntry = await JournalEntry.create({
+      ...journalEntryData,
+      createdBy: req.user.userId,
+    });
 
     // Map the DB model to the API response Data Transfer Object
-    const entry: JournalEntryResponse = {
-      title: newJournalEntry.title,
-      platform: newJournalEntry.platform,
-      status: newJournalEntry.status,
-      rating: newJournalEntry.rating ?? 5,
-      createdAt: newJournalEntry.createdAt.toISOString(),
-      updatedAt: newJournalEntry.updatedAt.toISOString(),
-    };
+    const entry: JournalEntryResponseDTO = toJournalEntryResponseDTO(newJournalEntry);
 
     const response: ApiResponse<CreateJournalEntrySuccess> = {
       status: 'success',
@@ -126,11 +172,56 @@ const createJournalEntry = async (
   }
 };
 
-const updateJournalEntry = async (req: Request, res: Response) => {
-  res.status(200).json({
-    message: `Update journal entry with ID ${req.params.id}`,
-    data: req.body,
-  });
+const updateJournalEntry = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+): Promise<void> => {
+  const userId: string | undefined = req.user?.userId;
+  if (!userId) {
+    next(
+      new UnauthenticatedError('User not authenticated. Please log in to edit journal entries.'),
+    );
+    return;
+  }
+
+  const entryId: string = req.params.id; // Validated by the route middleware
+
+  // Limit the fields that can be updated
+  const { title, platform, status, rating }: PatchJournalEntryDTO = req.body;
+  const updatePayload = { title, platform, status, rating };
+  if (Object.keys(updatePayload).length === 0) {
+    next(new BadRequestError('No update data provided.'));
+    return;
+  }
+
+  try {
+    const updatedJournalEntry = await JournalEntry.findOneAndUpdate(
+      { _id: entryId, createdBy: userId },
+      updatePayload, // Pass the clean, validated payload.
+      { new: true, runValidators: true },
+    );
+
+    if (!updatedJournalEntry) {
+      next(new NotFoundError(`No journal entry found with id: ${entryId}`));
+      return;
+    }
+
+    // Use the new helper function for mapping. Clean and reusable.
+    const entry: JournalEntryResponseDTO = toJournalEntryResponseDTO(updatedJournalEntry);
+
+    const response: ApiResponse<PatchJournalEntrySuccess> = {
+      status: 'success',
+      data: {
+        message: 'Journal entry updated successfully.',
+        entry,
+      },
+    };
+
+    res.status(StatusCodes.OK).json(response);
+  } catch (error) {
+    next(error);
+  }
 };
 
 const deleteJournalEntry = async (req: Request, res: Response) => {
