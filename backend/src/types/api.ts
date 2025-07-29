@@ -36,7 +36,9 @@ export interface DeleteUserSuccess {
 // Data Transfer Object (DTO) for journal entries.
 // It maps the database model to the API response structure.
 // This is the response structure, not the model structure!
-export interface JournalEntryResponse {
+export interface JournalEntryResponseDTO {
+  id: string; // This is the ID from the database, converted to a string
+  createdBy: string; // User ID as a string
   title: string;
   platform: string;
   status: 'started' | 'completed' | 'dropped';
@@ -45,27 +47,41 @@ export interface JournalEntryResponse {
   updatedAt: string;
 }
 
+export interface CreateJournalEntryDTO {
+  title: string;
+  platform: string;
+  status?: 'started' | 'completed' | 'dropped';
+  rating?: number;
+}
+
+export interface PatchJournalEntryDTO {
+  title?: string;
+  platform?: string;
+  status?: 'started' | 'completed' | 'dropped';
+  rating?: number;
+}
+
 // Journal entry-related API response types
 
 export interface GetJournalEntriesSuccess {
   message: string;
-  entries: JournalEntryResponse[];
+  entries: JournalEntryResponseDTO[];
   nextCursor: string | null;
 }
 
 export interface GetJournalEntrySuccess {
   message: string;
-  entry: JournalEntryResponse;
+  entry: JournalEntryResponseDTO;
 }
 
 export interface CreateJournalEntrySuccess {
   message: string;
-  entry: JournalEntryResponse;
+  entry: JournalEntryResponseDTO;
 }
 
 export interface PatchJournalEntrySuccess {
   message: string;
-  entry: JournalEntryResponse;
+  entry: JournalEntryResponseDTO;
 }
 
 export interface DeleteJournalEntrySuccess {
