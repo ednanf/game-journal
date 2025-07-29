@@ -1,4 +1,5 @@
 import express from 'express';
+import validateObjectId from '../middlewares/validateObjectId.js';
 import journalEntriesController from '../controllers/journalEntriesController.js';
 
 const router = express.Router();
@@ -12,6 +13,10 @@ const {
 
 router.route('/').get(getJournalEntries).post(createJournalEntry);
 
-router.route('/:id').get(getJournalEntryById).patch(updateJournalEntry).delete(deleteJournalEntry);
+router
+  .route('/:id')
+  .get(validateObjectId('id'), getJournalEntryById)
+  .patch(validateObjectId('id'), updateJournalEntry)
+  .delete(validateObjectId('id'), deleteJournalEntry);
 
 export default router;
