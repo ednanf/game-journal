@@ -1,7 +1,7 @@
 import express from 'express';
 import morgan from 'morgan';
 
-import requiresAuthentication from './middlewares/requiresAuthentication.js';
+import authenticate from './middlewares/authenticate.js';
 import notFound from './middlewares/notFound.js';
 import errorHandler from './middlewares/errorHandler.js';
 
@@ -16,7 +16,7 @@ app.use(morgan('tiny'));
 
 // Routes
 app.use('/api/v1/users', usersRoutes);
-app.use('/api/v1/journal-entries', requiresAuthentication, journalEntriesRoutes);
+app.use('/api/v1/journal-entries', authenticate, journalEntriesRoutes);
 
 // Error handling middleware
 app.use(notFound);

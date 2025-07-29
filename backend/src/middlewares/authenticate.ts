@@ -13,7 +13,7 @@ const isUserPayload = (payload: unknown): payload is UserPayload =>
   'userId' in payload &&
   typeof (payload as Record<string, unknown>).userId === 'string';
 
-const requiresAuthentication = (req: Request, _res: Response, next: NextFunction) => {
+const authenticate = (req: Request, _res: Response, next: NextFunction) => {
   const authHeader: string | undefined = req.headers.authorization;
   if (!authHeader || !authHeader.startsWith('Bearer ')) {
     next(
@@ -57,4 +57,4 @@ const requiresAuthentication = (req: Request, _res: Response, next: NextFunction
   }
 };
 
-export default requiresAuthentication;
+export default authenticate;
