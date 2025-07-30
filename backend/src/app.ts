@@ -1,5 +1,11 @@
 import express from 'express';
+import cors from 'cors';
+import helmet from 'helmet';
+import { rateLimit } from 'express-rate-limit';
 import morgan from 'morgan';
+
+import corsOptions from './configs/corsOptions.js';
+import rateLimitOptions from './configs/rateLimitOptions.js';
 
 import authenticate from './middlewares/authenticate.js';
 import notFound from './middlewares/notFound.js';
@@ -12,6 +18,9 @@ const app = express();
 
 // Middleware
 app.use(express.json());
+app.use(cors(corsOptions));
+app.use(rateLimit(rateLimitOptions));
+app.use(helmet());
 app.use(morgan('tiny'));
 
 // Routes
