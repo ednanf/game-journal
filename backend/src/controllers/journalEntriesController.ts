@@ -14,7 +14,6 @@ import {
 } from '../types/api.js';
 import { BadRequestError, NotFoundError } from '../errors/index.js';
 import performCursorPagination from '../utils/performCursorPagination.js';
-import requireUserIdCheck from '../utils/requireUserIdCheck.js';
 
 // Convert a JournalEntry model to a JournalEntryResponseDTO
 const toJournalEntryResponseDTO = (entry: IJournalEntry): JournalEntryResponseDTO => ({
@@ -34,11 +33,10 @@ const getJournalEntries = async (
   res: Response,
   next: NextFunction,
 ): Promise<void> => {
-  const userId: string | undefined = requireUserIdCheck(req, next);
-  if (!userId) return; // Clean exit if userId is not found
+  const { userId } = req.user; // Validated by authentication middleware
 
   // Pull the limit and cursor from the query parameters
-  // The frontend should send these parameters!!
+  // The frontend should send the parameter "?limit=X"!!
   const { cursor } = req.query;
   const limit = parseInt(req.query.limit as string, 10) || 10; // Default to 10 if not provided
 
@@ -70,7 +68,7 @@ const getJournalEntries = async (
       return;
     }
 
-    // Map the DB entries to the API response structure
+    // Map the DB model to the API response Data Transfer Object
     const journalEntries = documents.map(toJournalEntryResponseDTO);
 
     const response: ApiResponse<GetJournalEntriesSuccess> = {
@@ -93,8 +91,7 @@ const getJournalEntryById = async (
   res: Response,
   next: NextFunction,
 ): Promise<void> => {
-  const userId: string | undefined = requireUserIdCheck(req, next);
-  if (!userId) return; // Clean exit if userId is not found
+  const { userId } = req.user; // Validated by authentication middleware
 
   const entryId: string = req.params.id; // Validated by the route middleware
 
@@ -105,6 +102,7 @@ const getJournalEntryById = async (
       return;
     }
 
+    // Map the DB model to the API response Data Transfer Object
     const entry: JournalEntryResponseDTO = toJournalEntryResponseDTO(journalEntry);
 
     const response: ApiResponse<GetJournalEntrySuccess> = {
@@ -126,8 +124,7 @@ const createJournalEntry = async (
   res: Response,
   next: NextFunction,
 ): Promise<void> => {
-  const userId: string | undefined = requireUserIdCheck(req, next);
-  if (!userId) return; // Clean exit if userId is not found
+  const { userId } = req.user; // Validated by authentication middleware
 
   try {
     // Validate and construct the data
@@ -165,14 +162,16 @@ const updateJournalEntry = async (
   res: Response,
   next: NextFunction,
 ): Promise<void> => {
-  const userId: string | undefined = requireUserIdCheck(req, next);
-  if (!userId) return; // Clean exit if userId is not found
-
+  const { userId } = req.user; // Validated by authentication middleware
   const entryId: string = req.params.id; // Validated by the route middleware
 
-  // Limit the fields that can be updated
-  const { title, platform, status, rating }: PatchJournalEntryDTO = req.body;
-  const updatePayload = { title, platform, status, rating };
+  // Build a payload only with the keys that are provided in the request body
+  const updatePayload: PatchJournalEntryDTO = {};
+  if (req.body.title !== undefined) updatePayload.title = req.body.title;
+  if (req.body.platform !== undefined) updatePayload.platform = req.body.platform;
+  if (req.body.status !== undefined) updatePayload.status = req.body.status;
+  if (req.body.rating !== undefined) updatePayload.rating = req.body.rating;
+
   if (Object.keys(updatePayload).length === 0) {
     next(new BadRequestError('No update data provided.'));
     return;
@@ -190,7 +189,7 @@ const updateJournalEntry = async (
       return;
     }
 
-    // Use the new helper function for mapping. Clean and reusable.
+    // Map the DB model to the API response Data Transfer Object
     const entry: JournalEntryResponseDTO = toJournalEntryResponseDTO(updatedJournalEntry);
 
     const response: ApiResponse<PatchJournalEntrySuccess> = {
@@ -208,10 +207,9 @@ const updateJournalEntry = async (
 };
 
 const deleteJournalEntry = async (req: Request, res: Response, next: NextFunction) => {
-  const userId: string | undefined = requireUserIdCheck(req, next);
-  if (!userId) return; // Clean exit if userId is not found
+  const { userId } = req.user; // Validated by authentication middleware
 
-  const entryId: string = req.params.id; // Validated by the route middleware
+  const entryId = req.params.id; // Validated by the route middleware
 
   try {
     const deletedJournalEntry = await JournalEntry.findOneAndDelete({
