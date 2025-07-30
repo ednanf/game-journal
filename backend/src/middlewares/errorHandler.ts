@@ -2,7 +2,7 @@ import { Request, Response, NextFunction } from 'express';
 import type { ApiError, ApiResponse } from '../types/api.js';
 import { HttpError } from '../errors/index.js';
 
-// Error handler middleware for Express.js
+// Error handler middleware for express.
 // This middleware catches errors thrown in the application and formats them into a consistent JSON response.
 // It sets the HTTP status code based on the error and includes a message in the response body.
 // If the error does not have a specific code, it defaults to 500 (Internal Server Error).

@@ -1,3 +1,5 @@
+// User model for MongoDB using Mongoose
+
 import mongoose, { Schema, model, HydratedDocument } from 'mongoose';
 import validator from 'validator';
 import hashPassword from '../utils/hashPassword.js';

@@ -1,3 +1,4 @@
+// JournalEntry model for mongoDB using Mongoose
 import mongoose, { Schema, model, Document } from 'mongoose';
 
 export interface IJournalEntry extends Document {

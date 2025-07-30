@@ -1,6 +1,8 @@
 import { Model, Types } from 'mongoose';
 
-// This function will handle paginating our journal entries
+// This function will handle journal entry pagination using a cursor.
+// It will return the next set of entries based on the provided cursor and limit.
+// The cursor is a string that encodes the last item's creation date and ID.
 const performCursorPagination = async (
   model: Model<any>,
   limit: number,

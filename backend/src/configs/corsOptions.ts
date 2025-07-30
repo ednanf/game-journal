@@ -1,3 +1,5 @@
+// This file configures CORS options for the application.
+// It allows requests from specific origins and defines allowed HTTP methods.
 const allowedOrigins = ['http://localhost:5173'];
 
 const corsOptions = {

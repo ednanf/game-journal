@@ -47,20 +47,6 @@ export interface JournalEntryResponseDTO {
   updatedAt: string;
 }
 
-export interface CreateJournalEntryDTO {
-  title: string;
-  platform: string;
-  status?: 'started' | 'completed' | 'dropped';
-  rating?: number;
-}
-
-export interface PatchJournalEntryDTO {
-  title?: string;
-  platform?: string;
-  status?: 'started' | 'completed' | 'dropped';
-  rating?: number;
-}
-
 // Journal entry-related API response types
 
 export interface GetJournalEntriesSuccess {
