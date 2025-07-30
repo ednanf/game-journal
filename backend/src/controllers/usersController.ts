@@ -2,6 +2,7 @@ import { Request, Response, NextFunction } from 'express';
 import { StatusCodes } from 'http-status-codes';
 import comparePasswords from '../utils/comparePasswords.js';
 import User, { IUserDocument } from '../models/User.js';
+import JournalEntry from '../models/JournalEntry.js';
 import type {
   ApiResponse,
   RegisterUserSuccess,
@@ -124,7 +125,7 @@ const deleteUser = async (req: Request, res: Response, next: NextFunction) => {
       return;
     }
 
-    // TODO: Implement journal entry deletion logic after creating journal entry model
+    await JournalEntry.deleteMany({ createdBy: userId });
 
     const response: ApiResponse<DeleteUserSuccess> = {
       status: 'success',
