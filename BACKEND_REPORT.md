@@ -737,8 +737,8 @@ interface IJournalEntry {
 
 ```
 User (1) ──────── (Many) JournalEntry
-  │                        │
-  │                        │
+  │                         │
+  │                         │
   _id ←──── createdBy ──────┘
 
 • One user can have many journal entries
