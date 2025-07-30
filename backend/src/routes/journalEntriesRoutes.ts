@@ -1,4 +1,5 @@
 import express from 'express';
+import { xss } from 'express-xss-sanitizer';
 import validateObjectId from '../middlewares/validateObjectId.js';
 import journalEntriesController from '../controllers/journalEntriesController.js';
 import validateZodSchemas from '../middlewares/validateZodSchemas.js';
@@ -19,13 +20,14 @@ const {
 router
   .route('/')
   .get(getJournalEntries)
-  .post(validateZodSchemas(createJournalEntryBodySchema), createJournalEntry);
+  .post(xss(), validateZodSchemas(createJournalEntryBodySchema), createJournalEntry);
 
 router
   .route('/:id')
   .get(validateObjectId('id'), getJournalEntryById)
   .patch(
     validateObjectId('id'),
+    xss(),
     validateZodSchemas(patchJournalEntryBodySchema),
     updateJournalEntry,
   )
