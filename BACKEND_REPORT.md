@@ -940,8 +940,8 @@ Signature: HMACSHA256(base64UrlEncode(header) + "." + base64UrlEncode(payload), 
          │    (localStorage/memory)  │                           │
          │                           │                           │
          │ 7. Subsequent requests    │                           │
-         │ Authorization: Bearer     |                           |
-         | <token>                   │                           │
+         │ Authorization: Bearer     │                           │
+         │ <token>                   │                           │
          │──────────────────────────►│                           │
          │                           │ 8. Verify token           │
          │                           │ 9. Extract userId         │
