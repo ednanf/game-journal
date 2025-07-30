@@ -18,15 +18,6 @@ import {
 } from '../errors/index.js';
 
 // Type guards for proper error handling
-function isMongooseValidationError(error: unknown): error is {
-  name: string;
-  errors: Record<string, { message: string }>;
-} {
-  // Check if the error is an object (and not null) and has a 'name' property equal to 'ValidationError'
-  // (error as any).name is necessary because we can't access .name on unknown without first proving it exists
-  return typeof error === 'object' && error !== null && (error as any).name === 'ValidationError';
-}
-
 function isMongoDuplicateError(
   error: unknown,
 ): error is { code: number; keyPattern?: Record<string, any> } {
@@ -40,7 +31,9 @@ const registerUser = async (req: Request, res: Response, next: NextFunction): Pr
   try {
     // Mongoose creates a new user and assigns a unique _id (our userId).
     // This _id is the single source of truth for user identity in our system.
-    const user: IUserDocument = await User.create({ ...req.body });
+    const { email, password } = req.body; // Validated by Zod in the middleware
+    const user: IUserDocument = await User.create({ email, password });
+
     const token: string = await user.createJWT(); // Uses the user model to create a JWT adding _id as userId
     const response: ApiResponse<RegisterUserSuccess> = {
       status: 'success',
@@ -55,14 +48,6 @@ const registerUser = async (req: Request, res: Response, next: NextFunction): Pr
     // The client will present this token as proof of identity on future requests.
     res.status(StatusCodes.CREATED).json(response);
   } catch (error) {
-    if (isMongooseValidationError(error)) {
-      const messages: string[] = Object.values(error.errors).map(
-        (err: { message: string }): string => err.message,
-      );
-      next(new BadRequestError(messages.join(' ')));
-      return;
-    }
-
     if (isMongoDuplicateError(error) && error.keyPattern?.email) {
       next(new ConflictError('Email already in use.'));
       return;
@@ -73,7 +58,7 @@ const registerUser = async (req: Request, res: Response, next: NextFunction): Pr
 };
 
 const loginUser = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-  const { email, password } = req.body;
+  const { email, password } = req.body; // Validated by Zod in the middleware
 
   try {
     if (!email || !password) {
