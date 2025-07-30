@@ -1,4 +1,4 @@
-# Game Journal Backend Documentation
+# Game Journal Backend Report
 
 ## Table of Contents
 1. [Overview](#overview)
@@ -77,29 +77,29 @@ The backend follows a layered architecture with clear separation of concerns:
 └──────────────────────────┬───────────────────────────────────┘
                            │
 ┌──────────────────────────▼───────────────────────────────────┐
-│                 ROUTE-SPECIFIC MIDDLEWARE                   │
+│                 ROUTE-SPECIFIC MIDDLEWARE                    │
 │ ┌─────────────┐ ┌─────────────┐ ┌─────────────┐ ┌──────────┐ │
 │ │ XSS Protect │ │ Validation  │ │   Auth      │ │ ObjectID │ │
 │ └─────────────┘ └─────────────┘ └─────────────┘ └──────────┘ │
 └──────────────────────────┬───────────────────────────────────┘
                            │
 ┌──────────────────────────▼───────────────────────────────────┐
-│                   CONTROLLER LAYER                          │
-│  ┌─────────────────┐              ┌─────────────────────────┐ │
-│  │ Users Controller│              │Journal Entries Controller│ │
-│  └─────────────────┘              └─────────────────────────┘ │
+│                   CONTROLLER LAYER                           │
+│  ┌─────────────────┐              ┌─────────────────────────┐│
+│  │ Users Controller│              │Journal Entries Controller│
+│  └─────────────────┘              └─────────────────────────┘│
 └──────────────────────────┬───────────────────────────────────┘
                            │
 ┌──────────────────────────▼───────────────────────────────────┐
-│                     MODEL LAYER                             │
-│      ┌─────────────────┐              ┌─────────────────────┐ │
-│      │   User Model    │              │ JournalEntry Model  │ │
-│      └─────────────────┘              └─────────────────────┘ │
+│                     MODEL LAYER                              │
+│      ┌─────────────────┐              ┌─────────────────────┐│
+│      │   User Model    │              │ JournalEntry Model  ││
+│      └─────────────────┘              └─────────────────────┘│
 └──────────────────────────┬───────────────────────────────────┘
                            │
 ┌──────────────────────────▼───────────────────────────────────┐
-│                      DATABASE                               │
-│                     MongoDB                                 │
+│                      DATABASE                                │
+│                     MongoDB                                  │
 └──────────────────────────────────────────────────────────────┘
 ```
 
@@ -198,42 +198,42 @@ Every incoming request goes through this pipeline:
      │
      ▼
 ┌─────────────────────────────────────────────────────────────┐
-│                    GLOBAL MIDDLEWARE                       │
+│                    GLOBAL MIDDLEWARE                        │
 │                                                             │
-│ 1. express.json() ──► Parse JSON body                      │
-│ 2. cors() ──────────► Apply CORS policy                    │
-│ 3. rateLimit() ─────► Check rate limits                    │
-│ 4. helmet() ────────► Set security headers                 │
-│ 5. morgan() ────────► Log request                          │
+│ 1. express.json() ──► Parse JSON body                       │
+│ 2. cors() ──────────► Apply CORS policy                     │
+│ 3. rateLimit() ─────► Check rate limits                     │
+│ 4. helmet() ────────► Set security headers                  │
+│ 5. morgan() ────────► Log request                           │
 └─────────────────────────┬───────────────────────────────────┘
                           │
                           ▼
 ┌─────────────────────────────────────────────────────────────┐
-│                    ROUTE MATCHING                          │
+│                    ROUTE MATCHING                           │
 │                                                             │
 │ Express router matches URL pattern:                         │
-│ • /api/v1/users/*                                          │
-│ • /api/v1/journal-entries/*                               │
+│ • /api/v1/users/*                                           │
+│ • /api/v1/journal-entries/*                                 │
 └─────────────────────────┬───────────────────────────────────┘
                           │
                           ▼
 ┌─────────────────────────────────────────────────────────────┐
-│                ROUTE-SPECIFIC MIDDLEWARE                   │
+│                ROUTE-SPECIFIC MIDDLEWARE                    │
 │                                                             │
 │ Applied based on route requirements:                        │
-│ • xss() ────────────► XSS sanitization                    │
-│ • validateZodSchemas() ► Input validation                  │
-│ • authenticate() ────► JWT verification                    │
-│ • validateObjectId() ► MongoDB ObjectID validation        │
+│ • xss() ────────────► XSS sanitization                      │
+│ • validateZodSchemas() ► Input validation                   │
+│ • authenticate() ────► JWT verification                     │
+│ • validateObjectId() ► MongoDB ObjectID validation          │
 └─────────────────────────┬───────────────────────────────────┘
                           │
                           ▼
 ┌─────────────────────────────────────────────────────────────┐
-│                      CONTROLLER                            │
+│                      CONTROLLER                             │
 │                                                             │
 │ Business logic execution:                                   │
 │ • Process validated input                                   │
-│ • Interact with database models                            │
+│ • Interact with database models                             │
 │ • Format response data                                      │
 │ • Return JSON response                                      │
 └─────────────────────────┬───────────────────────────────────┘
@@ -245,12 +245,12 @@ If error occurs at any step:
      │
      ▼
 ┌─────────────────────────────────────────────────────────────┐
-│                   ERROR HANDLING                           │
+│                   ERROR HANDLING                            │
 │                                                             │
-│ • Custom errors are caught by errorHandler middleware      │
-│ • Formatted into consistent JSON response                  │
-│ • Appropriate HTTP status code set                         │
-│ • Error details logged (but not exposed to client)        │
+│ • Custom errors are caught by errorHandler middleware       │
+│ • Formatted into consistent JSON response                   │
+│ • Appropriate HTTP status code set                          │
+│ • Error details logged (but not exposed to client)          │
 └─────────────────────────┬───────────────────────────────────┘
                           │
                           ▼
@@ -942,7 +942,7 @@ Signature: HMACSHA256(base64UrlEncode(header) + "." + base64UrlEncode(payload), 
          │ 7. Subsequent requests    │                           │
          │ Authorization: Bearer <token> │                       │
          │──────────────────────────►│                           │
-         │                           │ 8. Verify token          │
+         │                           │ 8. Verify token           │
          │                           │ 9. Extract userId         │
          │                           │ 10. Query with userId     │
          │                           │──────────────────────────►│
