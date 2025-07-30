@@ -8,11 +8,9 @@ import {
   GetJournalEntriesSuccess,
   GetJournalEntrySuccess,
   PatchJournalEntrySuccess,
-  CreateJournalEntryDTO,
-  PatchJournalEntryDTO,
   DeleteJournalEntrySuccess,
 } from '../types/api.js';
-import { BadRequestError, NotFoundError } from '../errors/index.js';
+import { BadRequestError, NotFoundError, UnauthenticatedError } from '../errors/index.js';
 import performCursorPagination from '../utils/performCursorPagination.js';
 
 // Convert a JournalEntry model to a JournalEntryResponseDTO
@@ -33,6 +31,10 @@ const getJournalEntries = async (
   res: Response,
   next: NextFunction,
 ): Promise<void> => {
+  if (!req.user) {
+    next(new UnauthenticatedError('User not authenticated.'));
+    return;
+  }
   const { userId } = req.user; // Validated by authentication middleware
 
   // Pull the limit and cursor from the query parameters
@@ -91,8 +93,11 @@ const getJournalEntryById = async (
   res: Response,
   next: NextFunction,
 ): Promise<void> => {
+  if (!req.user) {
+    next(new UnauthenticatedError('User not authenticated.'));
+    return;
+  }
   const { userId } = req.user; // Validated by authentication middleware
-
   const entryId: string = req.params.id; // Validated by the route middleware
 
   try {
@@ -124,19 +129,15 @@ const createJournalEntry = async (
   res: Response,
   next: NextFunction,
 ): Promise<void> => {
+  if (!req.user) {
+    next(new UnauthenticatedError('User not authenticated.'));
+    return;
+  }
   const { userId } = req.user; // Validated by authentication middleware
 
   try {
-    // Validate and construct the data
-    const journalEntryData: CreateJournalEntryDTO = {
-      title: req.body.title,
-      platform: req.body.platform,
-      status: req.body.status,
-      rating: req.body.rating,
-    };
-
     const newJournalEntry = await JournalEntry.create({
-      ...journalEntryData,
+      ...req.body, // Validated by Zod schemas in the route middleware
       createdBy: userId,
     });
 
@@ -162,15 +163,15 @@ const updateJournalEntry = async (
   res: Response,
   next: NextFunction,
 ): Promise<void> => {
+  if (!req.user) {
+    next(new UnauthenticatedError('User not authenticated.'));
+    return;
+  }
   const { userId } = req.user; // Validated by authentication middleware
   const entryId: string = req.params.id; // Validated by the route middleware
 
   // Build a payload only with the keys that are provided in the request body
-  const updatePayload: PatchJournalEntryDTO = {};
-  if (req.body.title !== undefined) updatePayload.title = req.body.title;
-  if (req.body.platform !== undefined) updatePayload.platform = req.body.platform;
-  if (req.body.status !== undefined) updatePayload.status = req.body.status;
-  if (req.body.rating !== undefined) updatePayload.rating = req.body.rating;
+  const updatePayload = req.body; // Validated by Zod schemas in the route middleware
 
   if (Object.keys(updatePayload).length === 0) {
     next(new BadRequestError('No update data provided.'));
@@ -207,8 +208,11 @@ const updateJournalEntry = async (
 };
 
 const deleteJournalEntry = async (req: Request, res: Response, next: NextFunction) => {
+  if (!req.user) {
+    next(new UnauthenticatedError('User not authenticated.'));
+    return;
+  }
   const { userId } = req.user; // Validated by authentication middleware
-
   const entryId = req.params.id; // Validated by the route middleware
 
   try {
