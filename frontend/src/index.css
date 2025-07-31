@@ -1,68 +1,85 @@
+/* Google Fonts imports: */
+@import url('https://fonts.googleapis.com/css?family=Bungee&display=swap');
+@import url('https://fonts.googleapis.com/css?family=Nunito:400,700&display=swap');
+@import url('https://fonts.googleapis.com/css?family=Quicksand:400,700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+
+/* Reset styles */
+* {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    box-sizing: border-box;
+    font-family: 'Inter', sans-serif;
+}
+
+/* Headings */
+h1, h2, h3, .heading {
+    font-family: 'Nunito', Arial, sans-serif;
+    font-weight: 700;
+}
+
+/* Body text */
+body, p, .body, .main-content {
+    font-family: 'Quicksand', Arial, sans-serif;
+    font-weight: 400;
+    line-height: 1.7;
+}
+
 :root {
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
+    --color-bg-light: #EEF2FB;
+    --color-surface-light: #F7FAFC;
+    --color-text-primary-light: #243047;
+    --color-text-secondary-light: #6C7A96;
+    --color-divider-light: #E0E3EA;
+    --color-accent-cyan-light: #00BFEF;
+    --color-accent-green-light: #23D160;
+    --color-accent-purple-light: #7C3AED;
+    --color-accent-magenta-light: #E13C89;
+    --color-accent-yellow-light: #FFD93D;
+    --color-icon-inactive-light: #B0B8C1;
+    --color-icon-active-light: #00BFEF;
 
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
-
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-a {
-  font-weight: 500;
-  color: #646cff;
-  text-decoration: inherit;
-}
-a:hover {
-  color: #535bf2;
-}
-
-body {
-  margin: 0;
-  display: flex;
-  place-items: center;
-  min-width: 320px;
-  min-height: 100vh;
+    /* Semantic mapping - light theme */
+    --color-bg: var(--color-bg-light);
+    --color-surface: var(--color-surface-light);
+    --color-text-primary: var(--color-text-primary-light);
+    --color-text-secondary: var(--color-text-secondary-light);
+    --color-divider: var(--color-divider-light);
+    --color-accent-cyan: var(--color-accent-cyan-light);
+    --color-accent-green: var(--color-accent-green-light);
+    --color-accent-purple: var(--color-accent-purple-light);
+    --color-accent-magenta: var(--color-accent-magenta-light);
+    --color-accent-yellow: var(--color-accent-yellow-light);
+    --color-icon-inactive: var(--color-icon-inactive-light);
+    --color-icon-active: var(--color-icon-active-light);
 }
 
-h1 {
-  font-size: 3.2em;
-  line-height: 1.1;
-}
+[data-theme="dark"] {
+    --color-bg-dark: #1C1C1E;
+    --color-surface-dark: #2C2C2E;
+    --color-text-primary-dark: #F2F2F7;
+    --color-text-secondary-dark: #A1A1AA;
+    --color-divider-dark: #3A3A3C;
+    --color-accent-cyan-dark: #0ABFEF;
+    --color-accent-green-dark: #30E27C;
+    --color-accent-purple-dark: #9B5CFB;
+    --color-accent-magenta-dark: #ED4C9B;
+    --color-accent-yellow-dark: #FFE066;
+    --color-icon-inactive-dark: #6C6C70;
+    --color-icon-active-dark: #0ABFEF;
 
-button {
-  border-radius: 8px;
-  border: 1px solid transparent;
-  padding: 0.6em 1.2em;
-  font-size: 1em;
-  font-weight: 500;
-  font-family: inherit;
-  background-color: #1a1a1a;
-  cursor: pointer;
-  transition: border-color 0.25s;
-}
-button:hover {
-  border-color: #646cff;
-}
-button:focus,
-button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
-}
-
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
-  }
-  a:hover {
-    color: #747bff;
-  }
-  button {
-    background-color: #f9f9f9;
-  }
+    /* Semantic mapping - dark theme */
+    --color-bg: var(--color-bg-dark);
+    --color-surface: var(--color-surface-dark);
+    --color-text-primary: var(--color-text-primary-dark);
+    --color-text-secondary: var(--color-text-secondary-dark);
+    --color-divider: var(--color-divider-dark);
+    --color-accent-cyan: var(--color-accent-cyan-dark);
+    --color-accent-green: var(--color-accent-green-dark);
+    --color-accent-purple: var(--color-accent-purple-dark);
+    --color-accent-magenta: var(--color-accent-magenta-dark);
+    --color-accent-yellow: var(--color-accent-yellow-dark);
+    --color-icon-inactive: var(--color-icon-inactive-dark);
+    --color-icon-active: var(--color-icon-active-dark);
 }
