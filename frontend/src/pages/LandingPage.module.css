@@ -1,0 +1,8 @@
+.content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    flex-grow: 1; /* Ensures inner div take up all the space */
+}
