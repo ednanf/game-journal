@@ -1,0 +1,14 @@
+.layout {
+    width: 100%;
+}
+
+.mainContent {
+    /* Create space for the fixed header and nav bar. */
+    padding-top: var(--header-height);
+    padding-bottom: var(--navbar-height);
+
+    /* Ensure it can contain a full-height page if needed */
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}

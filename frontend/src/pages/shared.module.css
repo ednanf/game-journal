@@ -1,0 +1,15 @@
+.pageContainer {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    background-color: var(--color-bg);
+    flex-grow: 1; /* Take all the space available */
+    width: 100%;
+}
+
+.titleContainer {
+    margin-top: 5%;
+}

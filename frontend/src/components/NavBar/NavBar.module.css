@@ -1,17 +1,16 @@
 .navBar {
-    /* Fix the navBar to the bottom */
     position: fixed;
-    left: 0;
-    right: 0;
     bottom: 0;
-    z-index: 1000;
+    left: 0;
+    width: 100%;
+    z-index: 10; /* Ensures it's above the content */
+    height: var(--navbar-height);
     display: flex;
     align-items: center;
     justify-content: space-between;
     padding: 10px 24px;
     background-color: var(--color-surface);
     border-top: 1px solid var(--color-divider);
-    border-bottom: 1px solid var(--color-divider);
 }
 
 .sideButton {

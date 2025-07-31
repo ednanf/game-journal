@@ -1,6 +1,5 @@
 import { useLocation } from 'react-router-dom';
-import { BsJournalBookmarkFill } from 'react-icons/bs';
-import { FaHistory } from 'react-icons/fa';
+import { BsJournalBookmarkFill, BsBarChartLineFill } from 'react-icons/bs';
 import { HiPlus } from 'react-icons/hi';
 import NavBarButton from './NavBarButton/NavBarButton.tsx';
 import NavBarMainButton from './NavBarMainButton/NavBarMainButton.tsx';
@@ -26,7 +25,7 @@ function NavBar() {
         <div className={styles.sideButton}>
           <NavBarButton
             to={'statistics'}
-            icon={<FaHistory />}
+            icon={<BsBarChartLineFill />}
             active={location.pathname === '/statistics'}
           >
             Statistics
