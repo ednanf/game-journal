@@ -764,7 +764,7 @@ The backend implements defense-in-depth security:
 - Returns 429 Too Many Requests when exceeded
 
 **CORS (Cross-Origin Resource Sharing):**
-- Only allows requests from `http://localhost:5173` (dev frontend)
+- Only allows requests from whitelisted frontend address
 - Restricts HTTP methods to: GET, POST, PATCH, DELETE
 - Prevents unauthorized cross-origin requests
 
