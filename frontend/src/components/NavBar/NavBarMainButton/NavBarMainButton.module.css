@@ -1,0 +1,46 @@
+.link {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    color: inherit;
+    gap: 0.25em;
+    width: 100px;
+    height: 100px;
+    border: 1px solid var(--color-divider);
+    border-radius: 50%;
+    background: var(--color-surface);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+    transition: transform 0.08s cubic-bezier(0.4, 0, 0.2, 1);
+    /* Moves the button outside navBar */
+    margin-top: -30px;
+    /* Ensures the button will appear above the navbar and its children */
+    z-index: 2;
+}
+
+.link:active {
+    transform: scale(0.92);
+    transition: transform 0.08s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.icon {
+    font-size: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.text {
+    font-size: 0.85rem;
+    margin-top: 0.2em;
+    display: none;
+}
+
+/*@media (max-width: 768px) {*/
+/*    .link {*/
+/*        width: 64px; !* Adjust for smaller screens *!*/
+/*        height: 64px;*/
+/*        top: -16px;*/
+/*    }*/
+/*}*/
