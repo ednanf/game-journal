@@ -1,6 +1,15 @@
+import HeaderButton from './HeaderButton/HeaderButton.tsx';
+import { FaCog } from 'react-icons/fa';
+import styles from './Header.module.css';
+
 const Header = () => {
   return (
-    <div>Header</div>
-  )
-}
-export default Header
+    <header className={styles.header}>
+      <span className={styles.logo}>Game Journal</span>
+      <div>
+        <HeaderButton to={'settings'} icon={<FaCog />} />
+      </div>
+    </header>
+  );
+};
+export default Header;
