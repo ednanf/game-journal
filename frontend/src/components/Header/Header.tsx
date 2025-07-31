@@ -7,7 +7,9 @@ const Header = () => {
     <header className={styles.header}>
       <span className={styles.logo}>Game Journal</span>
       <div>
-        <HeaderButton to={'settings'} icon={<FaCog />} />
+        <HeaderButton to={'settings'}>
+          <FaCog />
+        </HeaderButton>
       </div>
     </header>
   );

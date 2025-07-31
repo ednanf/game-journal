@@ -4,13 +4,13 @@ import styles from './HeaderButton.module.css';
 
 type HeaderButtonProps = {
   to: string;
-  icon: React.ReactNode;
+  children: React.ReactNode;
 };
 
-const HeaderButton = ({ to, icon }: HeaderButtonProps) => {
+const HeaderButton = ({ to, children }: HeaderButtonProps) => {
   return (
     <Link to={to} className={styles.link}>
-      <span className={styles.icon}>{icon}</span>
+      <span className={styles.icon}>{children}</span>
     </Link>
   );
 };
