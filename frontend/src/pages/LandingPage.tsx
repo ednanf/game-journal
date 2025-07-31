@@ -5,7 +5,7 @@ import sharedStyles from './shared.module.css';
 const LandingPage = () => {
   return (
     <div className={sharedStyles.pageContainer}>
-      <div className={styles.content}>
+      <div className={styles.landingPageContent}>
         <h2>Welcome to Game Journal!</h2>
         <p>Keep track of the games you played</p>
         <p>
