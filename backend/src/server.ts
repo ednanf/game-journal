@@ -1,8 +1,11 @@
 import http from 'http';
+import checkEnvVars from './utils/checkEnvVars.js';
 import app from './app.js';
 import databaseConnect from './utils/databaseConnect.js';
 
 const { PORT = 3000, MONGODB_URI } = process.env;
+
+checkEnvVars(['PORT', 'MONGODB_URI']);
 
 const server: http.Server = http.createServer(app);
 
