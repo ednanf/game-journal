@@ -8,5 +8,5 @@
 }
 
 .titleContainer {
-    margin-top: 5%;
+    color: var(--color-text-primary);
 }
