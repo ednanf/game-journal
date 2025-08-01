@@ -6,14 +6,14 @@ import { z } from 'zod';
 const createJournalEntryBodySchema = z.object({
   title: z
     .string({
-      error: 'Title must be a string',
+      message: 'Title must be a string',
     })
     .trim()
     .min(1, { message: 'Title is required and cannot be empty' })
     .max(100, { message: 'Title cannot exceed 100 characters' }),
   platform: z
     .string({
-      error: 'Platform must be a string',
+      message: 'Platform must be a string',
     })
     .trim()
     .min(1, { message: 'Platform is required and cannot be empty' }),
