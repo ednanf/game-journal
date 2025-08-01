@@ -29,12 +29,14 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    color: var(--color-text-secondary);
 }
 
 .text {
     font-size: 0.85rem;
     margin-top: 0.2em;
     display: none;
+    color: var(--color-text-secondary);
 }
 
 /*@media (max-width: 768px) {*/

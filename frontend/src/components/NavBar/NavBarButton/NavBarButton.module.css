@@ -16,8 +16,10 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    color: var(--color-text-secondary);
 }
 
 .text {
     font-size: 0.7rem;
+    color: var(--color-text-secondary);
 }
