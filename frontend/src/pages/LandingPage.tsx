@@ -9,7 +9,7 @@ const LandingPage = () => {
         <h2>Welcome to Game Journal!</h2>
         <p>Keep track of the games you played</p>
         <p>
-          <Link to="signup">Sign up</Link> or <Link to="login">login</Link> to get started
+          <Link to="signup">Sign up</Link> or <Link to="login">log in</Link> to get started
         </p>
       </div>
     </div>
