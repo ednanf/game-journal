@@ -1,0 +1,10 @@
+.pageContainer {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    padding: 1rem;
+}
+
+.titleContainer {
+    color: var(--color-text-primary);
+}
