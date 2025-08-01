@@ -17,5 +17,15 @@
     font-family: 'Bungee', Arial, sans-serif;
     font-size: 2rem;
     letter-spacing: 2px;
-    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.10);
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.50);
+}
+
+.buttonWrapper {
+    position: absolute;
+    right: 0;
+    /* Align button to the text */
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    align-items: center;
 }

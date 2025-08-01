@@ -6,7 +6,7 @@ const Header = () => {
   return (
     <header className={styles.header}>
       <span className={styles.logo}>Game Journal</span>
-      <div>
+      <div className={styles.buttonWrapper}>
         <HeaderButton to={'settings'}>
           <FaCog />
         </HeaderButton>
