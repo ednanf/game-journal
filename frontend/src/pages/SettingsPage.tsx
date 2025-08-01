@@ -1,18 +1,38 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { FaGithubSquare } from 'react-icons/fa';
 import Button from '../components/Button/Button.tsx';
 import styles from './Settings.module.css';
 import sharedStyles from './shared.module.css';
 
+// Function to get the initial theme from localStorage or default to 'light'
+const getInitialTheme = () => {
+  return localStorage.getItem('theme') === 'dark' ? 'dark' : 'light';
+};
+
 const SettingsPage = () => {
-  const [theme, setTheme] = useState('light');
+  const [theme, setTheme] = useState(getInitialTheme);
   const isDarkMode = theme === 'dark';
 
+  // Effect to apply the theme to the body and store it in localStorage
+  useEffect(() => {
+    document.body.dataset.theme = theme;
+    localStorage.setItem('theme', theme);
+  }, [theme]);
+
+  // Effect to listen for changes in localStorage across tabs
+  useEffect(() => {
+    const handleStorage = (e: StorageEvent) => {
+      if (e.key === 'theme' && e.newValue) {
+        setTheme(e.newValue);
+      }
+    };
+    window.addEventListener('storage', handleStorage);
+    return () => window.removeEventListener('storage', handleStorage);
+  }, []);
+
+  // Function to toggle the theme between light and dark
   const handleToggleTheme = () => {
-    const newTheme = isDarkMode ? 'light' : 'dark';
-    document.body.dataset.theme = newTheme;
-    localStorage.setItem('theme', newTheme);
-    setTheme(newTheme);
+    setTheme(isDarkMode ? 'light' : 'dark');
   };
 
   return (
