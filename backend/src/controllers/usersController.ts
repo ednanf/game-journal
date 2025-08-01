@@ -72,6 +72,11 @@ const loginUser = async (req: Request, res: Response, next: NextFunction): Promi
       return;
     }
 
+    if (typeof email !== "string") {
+      next(new BadRequestError("Invalid email format."));
+      return;
+    }
+
     const user: IUserDocument | null = await User.findOne({ email });
     if (!user) {
       next(new UnauthorizedError('Invalid email or password'));
