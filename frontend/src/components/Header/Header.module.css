@@ -6,6 +6,7 @@
     z-index: 10; /* Make sure it's above the content */
     height: var(--header-height);
     display: flex;
+    flex-shrink: 0;
     align-items: center;
     justify-content: center;
     background-color: var(--color-accent-purple);

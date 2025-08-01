@@ -1,14 +1,39 @@
 .layout {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
     width: 100%;
+    background-color: var(--color-bg);
+    height: 100dvh;
 }
 
 .mainContent {
-    /* Create space for the fixed header and nav bar. */
+    flex: 1 1 auto;
     padding-top: var(--header-height);
     padding-bottom: var(--navbar-height);
-
-    /* Ensure it can contain a full-height page if needed */
-    min-height: 100vh;
     display: flex;
     flex-direction: column;
+    overflow-y: auto;
+    min-height: calc(100dvh - var(--header-height) - var(--navbar-height));
+}
+
+/* Fallback for dinosaur browsers */
+@supports (height: 100dvh) {
+    .layout {
+        height: 100dvh;
+    }
+
+    .mainContent {
+        min-height: calc(100dvh - var(--header-height) - var(--navbar-height));
+    }
+}
+
+@supports not (height: 100dvh) {
+    .layout {
+        min-height: 100vh;
+    }
+
+    .mainContent {
+        min-height: calc(100vh - var(--header-height) - var(--navbar-height));
+    }
 }
