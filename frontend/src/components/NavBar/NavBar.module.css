@@ -17,6 +17,7 @@
     display: flex;
     flex: 1;
     justify-content: center;
+    margin-top: 2px;
 }
 
 @media (max-width: 768px) {
