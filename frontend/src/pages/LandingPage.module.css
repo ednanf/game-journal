@@ -7,6 +7,10 @@
     justify-content: center;
 }
 
+.landingPageContent > h2, p {
+    color: var(--color-text-primary);
+}
+
 .githubLink {
     display: inline-flex;
     align-items: center;
