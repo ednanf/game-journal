@@ -8,3 +8,16 @@
 .titleContainer {
     color: var(--color-text-primary);
 }
+
+.link {
+    font-family: 'Quicksand', Arial, sans-serif;
+    color: var(--color-text-primary);
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 0.95rem;
+    transition: color 0.2s ease;
+}
+
+.link:hover {
+    color: var(--color-accent-purple);
+}

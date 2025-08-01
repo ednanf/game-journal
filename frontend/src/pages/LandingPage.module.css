@@ -1,0 +1,29 @@
+.landingPageContent {
+    width: 100%;
+    margin: 13rem 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.githubLink {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    color: var(--color-text-secondary);
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.95rem;
+    transition: color 0.2s ease;
+    margin-top: 3rem;
+}
+
+.githubLink:hover {
+    color: var(--color-text-primary);
+}
+
+.icon {
+    position: relative;
+    top: -1px;
+}
