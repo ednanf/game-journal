@@ -1,5 +1,5 @@
 import styles from './EditEntryPage.module.css';
-import sharedStyles from './shared.module.css';
+import sharedStyles from '../shared.module.css';
 
 const EditEntryPage = () => {
   return (

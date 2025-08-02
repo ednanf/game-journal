@@ -4,15 +4,15 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 
 // Pages
 import Layout from './components/Layout/Layout.tsx';
-import ErrorPage from './pages/ErrorPage.tsx';
-import LandingPage from './pages/LandingPage.tsx';
-import SettingsPage from './pages/SettingsPage.tsx';
-import SignUpPage from './pages/SignUpPage.tsx';
-import LoginPage from './pages/LoginPage.tsx';
-import JournalPage from './pages/JournalPage.tsx';
-import StatisticsPage from './pages/StatisticsPage.tsx';
-import CreateEntryPage from './pages/CreateEntryPage.tsx';
-import EditEntryPage from './pages/EditEntryPage.tsx';
+import ErrorPage from './pages/ErrorPage/ErrorPage.tsx';
+import LandingPage from './pages/LandingPage/LandingPage.tsx';
+import SettingsPage from './pages/SettingsPage/SettingsPage.tsx';
+import SignUpPage from './pages/SignUpPage/SignUpPage.tsx';
+import LoginPage from './pages/LoginPage/LoginPage.tsx';
+import JournalPage from './pages/JournalPage/JournalPage.tsx';
+import StatisticsPage from './pages/StatisticsPage/StatisticsPage.tsx';
+import CreateEntryPage from './pages/CreateEntryPage/CreateEntryPage.tsx';
+import EditEntryPage from './pages/EditEntryPage/EditEntryPage.tsx';
 
 import './index.css';
 

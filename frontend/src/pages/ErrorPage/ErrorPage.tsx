@@ -1,5 +1,5 @@
 import styles from './ErrorPage.module.css';
-import sharedStyles from './shared.module.css';
+import sharedStyles from '../shared.module.css';
 
 const ErrorPage = () => {
   return (

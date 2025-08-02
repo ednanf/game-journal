@@ -14,7 +14,7 @@
     gap: 1rem
 }
 
-.accountInfo {
+.accountInfo > p {
     color: var(--color-text-secondary);
 }
 

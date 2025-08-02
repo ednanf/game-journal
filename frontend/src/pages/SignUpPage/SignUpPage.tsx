@@ -1,4 +1,4 @@
-import sharedStyles from './shared.module.css';
+import sharedStyles from '../shared.module.css';
 import styles from './SignUpPage.module.css';
 
 const SignUpPage = () => {

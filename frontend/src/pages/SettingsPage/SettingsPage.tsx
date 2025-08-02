@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
 import { FaGithubSquare } from 'react-icons/fa';
-import Button from '../components/Button/Button.tsx';
-import styles from './Settings.module.css';
-import sharedStyles from './shared.module.css';
+import Button from '../../components/Button/Button.tsx';
+import styles from './SettingsPage.module.css';
+import sharedStyles from '../shared.module.css';
 
 // Function to get the initial theme from localStorage or default to 'light'
 const getInitialTheme = () => {

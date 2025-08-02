@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import styles from './LandingPage.module.css';
-import sharedStyles from './shared.module.css';
+import sharedStyles from '../shared.module.css';
 import { FaGithubSquare } from 'react-icons/fa';
 
 const LandingPage = () => {

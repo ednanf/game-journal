@@ -1,5 +1,5 @@
 import styles from './JournalPage.module.css';
-import sharedStyles from './shared.module.css';
+import sharedStyles from '../shared.module.css';
 
 const JournalPage = () => {
   const entries = [

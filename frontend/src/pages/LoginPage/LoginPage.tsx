@@ -1,5 +1,5 @@
 import styles from './LoginPage.module.css';
-import sharedStyles from './shared.module.css';
+import sharedStyles from '../shared.module.css';
 
 const LoginPage = () => {
   return (

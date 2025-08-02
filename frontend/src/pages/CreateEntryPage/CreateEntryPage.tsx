@@ -1,5 +1,5 @@
 import styles from './CreateEntryPage.module.css';
-import sharedStyles from './shared.module.css';
+import sharedStyles from '../shared.module.css';
 
 const CreateEntryPage = () => {
   return (
