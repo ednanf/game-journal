@@ -21,3 +21,15 @@
     border-radius: 5px;
     border: 1px solid var(--color-divider);
 }
+
+.inputFieldError {
+    border-color: var(--color-accent-magenta);
+    border-width: 2px;
+}
+
+.errorText {
+    color: var(--color-accent-magenta);
+    font-size: 0.75rem;
+    margin-top: 0.25rem;
+    align-self: flex-start;
+}

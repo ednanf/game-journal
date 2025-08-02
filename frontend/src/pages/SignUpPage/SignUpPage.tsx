@@ -40,9 +40,6 @@ const SignUpPage = () => {
     }
   };
 
-  console.log(formData.email);
-  console.log(errors.confirmPassword);
-
   return (
     <div className={sharedStyles.pageContainer}>
       <div className={sharedStyles.titleContainer}>
@@ -57,6 +54,7 @@ const SignUpPage = () => {
               name={'email'}
               type={'email'}
               onChange={handleChange}
+              error={errors.email}
             />
             <TextInput
               label={'Password'}
@@ -64,6 +62,7 @@ const SignUpPage = () => {
               name={'password'}
               type={'password'}
               onChange={handleChange}
+              error={errors.password}
             />
             <TextInput
               label={'Confirm Password'}
@@ -71,6 +70,7 @@ const SignUpPage = () => {
               name={'confirmPassword'}
               type={'password'}
               onChange={handleChange}
+              error={errors.confirmPassword}
             />
           </div>
           <div className={styles.formButton}>

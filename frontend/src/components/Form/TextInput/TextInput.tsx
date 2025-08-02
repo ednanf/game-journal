@@ -9,9 +9,19 @@ type TextInputProps = {
   value?: string;
   placeholder?: string;
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  error?: string;
 };
 
-const TextInput = ({ label, type, id, name, value, placeholder, onChange }: TextInputProps) => {
+const TextInput = ({
+  label,
+  type,
+  id,
+  name,
+  value,
+  placeholder,
+  onChange,
+  error,
+}: TextInputProps) => {
   return (
     <div className={styles.textInput}>
       <label htmlFor={id} className={styles.inputLabel}>
@@ -26,9 +36,9 @@ const TextInput = ({ label, type, id, name, value, placeholder, onChange }: Text
         onChange={onChange}
         autoComplete={type === 'email' ? 'email' : type === 'password' ? 'password' : 'text'}
         required
-        className={styles.inputField}
+        className={`${styles.inputField} ${error ? styles.inputFieldError : ''}`}
       />
-      {/* TODO: Add error message below the field and style it */}
+      {error && <span className={styles.errorText}>{error}</span>}
     </div>
   );
 };
