@@ -1,12 +1,20 @@
 .pageContainer {
     display: flex;
     flex-direction: column;
+    justify-content: center;
+    align-items: center;
     width: 100%;
-    padding: 1rem;
+    padding: 0.5rem;
+    border: 2px solid red;
 }
 
 .titleContainer {
+    display: flex;
+    align-self: flex-start;
+    justify-content: flex-start; /* Explicitly left-align children */
     color: var(--color-text-primary);
+    text-align: left;
+    border: 2px solid deeppink;
 }
 
 .link {
