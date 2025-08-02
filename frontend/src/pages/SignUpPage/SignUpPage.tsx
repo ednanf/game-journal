@@ -17,7 +17,7 @@ const SignUpPage = () => {
     password: '',
     confirmPassword: '',
   });
-  const [errors, setErrors] = useState<Partial<FormData>>({
+  const [errors, setErrors] = useState<FormData>({
     email: '',
     password: '',
     confirmPassword: '',
@@ -39,6 +39,8 @@ const SignUpPage = () => {
       }
     }
   };
+
+  // TODO: Implement handleSubmit
 
   return (
     <div className={sharedStyles.pageContainer}>
