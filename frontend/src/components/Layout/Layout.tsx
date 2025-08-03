@@ -16,6 +16,7 @@ const Layout = () => {
       </main>
       <NavBar />
       <ToastContainer
+        className={styles.toastContainer}
         position="top-center"
         autoClose={2000}
         hideProgressBar={false}

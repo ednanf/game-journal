@@ -17,6 +17,10 @@
     min-height: calc(100dvh - var(--header-height) - var(--navbar-height));
 }
 
+.toastContainer {
+    margin-top: var(--header-height);
+}
+
 /* Fallback for dinosaur browsers */
 @supports (height: 100dvh) {
     .layout {
