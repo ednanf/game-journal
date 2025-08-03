@@ -9,6 +9,7 @@ type TextInputProps = {
   value?: string;
   placeholder?: string;
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  required?: boolean;
   error?: string;
 };
 
@@ -20,6 +21,7 @@ const TextInput = ({
   value,
   placeholder,
   onChange,
+  required,
   error,
 }: TextInputProps) => {
   return (
@@ -34,8 +36,8 @@ const TextInput = ({
         value={value}
         placeholder={placeholder}
         onChange={onChange}
-        autoComplete={type === 'email' ? 'email' : type === 'password' ? 'password' : 'text'}
-        required
+        autoComplete="on"
+        required={!!required}
         className={`${styles.inputField} ${error ? styles.inputFieldError : ''}`}
       />
       {error && <span className={styles.errorText}>{error}</span>}

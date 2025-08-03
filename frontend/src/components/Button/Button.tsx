@@ -5,13 +5,14 @@ import styles from './Button.module.css';
 // default color = purple
 type ButtonProps = {
   to?: string;
+  type?: 'button' | 'submit' | 'reset';
   icon?: React.ReactNode;
   color: 'default' | 'cyan' | 'green' | 'magenta' | 'yellow';
   children: React.ReactNode;
   onClick?: () => void;
 };
 
-const Button = ({ to, icon, color, onClick, children }: ButtonProps) => {
+const Button = ({ to, type, icon, color, onClick, children }: ButtonProps) => {
   const colorClass =
     color === 'default' ? styles.button : `${styles.button} ${styles[`button--${color}`]}`;
 
@@ -25,8 +26,9 @@ const Button = ({ to, icon, color, onClick, children }: ButtonProps) => {
     );
   }
 
+  // The regular button type if not provided is 'button'!
   return (
-    <button className={colorClass} onClick={onClick} type="button">
+    <button className={colorClass} onClick={onClick} type={type || 'button'}>
       <span className={styles.icon}>{icon}</span>
       <span className={styles.text}>{children}</span>
     </button>
