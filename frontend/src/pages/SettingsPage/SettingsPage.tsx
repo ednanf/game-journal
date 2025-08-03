@@ -12,6 +12,7 @@ const getInitialTheme = () => {
 const SettingsPage = () => {
   const [theme, setTheme] = useState(getInitialTheme);
   const isDarkMode = theme === 'dark';
+  const currentUser = localStorage.getItem('user');
 
   // Effect to apply the theme to the body and store it in localStorage
   useEffect(() => {
@@ -53,7 +54,7 @@ const SettingsPage = () => {
           </Button>
         </div>
         <div className={styles.accountInfo}>
-          <p>Account: EMAIL@PLACEHOLDER.COM</p>
+          <p>Account: {currentUser ? currentUser : 'Failed fetching the current user'}</p>
         </div>
         <div className={styles.footer}>
           <a
