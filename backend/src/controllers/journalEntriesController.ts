@@ -173,7 +173,15 @@ const updateJournalEntry = async (
   // Build a payload only with the keys that are provided in the request body
   const updatePayload = req.body; // Validated by Zod schemas in the route middleware
 
-  if (Object.keys(updatePayload).length === 0) {
+  // Remove any keys starting with '$' to prevent NoSQL injection
+  const sanitizedPayload: Record<string, any> = {};
+  for (const key of Object.keys(updatePayload)) {
+    if (!key.startsWith('$')) {
+      sanitizedPayload[key] = updatePayload[key];
+    }
+  }
+
+  if (Object.keys(sanitizedPayload).length === 0) {
     next(new BadRequestError('No update data provided.'));
     return;
   }
@@ -181,7 +189,7 @@ const updateJournalEntry = async (
   try {
     const updatedJournalEntry = await JournalEntry.findOneAndUpdate(
       { _id: entryId, createdBy: userId },
-      updatePayload, // Pass the clean, validated payload.
+      sanitizedPayload, // Pass the sanitized payload.
       { new: true, runValidators: true },
     );
 
