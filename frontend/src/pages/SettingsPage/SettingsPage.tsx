@@ -43,13 +43,13 @@ const SettingsPage = () => {
       </div>
       <div className={styles.settingsContent}>
         <div className={styles.buttonsGroup}>
-          <Button to={''} color="cyan" onClick={handleToggleTheme}>
+          <Button type={'button'} to={''} color="cyan" onClick={handleToggleTheme} disabled={false}>
             {isDarkMode ? 'Light Mode' : 'Dark Mode'}
           </Button>
-          <Button to={''} color="default">
+          <Button type={'button'} to={''} color="default" disabled={false}>
             Log Out
           </Button>
-          <Button to={''} color="magenta">
+          <Button type={'button'} to={''} color="magenta" disabled={false}>
             Delete Account
           </Button>
         </div>
