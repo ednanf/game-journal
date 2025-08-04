@@ -90,9 +90,9 @@ const LoginPage = () => {
       <div className={sharedStyles.titleContainer}>
         <h2>Log in</h2>
       </div>
-      <div className={styles.formContent}>
+      <div className={sharedStyles.pageContent}>
         <form onSubmit={handleSubmit}>
-          <div className={styles.formInputs}>
+          <div className={sharedStyles.formInputs}>
             <TextInput
               label={'Email'}
               id={'email'}
@@ -114,7 +114,7 @@ const LoginPage = () => {
               error={errors.password}
             />
           </div>
-          <div className={styles.formButton}>
+          <div className={sharedStyles.formButton}>
             <Button type={'submit'} color={'default'} disabled={isLoading}>
               {isLoading ? 'Logging in...' : 'Log in'}
             </Button>

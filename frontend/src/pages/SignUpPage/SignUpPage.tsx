@@ -40,6 +40,14 @@ const SignUpPage = () => {
 
   const navigate = useNavigate();
 
+  const isFormReady = () => {
+    return (
+      formData.email.trim() !== '' &&
+      formData.password.trim() !== '' &&
+      formData.confirmPassword.trim() !== ''
+    );
+  };
+
   // Validation function to check for empty fields and email format
   const validate = (data: FormData) => {
     const newErrors: FormData = { email: '', password: '', confirmPassword: '' };
@@ -117,14 +125,15 @@ const SignUpPage = () => {
       <div className={sharedStyles.titleContainer}>
         <h2>Sign up</h2>
       </div>
-      <div className={styles.formContent}>
+      <div className={sharedStyles.pageContent}>
         <form onSubmit={handleSubmit}>
-          <div className={styles.formInputs}>
+          <div className={sharedStyles.formInputs}>
             <TextInput
               label={'Email'}
               id={'email'}
               name={'email'}
               type={'email'}
+              value={formData.email}
               onChange={handleChange}
               required={true}
               error={errors.email}
@@ -134,6 +143,7 @@ const SignUpPage = () => {
               id={'password'}
               name={'password'}
               type={'password'}
+              value={formData.password}
               onChange={handleChange}
               required={true}
               error={errors.password}
@@ -143,13 +153,14 @@ const SignUpPage = () => {
               id={'confirmPassword'}
               name={'confirmPassword'}
               type={'password'}
+              value={formData.confirmPassword}
               onChange={handleChange}
               required={true}
               error={errors.confirmPassword}
             />
           </div>
-          <div className={styles.formButton}>
-            <Button type={'submit'} color={'default'} disabled={isLoading}>
+          <div className={sharedStyles.formButton}>
+            <Button type={'submit'} color={'default'} disabled={isLoading || !isFormReady()}>
               {isLoading ? 'Signing up...' : 'Sign Up'}
             </Button>
           </div>

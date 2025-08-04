@@ -9,7 +9,6 @@ import Slider from '../../components/Form/Slider/Slider.tsx';
 import Button from '../../components/Button/Button.tsx';
 import { gamingPlatforms } from '../../data/platforms.ts';
 import { gameStatus } from '../../data/status.ts';
-import styles from './CreateEntryPage.module.css';
 import sharedStyles from '../shared.module.css';
 
 type FormData = {
@@ -120,53 +119,55 @@ const CreateEntryPage = () => {
       <div className={sharedStyles.titleContainer}>
         <h2>Create Entry</h2>
       </div>
-      <div className={styles.formContent}>
+      <div className={sharedStyles.pageContent}>
         <form onSubmit={handleSubmit}>
-          <TextInput
-            label={'Title'}
-            id={'title'}
-            name={'title'}
-            type={'text'}
-            value={formData.title}
-            placeholder={'Enter a title...'}
-            onChange={handleChange}
-            error={errors.title}
-          />
-          <DropDown
-            label={'Platform'}
-            id={'platform'}
-            name={'platform'}
-            size={1}
-            value={formData.platform}
-            values={gamingPlatforms}
-            placeholder={'Select a platform...'}
-            onChange={handleChange}
-            error={errors.platform}
-          />
-          <DropDown
-            label={'Status'}
-            id={'status'}
-            name={'status'}
-            size={1}
-            value={formData.status}
-            values={gameStatus}
-            placeholder={'Select status...'}
-            onChange={handleChange}
-            error={errors.status}
-          />
-          <Slider
-            label={'Rating'}
-            name={'rating'}
-            min={0}
-            max={10}
-            value={formData.rating}
-            onChange={handleChange}
-            disabled={formData.status !== 'completed'}
-          />
-          <div className={styles.formButton}>
-            <Button type={'submit'} color={'default'} disabled={isLoading || !isFormReady()}>
-              {isLoading ? 'Creating entry...' : 'Add entry'}
-            </Button>
+          <div className={sharedStyles.formInputs}>
+            <TextInput
+              label={'Title'}
+              id={'title'}
+              name={'title'}
+              type={'text'}
+              value={formData.title}
+              placeholder={'Enter a title...'}
+              onChange={handleChange}
+              error={errors.title}
+            />
+            <DropDown
+              label={'Platform'}
+              id={'platform'}
+              name={'platform'}
+              size={1}
+              value={formData.platform}
+              values={gamingPlatforms}
+              placeholder={'Select a platform...'}
+              onChange={handleChange}
+              error={errors.platform}
+            />
+            <DropDown
+              label={'Status'}
+              id={'status'}
+              name={'status'}
+              size={1}
+              value={formData.status}
+              values={gameStatus}
+              placeholder={'Select status...'}
+              onChange={handleChange}
+              error={errors.status}
+            />
+            <Slider
+              label={'Rating'}
+              name={'rating'}
+              min={0}
+              max={10}
+              value={formData.rating}
+              onChange={handleChange}
+              disabled={formData.status !== 'completed'}
+            />
+            <div className={sharedStyles.formButton}>
+              <Button type={'submit'} color={'default'} disabled={isLoading || !isFormReady()}>
+                {isLoading ? 'Creating entry...' : 'Add entry'}
+              </Button>
+            </div>
           </div>
         </form>
       </div>
