@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import appIcon from '../../assets/app-icon.png';
 import styles from './LandingPage.module.css';
 import sharedStyles from '../shared.module.css';
 import { FaGithubSquare } from 'react-icons/fa';
@@ -7,6 +8,7 @@ const LandingPage = () => {
   return (
     <div className={sharedStyles.pageContainer}>
       <div className={styles.landingPageContent}>
+        <img src={appIcon} alt="logo" className={styles.appLogo} />
         <h2>Welcome to Game Journal!</h2>
         <p>Keep track of the games you played</p>
         <p>
