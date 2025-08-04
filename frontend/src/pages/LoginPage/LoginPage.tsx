@@ -125,7 +125,10 @@ const LoginPage = () => {
       </div>
       <div className={styles.footer}>
         <p>
-          Don't have an account? <Link to={'../signup'}>Sign up.</Link>
+          Don't have an account?{' '}
+          <Link to={'../signup'} className={styles.link}>
+            Sign up.
+          </Link>
         </p>
       </div>
     </div>

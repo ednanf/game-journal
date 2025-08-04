@@ -22,3 +22,13 @@
 .footer {
     margin-top: 1rem;
 }
+
+.link {
+    color: var(--color-text-primary);
+    text-decoration: none;
+    transition-duration: 0.3s;
+}
+
+.link:hover {
+    color: var(--color-accent-purple)
+}
