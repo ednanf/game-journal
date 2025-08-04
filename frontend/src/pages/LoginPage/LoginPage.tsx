@@ -14,14 +14,10 @@ type FormData = {
 };
 
 // No need to use the correct response structure as it was unwrapped in the axios interceptor
-interface RegisterResponse {
+interface LoginResponse {
   message: string;
   user: string;
   token: string;
-}
-
-interface ApiError {
-  message: string;
 }
 
 const LoginPage = () => {
@@ -33,8 +29,23 @@ const LoginPage = () => {
     email: '',
     password: '',
   });
+  const [isLoading, setIsLoading] = useState(false);
 
   const navigate = useNavigate();
+
+  // Validation function to check for empty fields and email format
+  const validate = (data: FormData) => {
+    const newErrors: FormData = { email: '', password: '' };
+    if (!data.email) {
+      newErrors.email = 'Email is required';
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email)) {
+      newErrors.email = 'Invalid email format';
+    }
+    if (!data.password) {
+      newErrors.password = 'Password is required';
+    }
+    return newErrors;
+  };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -47,22 +58,21 @@ const LoginPage = () => {
     setErrors({ email: '', password: '' });
 
     // Basic validation
-    if (!formData.email) {
-      setErrors((prev) => ({ ...prev, email: 'Email is required' }));
+    const validationErrors = validate(formData);
+    if (validationErrors.email || validationErrors.password) {
+      setErrors(validationErrors);
       return;
     }
-    if (!formData.password) {
-      setErrors((prev) => ({ ...prev, password: 'Password is required' }));
-      return;
-    }
+
+    setIsLoading(true);
 
     try {
       if (!errors.email && !errors.password) {
         // The response was unwrapped in the axios interceptor
-        const response = (await postUnwrapped(
+        const response = await postUnwrapped<LoginResponse>(
           `${API_BASE_URL}/users/login`,
           formData,
-        )) as RegisterResponse;
+        );
 
         localStorage.setItem('token', response.token);
         localStorage.setItem('user', response.user);
@@ -72,15 +82,17 @@ const LoginPage = () => {
         navigate('/journal');
       }
     } catch (error) {
-      const apiError = error as ApiError;
-      toast.error(apiError.message || 'An error occurred. Please try again.');
+      // Error is validated in the axios interceptor as well
+      toast.error((error as { message: string }).message);
+    } finally {
+      setIsLoading(false);
     }
   };
 
   return (
     <div className={sharedStyles.pageContainer}>
       <div className={sharedStyles.titleContainer}>
-        <h2>Sign up</h2>
+        <h2>Log in</h2>
       </div>
       <div className={styles.formContent}>
         <form onSubmit={handleSubmit}>
@@ -105,15 +117,15 @@ const LoginPage = () => {
             />
           </div>
           <div className={styles.formButton}>
-            <Button type={'submit'} color={'default'}>
-              {'Log in'}
+            <Button type={'submit'} color={'default'} disabled={isLoading}>
+              {isLoading ? 'Logging in...' : 'Log in'}
             </Button>
           </div>
         </form>
       </div>
       <div className={styles.footer}>
         <p>
-          Don't have an account? <Link to={'../login'}>Sign up.</Link>
+          Don't have an account? <Link to={'../signup'}>Sign up.</Link>
         </p>
       </div>
     </div>
