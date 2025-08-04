@@ -8,11 +8,12 @@ type ButtonProps = {
   type?: 'button' | 'submit' | 'reset';
   icon?: React.ReactNode;
   color: 'default' | 'cyan' | 'green' | 'magenta' | 'yellow';
-  children: React.ReactNode;
   onClick?: () => void;
+  children: React.ReactNode;
+  disabled: boolean;
 };
 
-const Button = ({ to, type, icon, color, onClick, children }: ButtonProps) => {
+const Button = ({ to, type, icon, color, onClick, children, disabled }: ButtonProps) => {
   const colorClass =
     color === 'default' ? styles.button : `${styles.button} ${styles[`button--${color}`]}`;
 
@@ -28,7 +29,7 @@ const Button = ({ to, type, icon, color, onClick, children }: ButtonProps) => {
 
   // The regular button type if not provided is 'button'!
   return (
-    <button className={colorClass} onClick={onClick} type={type || 'button'}>
+    <button className={colorClass} onClick={onClick} type={type || 'button'} disabled={disabled}>
       <span className={styles.icon}>{icon}</span>
       <span className={styles.text}>{children}</span>
     </button>

@@ -21,6 +21,10 @@
     justify-content: center;
 }
 
+button:disabled {
+    color: #a987e2;
+}
+
 .button--cyan {
     background-color: var(--color-accent-cyan);
 }
