@@ -1,9 +1,9 @@
 .textInput {
     display: flex;
     flex-direction: column;
-    width: 90%;
-    max-width: 400px;
-    margin: 0.5rem auto
+    width: var(--form-fields-width);
+    max-width: var(--form-fields-max-width);
+    margin: var(--form-fields-margin);
 }
 
 .inputLabel {
@@ -21,6 +21,12 @@
     padding: 0.5rem;
     border-radius: 5px;
     border: 1px solid var(--color-divider);
+}
+
+.inputField:focus {
+    outline: none;
+    border-color: var(--color-accent-purple, #d72660);
+    box-shadow: 0 0 0 2px rgba(215, 38, 96, 0.10);
 }
 
 .inputFieldError {
