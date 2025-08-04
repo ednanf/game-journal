@@ -1,0 +1,24 @@
+.link {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-decoration: none;
+    color: inherit;
+    padding: 0.5rem;
+}
+
+.icon {
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 5px;
+    border-radius: 20%;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.40);
+    transition: transform 0.08s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.icon:active {
+    transform: scale(0.92);
+    transition: transform 0.08s cubic-bezier(0.4, 0, 0.2, 1);
+}

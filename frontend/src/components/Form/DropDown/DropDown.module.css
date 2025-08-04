@@ -1,0 +1,37 @@
+.inputBody {
+    display: flex;
+    flex-direction: column;
+    width: var(--form-fields-width);
+    max-width: var(--form-fields-max-width);
+    margin: var(--form-fields-margin);
+}
+
+.label {
+    font-family: 'Quicksand', Arial, sans-serif;
+    align-self: flex-start;
+    text-align: left;
+}
+
+.selectBody {
+    width: 100%;
+    height: 2.5rem;
+    margin: 0 auto;
+    display: block;
+    padding: 0.5rem;
+    border-radius: 5px;
+    border: 1px solid var(--color-divider);
+    appearance: none;
+    -webkit-appearance: none;
+    /* Custom arrow to replace browser’s ugly default */
+    background-image: url("data:image/svg+xml;charset=UTF-8,<svg width='16' height='16' fill='gray' xmlns='http://www.w3.org/2000/svg'><path d='M4 6l4 4 4-4'/></svg>");
+    background-repeat: no-repeat;
+    background-position: right 0.75rem center;
+    background-size: 1rem;
+    transition: border-color 0.2s;
+}
+
+.selectBody:focus {
+    outline: none;
+    border-color: var(--color-accent-purple, #d72660);
+    box-shadow: 0 0 0 2px rgba(215, 38, 96, 0.10);
+}
