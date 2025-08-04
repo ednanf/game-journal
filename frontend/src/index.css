@@ -30,6 +30,9 @@ body, p, .body, .main-content {
     --header-height: 60px;
     --navbar-height: 64px;
 
+    --form-fields-width: 90%;
+    --form-fields-max-width: 400px;
+
     --color-bg-light: #EEF2FB;
     --color-surface-light: #F7FAFC;
     --color-text-primary-light: #243047;
