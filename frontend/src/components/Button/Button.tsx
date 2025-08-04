@@ -5,7 +5,7 @@ import styles from './Button.module.css';
 // default color = purple
 type ButtonProps = {
   to?: string;
-  type?: 'button' | 'submit' | 'reset';
+  type: 'button' | 'submit' | 'reset';
   icon?: React.ReactNode;
   color: 'default' | 'cyan' | 'green' | 'magenta' | 'yellow';
   onClick?: () => void;
@@ -29,7 +29,7 @@ const Button = ({ to, type, icon, color, onClick, children, disabled }: ButtonPr
 
   // The regular button type if not provided is 'button'!
   return (
-    <button className={colorClass} onClick={onClick} type={type || 'button'} disabled={disabled}>
+    <button className={colorClass} onClick={onClick} type={type} disabled={disabled}>
       <span className={styles.icon}>{icon}</span>
       <span className={styles.text}>{children}</span>
     </button>
