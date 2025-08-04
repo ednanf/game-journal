@@ -54,6 +54,7 @@ const LoginPage = () => {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
     // Reset errors
     setErrors({ email: '', password: '' });
 
