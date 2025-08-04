@@ -97,6 +97,7 @@ const LoginPage = () => {
               id={'email'}
               name={'email'}
               type={'email'}
+              value={formData.email}
               onChange={handleChange}
               required={true}
               error={errors.email}
@@ -106,6 +107,7 @@ const LoginPage = () => {
               id={'password'}
               name={'password'}
               type={'password'}
+              value={formData.password}
               onChange={handleChange}
               required={true}
               error={errors.password}
