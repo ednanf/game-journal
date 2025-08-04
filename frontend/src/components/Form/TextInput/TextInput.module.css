@@ -10,6 +10,7 @@
     font-family: 'Quicksand', Arial, sans-serif;
     align-self: flex-start;
     text-align: left;
+    color: var(--color-text-primary)
 }
 
 .inputField {
