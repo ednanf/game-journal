@@ -67,20 +67,15 @@ const LoginPage = () => {
     setIsLoading(true);
 
     try {
-      if (!errors.email && !errors.password) {
-        // The response was unwrapped in the axios interceptor
-        const response = await postUnwrapped<LoginResponse>(
-          `${API_BASE_URL}/users/login`,
-          formData,
-        );
+      // The response was unwrapped in the axios interceptor
+      const response = await postUnwrapped<LoginResponse>(`${API_BASE_URL}/users/login`, formData);
 
-        localStorage.setItem('token', response.token);
-        localStorage.setItem('user', response.user);
+      localStorage.setItem('token', response.token);
+      localStorage.setItem('user', response.user);
 
-        toast.success('Login successful! Welcome back!');
+      toast.success('Login successful. Welcome back!');
 
-        navigate('/journal');
-      }
+      navigate('/journal');
     } catch (error) {
       // Error is validated in the axios interceptor as well
       toast.error((error as { message: string }).message);

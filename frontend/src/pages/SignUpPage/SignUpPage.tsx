@@ -36,8 +36,29 @@ const SignUpPage = () => {
     password: '',
     confirmPassword: '',
   });
+  const [isLoading, setIsLoading] = useState(false);
 
   const navigate = useNavigate();
+
+  // Validation function to check for empty fields and email format
+  const validate = (data: FormData) => {
+    const newErrors: FormData = { email: '', password: '', confirmPassword: '' };
+    if (!data.email) {
+      newErrors.email = 'Email is required';
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email)) {
+      newErrors.email = 'Invalid email format';
+    }
+    if (!data.password) {
+      newErrors.password = 'Password is required';
+    }
+    if (!data.confirmPassword) {
+      newErrors.confirmPassword = 'Password confirmation is required';
+    }
+    if (data.password !== data.confirmPassword) {
+      newErrors.confirmPassword = 'Passwords do not match';
+    }
+    return newErrors;
+  };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -62,37 +83,32 @@ const SignUpPage = () => {
     setErrors({ email: '', password: '', confirmPassword: '' });
 
     // Basic validation
-    if (!formData.email) {
-      setErrors((prev) => ({ ...prev, email: 'Email is required' }));
+    const validationErrors = validate(formData);
+    if (validationErrors.email || validationErrors.password || validationErrors.confirmPassword) {
+      setErrors(validationErrors);
       return;
     }
-    if (!formData.password) {
-      setErrors((prev) => ({ ...prev, password: 'Password is required' }));
-      return;
-    }
-    if (formData.password !== formData.confirmPassword) {
-      setErrors((prev) => ({ ...prev, confirmPassword: 'Passwords do not match' }));
-      return;
-    }
+
+    setIsLoading(true);
 
     try {
-      if (!errors.email && !errors.password && !errors.confirmPassword) {
-        // The response was unwrapped in the axios interceptor
-        const response = (await postUnwrapped(
-          `${API_BASE_URL}/users/register`,
-          formData,
-        )) as RegisterResponse;
-        
-        localStorage.setItem('token', response.token);
-        localStorage.setItem('user', response.user);
+      // The response was unwrapped in the axios interceptor
+      const response = await postUnwrapped<RegisterResponse>(
+        `${API_BASE_URL}/users/register`,
+        formData,
+      );
 
-        toast.success('Registration successful! Welcome aboard!');
+      localStorage.setItem('token', response.token);
+      localStorage.setItem('user', response.user);
 
-        navigate('/journal');
-      }
+      toast.success('Registration successful. Welcome aboard!');
+
+      navigate('/journal');
     } catch (error) {
       const apiError = error as ApiError;
       toast.error(apiError.message || 'An error occurred during registration. Please try again.');
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -133,8 +149,8 @@ const SignUpPage = () => {
             />
           </div>
           <div className={styles.formButton}>
-            <Button type={'submit'} color={'default'}>
-              {'Sign Up'}
+            <Button type={'submit'} color={'default'} disabled={isLoading}>
+              {isLoading ? 'Signing up...' : 'Sign Up'}
             </Button>
           </div>
         </form>
