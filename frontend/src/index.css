@@ -32,6 +32,7 @@ body, p, .body, .main-content {
 
     --form-fields-width: 90%;
     --form-fields-max-width: 400px;
+    --form-fields-margin: 0.5rem auto;
 
     --color-bg-light: #EEF2FB;
     --color-surface-light: #F7FAFC;
