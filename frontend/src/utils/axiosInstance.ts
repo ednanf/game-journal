@@ -40,6 +40,19 @@ api.interceptors.response.use(
   },
 );
 
+// Interceptor to handle requests.
+api.interceptors.request.use(
+  (config) => {
+    const token = localStorage.getItem('token');
+    if (token) {
+      config.headers = config.headers || {};
+      config.headers['Authorization'] = `Bearer ${token}`;
+    }
+    return config;
+  },
+  (error) => Promise.reject(error),
+);
+
 // CRUD helpers
 export const getUnwrapped = <T = unknown>(url: string, config?: AxiosRequestConfig): Promise<T> =>
   api.get(url, config) as Promise<T>;
