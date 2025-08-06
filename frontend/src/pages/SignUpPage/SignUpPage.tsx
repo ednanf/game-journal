@@ -164,7 +164,10 @@ const SignUpPage = () => {
       </div>
       <div className={styles.footer}>
         <p>
-          Already have an account? <Link to={'../login'}>Log in.</Link>
+          Already have an account?{' '}
+          <Link to={'../login'} className={styles.link}>
+            Log in.
+          </Link>
         </p>
       </div>
     </div>
