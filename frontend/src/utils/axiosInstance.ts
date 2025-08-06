@@ -14,29 +14,44 @@ const api = axios.create({
 // It checks the response structure and extracts the payload or handles errors.
 api.interceptors.response.use(
   (response) => {
+    // This part is fine, assuming your backend is consistent.
     const { status, data } = response.data;
 
     if (status === 'success') {
       return data; // payload
     }
 
-    // Optionally handle "error" status explicitly
+    // Handle backend-defined "error" or "fail" statuses
     return Promise.reject({
-      message: data?.message || 'Unknown error occurred',
+      message: data?.message || 'An unknown error occurred.',
       raw: response.data,
     });
   },
   (error) => {
-    // This handles failed (non-2xx) responses from the server
-    if (axios.isAxiosError(error) && error.response) {
-      const errorMessage =
-        error.response.data?.data?.message || error.response.data?.message || error.message;
-
-      return Promise.reject({
-        message: errorMessage,
-        raw: error.response.data,
-      });
+    // This handles network errors and non-2xx responses from the server
+    if (axios.isAxiosError(error)) {
+      // Server responded with a status code that falls out of the range of 2xx
+      if (error.response) {
+        const errorMessage =
+          error.response.data?.data?.message || error.response.data?.message || error.message;
+        return Promise.reject({
+          message: errorMessage,
+          raw: error.response.data,
+        });
+      } else if (error.request) {
+        // The request was made but no response was received
+        // This is the classic network error scenario
+        return Promise.reject({
+          message: 'Cannot connect to the server. Please check your network connection.',
+          raw: error,
+        });
+      }
     }
+    // Something happened in setting up the request that triggered an Error
+    return Promise.reject({
+      message: error.message || 'An unexpected error occurred.',
+      raw: error,
+    });
   },
 );
 

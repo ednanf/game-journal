@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { toast } from 'react-toastify';
 import { Link, useNavigate } from 'react-router-dom';
 import { postUnwrapped } from '../../utils/axiosInstance.ts';
-import { API_BASE_URL } from '../../config/apiURL.ts';
 import TextInput from '../../components/Form/TextInput/TextInput.tsx';
 import Button from '../../components/Button/Button.tsx';
 import sharedStyles from '../shared.module.css';
@@ -101,10 +100,7 @@ const SignUpPage = () => {
 
     try {
       // The response was unwrapped in the axios interceptor
-      const response = await postUnwrapped<RegisterResponse>(
-        `${API_BASE_URL}/users/register`,
-        formData,
-      );
+      const response = await postUnwrapped<RegisterResponse>(`/users/register`, formData);
 
       localStorage.setItem('token', response.token);
       localStorage.setItem('user', response.user);

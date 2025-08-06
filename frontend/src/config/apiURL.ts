@@ -1,4 +1,4 @@
 export const API_BASE_URL =
   import.meta.env.VITE_ENV === 'development'
-    ? 'http://localhost:9000/api/v1'
-    : 'https://production-url/api/v1';
+    ? import.meta.env.VITE_API_BASE_URL_DEV
+    : import.meta.env.VITE_API_BASE_URL_PROD;
