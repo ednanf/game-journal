@@ -1,16 +1,12 @@
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
+import { useOutletContext } from 'react-router-dom';
 import { FaGithubSquare } from 'react-icons/fa';
 import Button from '../../components/Button/Button.tsx';
 import styles from './SettingsPage.module.css';
 import sharedStyles from '../shared.module.css';
 
-// Function to get the initial theme from localStorage or default to 'light'
-const getInitialTheme = () => {
-  return localStorage.getItem('theme') === 'dark' ? 'dark' : 'light';
-};
-
 const SettingsPage = () => {
-  const [theme, setTheme] = useState(getInitialTheme);
+  const { theme, toggleTheme } = useOutletContext<{ theme: string; toggleTheme: () => void }>();
   const isDarkMode = theme === 'dark';
   const currentUser = localStorage.getItem('user');
 
@@ -31,11 +27,6 @@ const SettingsPage = () => {
     return () => window.removeEventListener('storage', handleStorage);
   }, []);
 
-  // Function to toggle the theme between light and dark
-  const handleToggleTheme = () => {
-    setTheme(isDarkMode ? 'light' : 'dark');
-  };
-
   return (
     <div className={sharedStyles.pageContainer}>
       <div className={sharedStyles.titleContainer}>
@@ -43,7 +34,7 @@ const SettingsPage = () => {
       </div>
       <div className={styles.settingsContent}>
         <div className={styles.buttonsGroup}>
-          <Button type={'button'} to={''} color="cyan" onClick={handleToggleTheme} disabled={false}>
+          <Button type={'button'} to={''} color="cyan" onClick={toggleTheme} disabled={false}>
             {isDarkMode ? 'Light Mode' : 'Dark Mode'}
           </Button>
           <Button type={'button'} to={''} color="default" disabled={false}>
