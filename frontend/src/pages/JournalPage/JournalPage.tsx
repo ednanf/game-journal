@@ -32,8 +32,10 @@ const JournalPage = () => {
 
   const observer = useRef<IntersectionObserver | null>(null);
 
-  const fetchMoreEntries = async (currentCursor: string | null) => {
-    if (!currentCursor || loading || !hasMore) return;
+  // Stabilize fetchMoreEntries with useCallback.
+  const fetchMoreEntries = useCallback(async () => {
+    // The guard clause now lives inside the function that uses the state.
+    if (loading || !hasMore || !cursor) return;
 
     setLoading(true);
     setError(null);
@@ -41,7 +43,7 @@ const JournalPage = () => {
     try {
       const params = new URLSearchParams();
       params.append('limit', '10');
-      params.append('cursor', currentCursor);
+      params.append('cursor', cursor); // Safely use the cursor from state.
 
       const response = await getUnwrapped<PaginatedResponse>(
         `/journal-entries?${params.toString()}`,
@@ -49,16 +51,14 @@ const JournalPage = () => {
 
       setJournalEntries((prev) => [...prev, ...response.entries]);
       setCursor(response.nextCursor);
-      if (!response.nextCursor) {
-        setHasMore(false);
-      }
+      setHasMore(!!response.nextCursor);
     } catch (err: unknown) {
       const message = err instanceof Error ? err.message : 'Failed to fetch more entries';
       setError(message);
     } finally {
       setLoading(false);
     }
-  };
+  }, [loading, hasMore, cursor]);
 
   const loaderRef = useCallback(
     (node: HTMLDivElement) => {
@@ -66,14 +66,15 @@ const JournalPage = () => {
       if (observer.current) observer.current.disconnect();
 
       observer.current = new IntersectionObserver((entries) => {
-        if (entries[0].isIntersecting && hasMore && cursor) {
-          fetchMoreEntries(cursor);
+        if (entries[0].isIntersecting) {
+          // Now we call the stable fetchMoreEntries function.
+          void fetchMoreEntries();
         }
       });
 
       if (node) observer.current.observe(node);
     },
-    [loading, hasMore, cursor],
+    [loading, fetchMoreEntries], // The dependency array is now correct and stable.
   );
 
   // Effect for the initial data load ONLY
@@ -108,7 +109,7 @@ const JournalPage = () => {
       }
     };
 
-    fetchInitialEntries();
+    void fetchInitialEntries();
 
     return () => {
       ignore = true;
@@ -136,7 +137,7 @@ const JournalPage = () => {
           {loading && !initialLoad && <p>Loading More...</p>}
           {!hasMore && journalEntries.length > 0 && (
             <p className={styles.endMessage}>
-              <BiGhost /> You've reached the end.
+              <BiGhost /> Nothing to see here.
             </p>
           )}
           {error && <div className={sharedStyles.error}>{error}</div>}
