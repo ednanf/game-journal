@@ -10,22 +10,10 @@ const SettingsPage = () => {
   const isDarkMode = theme === 'dark';
   const currentUser = localStorage.getItem('user');
 
-  // Effect to apply the theme to the body and store it in localStorage
   useEffect(() => {
     document.body.dataset.theme = theme;
     localStorage.setItem('theme', theme);
   }, [theme]);
-
-  // Effect to listen for changes in localStorage across tabs
-  useEffect(() => {
-    const handleStorage = (e: StorageEvent) => {
-      if (e.key === 'theme' && e.newValue) {
-        setTheme(e.newValue);
-      }
-    };
-    window.addEventListener('storage', handleStorage);
-    return () => window.removeEventListener('storage', handleStorage);
-  }, []);
 
   return (
     <div className={sharedStyles.pageContainer}>
