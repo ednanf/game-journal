@@ -5,3 +5,11 @@
     align-items: center;
     padding: 1rem 0
 }
+
+.endMessage {
+    color: var(--color-text-secondary);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 2rem;
+}
