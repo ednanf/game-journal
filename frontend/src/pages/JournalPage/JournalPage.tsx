@@ -1,7 +1,8 @@
 import { useEffect, useState, useRef, useCallback } from 'react';
 import { getUnwrapped } from '../../utils/axiosInstance.ts';
 import JournalCard from '../../components/JournalCard/JournalCard.tsx';
-import { BiGhost } from 'react-icons/bi';
+import { TbPacman } from 'react-icons/tb';
+import { PiGhostBold } from 'react-icons/pi';
 import styles from './JournalPage.module.css';
 import sharedStyles from '../shared.module.css';
 
@@ -137,7 +138,7 @@ const JournalPage = () => {
           {loading && !initialLoad && <p>Loading More...</p>}
           {!hasMore && journalEntries.length > 0 && (
             <p className={styles.endMessage}>
-              <BiGhost /> Nothing to see here.
+              <TbPacman size={30} /> Nothing to see here. <PiGhostBold size={30} />
             </p>
           )}
           {error && <div className={sharedStyles.error}>{error}</div>}
