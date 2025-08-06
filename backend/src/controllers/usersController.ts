@@ -39,7 +39,7 @@ const registerUser = async (req: Request, res: Response, next: NextFunction): Pr
     const response: ApiResponse<RegisterUserSuccess> = {
       status: 'success',
       data: {
-        message: 'User registered successfully',
+        message: 'User registered successfully.',
         user: user.email,
         token,
       },
@@ -64,28 +64,28 @@ const loginUser = async (req: Request, res: Response, next: NextFunction): Promi
   try {
     if (!email || !password) {
       const fieldErrors: Record<'email' | 'password', string | undefined> = {
-        email: !email ? 'An email is required' : undefined,
-        password: !password ? 'Password is required' : undefined,
+        email: !email ? 'An email is required.' : undefined,
+        password: !password ? 'Password is required.' : undefined,
       };
 
       next(new BadRequestError(JSON.stringify(fieldErrors)));
       return;
     }
 
-    if (typeof email !== "string") {
-      next(new BadRequestError("Invalid email format."));
+    if (typeof email !== 'string') {
+      next(new BadRequestError('Invalid email format.'));
       return;
     }
 
     const user: IUserDocument | null = await User.findOne({ email });
     if (!user) {
-      next(new UnauthorizedError('Invalid email or password'));
+      next(new UnauthorizedError('Invalid email or password.'));
       return;
     }
 
     const isPasswordValid: boolean = await comparePasswords(password, user.password);
     if (!isPasswordValid) {
-      next(new UnauthorizedError('Invalid email or password'));
+      next(new UnauthorizedError('Invalid email or password.'));
       return;
     }
 
@@ -95,7 +95,7 @@ const loginUser = async (req: Request, res: Response, next: NextFunction): Promi
     const response: ApiResponse<LoginUserSuccess> = {
       status: 'success',
       data: {
-        message: 'User logged in successfully',
+        message: 'User logged in successfully.',
         user: user.email,
         token,
       },
@@ -110,7 +110,7 @@ const loginUser = async (req: Request, res: Response, next: NextFunction): Promi
 const logoutUser = async (_req: Request, res: Response) => {
   const response: ApiResponse<LogoutUserSuccess> = {
     status: 'success',
-    data: { message: 'User logged out successfully' },
+    data: { message: 'User logged out successfully.' },
   };
 
   res.status(StatusCodes.OK).json(response);
@@ -120,13 +120,13 @@ const deleteUser = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const userId: string | undefined = req.user?.userId;
     if (!userId) {
-      next(new UnauthorizedError('User not authenticated'));
+      next(new UnauthorizedError('User not authenticated.'));
       return;
     }
 
     const userToDelete: IUserDocument | null = await User.findByIdAndDelete(userId);
     if (!userToDelete) {
-      next(new NotFoundError(`User with ID ${userId} not found`));
+      next(new NotFoundError(`User with ID ${userId} not found.`));
       return;
     }
 
@@ -135,7 +135,7 @@ const deleteUser = async (req: Request, res: Response, next: NextFunction) => {
     const response: ApiResponse<DeleteUserSuccess> = {
       status: 'success',
       data: {
-        message: 'User deleted successfully',
+        message: 'User deleted successfully.',
       },
     };
 

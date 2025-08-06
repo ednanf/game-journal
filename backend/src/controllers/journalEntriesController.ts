@@ -175,6 +175,7 @@ const updateJournalEntry = async (
 
   // Remove any keys starting with '$' to prevent NoSQL injection
   const sanitizedPayload: Record<string, any> = {};
+  // eslint-disable-next-line no-restricted-syntax
   for (const key of Object.keys(updatePayload)) {
     if (!key.startsWith('$')) {
       sanitizedPayload[key] = updatePayload[key];
@@ -194,7 +195,7 @@ const updateJournalEntry = async (
     );
 
     if (!updatedJournalEntry) {
-      next(new NotFoundError(`No journal entry found with id: ${entryId}`));
+      next(new NotFoundError(`No journal entry found with id: ${entryId}.`));
       return;
     }
 
@@ -229,7 +230,7 @@ const deleteJournalEntry = async (req: Request, res: Response, next: NextFunctio
       createdBy: userId,
     });
     if (!deletedJournalEntry) {
-      next(new NotFoundError(`No journal entry found with id: ${entryId}`));
+      next(new NotFoundError(`No journal entry found with id: ${entryId}.`));
       return;
     }
 

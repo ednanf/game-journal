@@ -13,17 +13,17 @@ const createJWT = (payload: JwtUserPayload) => {
   const { JWT_SECRET: jwtSecret, JWT_LIFETIME: jwtLifetime } = process.env;
 
   if (!jwtSecret) {
-    throw new JWTConfigurationError('JWT_SECRET is not defined in environment variables');
+    throw new JWTConfigurationError('JWT_SECRET is not defined in environment variables.');
   }
 
   if (!jwtLifetime) {
-    throw new JWTConfigurationError('JWT_LIFETIME is not defined in environment variables');
+    throw new JWTConfigurationError('JWT_LIFETIME is not defined in environment variables.');
   }
 
   // Validate the JWT_LIFETIME format
   if (!/^\d+[smhdwy]$/.test(jwtLifetime)) {
     throw new JWTConfigurationError(
-      `JWT_LIFETIME format invalid: ${jwtLifetime}. Expected format like '30d', '1h', '15m'`,
+      `JWT_LIFETIME format invalid: ${jwtLifetime}. Expected format like '30d', '1h', '15m'.`,
     );
   }
 
