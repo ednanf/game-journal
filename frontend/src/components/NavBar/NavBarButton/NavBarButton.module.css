@@ -7,19 +7,22 @@
     gap: 0.25em;
 }
 
-.link.active {
-    color: var(--color-accent-purple);
-}
-
 .icon {
     font-size: 1.25rem;
     display: flex;
     align-items: center;
     justify-content: center;
     color: var(--color-text-secondary);
+    transition: color 0.2s ease-in-out; /* Added for a smooth transition */
 }
 
 .text {
     font-size: 0.7rem;
     color: var(--color-text-secondary);
+    transition: color 0.2s ease-in-out; /* Added for a smooth transition */
+}
+
+.link.active .icon,
+.link.active .text {
+    color: var(--color-accent-purple);
 }
