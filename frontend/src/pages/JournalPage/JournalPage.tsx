@@ -60,7 +60,7 @@ const JournalPage = () => {
       // Update hasMore based on the presence of nextCursor.
       setHasMore(!!response.nextCursor);
     } catch (err: unknown) {
-      const message = err instanceof Error ? err.message : 'Failed to fetch more entries';
+      const message = err instanceof Error ? err.message : 'Failed to fetch more entries.';
       setError(message);
     } finally {
       setLoading(false);
@@ -110,7 +110,7 @@ const JournalPage = () => {
         }
       } catch (err: unknown) {
         if (!ignore) {
-          const message = err instanceof Error ? err.message : 'Failed to fetch journal entries';
+          const message = err instanceof Error ? err.message : 'Failed to fetch journal entries.';
           setError(message);
         }
       } finally {

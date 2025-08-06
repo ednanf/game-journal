@@ -33,7 +33,7 @@ const SettingsPage = () => {
           </Button>
         </div>
         <div className={styles.accountInfo}>
-          <p>Account: {currentUser ? currentUser : 'Failed fetching the current user'}</p>
+          <p>Account: {currentUser ? currentUser : 'Failed fetching the current user.'}</p>
         </div>
         <div className={styles.footer}>
           <a

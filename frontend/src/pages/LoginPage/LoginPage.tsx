@@ -38,10 +38,10 @@ const LoginPage = () => {
     if (!data.email) {
       newErrors.email = 'Email is required';
     } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email)) {
-      newErrors.email = 'Invalid email format';
+      newErrors.email = 'Invalid email format.';
     }
     if (!data.password) {
-      newErrors.password = 'Password is required';
+      newErrors.password = 'Password is required.';
     }
     return newErrors;
   };
