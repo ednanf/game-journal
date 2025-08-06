@@ -3,6 +3,7 @@ import { getUnwrapped } from '../../utils/axiosInstance.ts';
 import JournalCard from '../../components/JournalCard/JournalCard.tsx';
 import { TbPacman } from 'react-icons/tb';
 import { PiGhostBold } from 'react-icons/pi';
+import { GoDotFill } from 'react-icons/go';
 import styles from './JournalPage.module.css';
 import sharedStyles from '../shared.module.css';
 
@@ -155,9 +156,14 @@ const JournalPage = () => {
             </div>
           )}
           {!hasMore && journalEntries.length > 0 && (
-            <p className={styles.endMessage}>
-              <TbPacman size={30} /> Nothing to see here. <PiGhostBold size={30} />
-            </p>
+            <>
+              <p className={styles.endMessageDecoration}>
+                <TbPacman size={30} /> <GoDotFill /> <GoDotFill /> <GoDotFill /> <GoDotFill />
+                <GoDotFill /> <GoDotFill /> <GoDotFill />
+                <PiGhostBold size={30} />
+              </p>
+              <p className={styles.endMessage}>Nothing to see here...</p>
+            </>
           )}
           {error && <div className={sharedStyles.error}>{error}</div>}
         </div>

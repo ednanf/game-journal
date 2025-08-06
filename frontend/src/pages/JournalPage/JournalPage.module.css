@@ -6,6 +6,13 @@
     padding: 1rem 0
 }
 
+.endMessageDecoration {
+    color: var(--color-text-secondary);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 .endMessage {
     color: var(--color-text-secondary);
     display: flex;
