@@ -14,7 +14,7 @@ const api = axios.create({
 // It checks the response structure and extracts the payload or handles errors.
 api.interceptors.response.use(
   (response) => {
-    // This part is fine, assuming your backend is consistent.
+    // This is fine is acceptable because the backend is consistent.
     const { status, data } = response.data;
 
     if (status === 'success') {
@@ -39,8 +39,7 @@ api.interceptors.response.use(
           raw: error.response.data,
         });
       } else if (error.request) {
-        // The request was made but no response was received
-        // This is the classic network error scenario
+        // The request was made but no response was received - classic network error scenario
         return Promise.reject({
           message: 'Cannot connect to the server. Please check your network connection.',
           raw: error,
@@ -56,6 +55,7 @@ api.interceptors.response.use(
 );
 
 // Interceptor to handle requests.
+// It can be used to add auth tokens or custom headers.
 api.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem('token');
