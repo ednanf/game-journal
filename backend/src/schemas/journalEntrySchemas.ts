@@ -17,7 +17,7 @@ const createJournalEntryBodySchema = z.object({
     })
     .trim()
     .min(1, { message: 'Platform is required and cannot be empty' }),
-  status: z.enum(['started', 'completed', 'dropped']).optional(),
+  status: z.enum(['started', 'completed', 'revisited', 'paused', 'dropped']).optional(),
   rating: z.number().min(0).max(10).optional(),
 });
 

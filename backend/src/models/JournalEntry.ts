@@ -33,7 +33,7 @@ const journalEntrySchema = new Schema<IJournalEntry>(
     status: {
       type: String,
       required: [true, 'Status is required.'],
-      enum: ['started', 'completed', 'dropped'],
+      enum: ['started', 'completed', 'revisited', 'paused', 'dropped'],
       default: 'started',
     },
     rating: {

@@ -95,8 +95,8 @@ const DetailsPage = () => {
         return { ...prev, rating: Number(value) };
       }
       if (name === 'status') {
-        // Only allow valid status values
-        if (['started', 'completed', 'dropped'].includes(value)) {
+        // Only allow valid status values - kind of exaggerated, but ensures type safety
+        if (['started', 'completed', 'revisited', 'paused', 'dropped'].includes(value)) {
           return { ...prev, status: value as StatusType };
         }
         return prev;

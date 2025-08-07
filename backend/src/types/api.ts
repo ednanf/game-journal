@@ -41,7 +41,7 @@ export interface JournalEntryResponseDTO {
   createdBy: string; // User ID as a string
   title: string;
   platform: string;
-  status: 'started' | 'completed' | 'dropped';
+  status: 'started' | 'completed' | 'revisited' | 'paused' | 'dropped';
   rating: number;
   createdAt: string;
   updatedAt: string;

@@ -25,6 +25,10 @@ const JournalCard = ({ entry, to }: JournalCardProps) => {
         return styles.completed;
       case 'started':
         return styles.started;
+      case 'revisited':
+        return styles.revisited;
+      case 'paused':
+        return styles.paused;
       case 'dropped':
         return styles.dropped;
       default:
