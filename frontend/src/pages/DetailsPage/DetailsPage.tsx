@@ -8,6 +8,7 @@ import Slider from '../../components/Form/Slider/Slider.tsx';
 import Button from '../../components/Button/Button.tsx';
 import { gameStatus } from '../../data/status.ts';
 import { gamingPlatforms } from '../../data/platforms.ts';
+import styles from './DetailsPage.module.css';
 import sharedStyles from '../shared.module.css';
 
 type StatusType = 'started' | 'completed' | 'dropped';
@@ -132,7 +133,10 @@ const DetailsPage = () => {
       </div>
       <div className={sharedStyles.pageContent}>
         {isLoading || !formData ? (
-          <div>Loading...</div>
+          // using local styles for centering due differences in layout
+          <div className={styles.centerLoader}>
+            <div className={sharedStyles.loader}></div>
+          </div>
         ) : (
           <>
             <form onSubmit={handleSubmit}>
