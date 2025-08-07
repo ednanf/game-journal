@@ -164,6 +164,12 @@ const JournalPage = () => {
               <p className={styles.endMessage}>Nothing to see beyond here...</p>
             </>
           )}
+          {journalEntries.length === 0 && error && (
+            <div className={sharedStyles.error}>
+              <VscError size={30} />
+              {error}
+            </div>
+          )}
           {journalEntries.length === 0 && (
             <>
               <p className={styles.emptyMessage}>
@@ -171,12 +177,6 @@ const JournalPage = () => {
                 <span>Go add some entries!</span>
               </p>
             </>
-          )}
-          {error && (
-            <div className={sharedStyles.error}>
-              <VscError size={30} />
-              {error}
-            </div>
           )}
         </div>
       </div>

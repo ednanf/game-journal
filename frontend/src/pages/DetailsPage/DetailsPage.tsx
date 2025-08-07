@@ -218,7 +218,7 @@ const DetailsPage = () => {
                 {/* Save button when isEditing === true */}
                 {isEditing && (
                   <>
-                    <div className={sharedStyles.formButton}>
+                    <div className={sharedStyles.formButtonGroup}>
                       <Button type="submit" color="green" disabled={isLoading}>
                         {isLoading ? 'Saving entry...' : 'Save'}
                       </Button>
@@ -235,7 +235,7 @@ const DetailsPage = () => {
               </div>
               {/* Edit button when isEditing === false */}
               {!isEditing && (
-                <div className={sharedStyles.formButton}>
+                <div className={sharedStyles.formButtonGroup}>
                   <Button
                     type="button"
                     color="default"
