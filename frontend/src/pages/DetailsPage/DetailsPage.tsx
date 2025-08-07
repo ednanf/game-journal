@@ -1,7 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import { getUnwrappedWithParams, patchUnwrapped } from '../../utils/axiosInstance.ts';
+import {
+  getUnwrappedWithParams,
+  patchUnwrapped,
+  deleteUnwrapped,
+} from '../../utils/axiosInstance.ts';
 import TextInput from '../../components/Form/TextInput/TextInput.tsx';
 import DropDown from '../../components/Form/DropDown/DropDown.tsx';
 import Slider from '../../components/Form/Slider/Slider.tsx';
@@ -40,6 +44,8 @@ const DetailsPage = () => {
   const [errors, setErrors] = useState<FormErrors>({});
   const [isLoading, setIsLoading] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
+  const [deleteConfirmation, setDeleteConfirmation] = useState(false);
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
 
@@ -125,7 +131,30 @@ const DetailsPage = () => {
     }
   };
 
-  const handleDelete = async () => {};
+  const handleDelete = async () => {
+    // Set button text to confirm deletion
+    setDeleteConfirmation(true);
+
+    // If the user clicks delete again, proceed with deletion
+    if (!isDeleting && deleteConfirmation) {
+      setIsDeleting(true);
+      try {
+        // Ensure we have an ID to delete
+        if (!id) {
+          toast.error('No entry ID provided for deletion.');
+          return;
+        }
+        const response = await deleteUnwrapped<ServerResponse>(`/journal-entries/${id}`);
+        toast.success(response.message || 'Entry deleted successfully!');
+        navigate('/journal');
+      } catch (error) {
+        toast.error((error as { message: string }).message);
+      }
+      // Reset states after deletion
+      setIsDeleting(false);
+      setDeleteConfirmation(false);
+    }
+  };
 
   return (
     <div className={sharedStyles.pageContainer}>
@@ -216,7 +245,7 @@ const DetailsPage = () => {
                     {isLoading ? 'Loading...' : 'Edit'}
                   </Button>
                   <Button type={'button'} color={'magenta'} disabled={false} onClick={handleDelete}>
-                    Delete Entry
+                    {deleteConfirmation ? 'Are you sure?' : !isDeleting ? 'Delete' : 'Deleting...'}
                   </Button>
                 </div>
               )}
