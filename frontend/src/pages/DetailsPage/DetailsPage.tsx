@@ -55,8 +55,7 @@ const DetailsPage = () => {
         }>(`/journal-entries/${id}`);
         setFormData(response.entry);
       } catch (error) {
-        console.error('Error fetching entry:', error);
-        // TODO: Show user-facing error
+        toast.error((error as { message: string }).message);
       } finally {
         setIsLoading(false);
       }
