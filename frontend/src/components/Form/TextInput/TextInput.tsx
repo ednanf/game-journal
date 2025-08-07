@@ -11,6 +11,7 @@ type TextInputProps = {
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   required?: boolean;
   error?: string;
+  disabled?: boolean;
 };
 
 const TextInput = ({
@@ -23,6 +24,7 @@ const TextInput = ({
   onChange,
   required,
   error,
+  disabled,
 }: TextInputProps) => {
   return (
     <div className={styles.textInput}>
@@ -39,6 +41,7 @@ const TextInput = ({
         autoComplete="on"
         required={!!required}
         className={`${styles.inputField} ${error ? styles.inputFieldError : ''}`}
+        disabled={disabled}
       />
       {error && <span className={styles.errorText}>{error}</span>}
     </div>

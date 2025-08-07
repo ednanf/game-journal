@@ -1,9 +1,17 @@
+.link {
+    display: flex;
+    width: 100%;
+    text-decoration: none;
+    align-content: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
 .cardContainer {
     position: relative;
     background-color: var(--color-surface);
     width: 90%;
     max-width: 400px;
-    /*border: 1px solid var(--color-divider);*/
     border-radius: 5px;
     padding: 0.5rem 1rem;
     margin-bottom: 10px;
@@ -60,7 +68,7 @@
     border: 1px solid var(--color-accent-green);
     border-radius: 35px;
     padding: 0 0.2rem;
-    
+
 }
 
 .completed {

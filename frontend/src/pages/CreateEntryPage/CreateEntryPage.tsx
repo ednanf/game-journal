@@ -41,6 +41,9 @@ const CreateEntryPage = () => {
 
   const navigate = useNavigate();
 
+  // Function to check if the form is ready for submission
+  // This checks if title, platform, and status are not empty
+  // Rating is not checked here as it has a default value and is only relevant when status is 'completed'
   const isFormReady = () => {
     return (
       formData.title.trim() !== '' &&

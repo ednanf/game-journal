@@ -12,7 +12,7 @@ import LoginPage from './pages/LoginPage/LoginPage.tsx';
 import JournalPage from './pages/JournalPage/JournalPage.tsx';
 import StatisticsPage from './pages/StatisticsPage/StatisticsPage.tsx';
 import CreateEntryPage from './pages/CreateEntryPage/CreateEntryPage.tsx';
-import EditEntryPage from './pages/EditEntryPage/EditEntryPage.tsx';
+import DetailsPage from './pages/DetailsPage/DetailsPage.tsx';
 
 import './index.css';
 
@@ -28,7 +28,7 @@ const router = createBrowserRouter([
       { path: 'journal', element: <JournalPage /> },
       { path: 'statistics', element: <StatisticsPage /> },
       { path: 'addEntry', element: <CreateEntryPage /> },
-      { path: 'editEntry/:id', element: <EditEntryPage /> },
+      { path: 'details/:id', element: <DetailsPage /> },
       { path: 'settings', element: <SettingsPage /> },
     ],
   },

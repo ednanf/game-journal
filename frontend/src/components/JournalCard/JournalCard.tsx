@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import styles from './JournalCard.module.css';
 import { FaChevronRight } from 'react-icons/fa6';
 
@@ -11,10 +12,11 @@ type JournalEntry = {
 
 type JournalCardProps = {
   entry: JournalEntry;
-  onClick: () => void;
+  to: string;
 };
 
-const JournalCard = ({ entry, onClick }: JournalCardProps) => {
+const JournalCard = ({ entry, to }: JournalCardProps) => {
+  // Destructure the props the came packed into entry to be used
   const { title, platform, status, createdAt } = entry;
 
   function statusColorLabel(statusValue: string): string {
@@ -31,27 +33,29 @@ const JournalCard = ({ entry, onClick }: JournalCardProps) => {
   }
 
   return (
-    <div className={styles.cardContainer} onClick={onClick}>
-      <div className={styles.mainDetails}>
-        <div className={styles.headerContainer}>
-          <div className={styles.cardHeader}>
-            <h3>{title}</h3>
-          </div>
-          <div className={styles.cardSubHeader}>
-            <p>{platform}</p>
-          </div>
-          <div className={styles.cardIcon}>
-            <p>
-              <FaChevronRight />
-            </p>
+    <Link to={to} className={styles.link}>
+      <div className={styles.cardContainer}>
+        <div className={styles.mainDetails}>
+          <div className={styles.headerContainer}>
+            <div className={styles.cardHeader}>
+              <h3>{title}</h3>
+            </div>
+            <div className={styles.cardSubHeader}>
+              <p>{platform}</p>
+            </div>
+            <div className={styles.cardIcon}>
+              <p>
+                <FaChevronRight />
+              </p>
+            </div>
           </div>
         </div>
+        <div className={styles.entryDetails}>
+          <p className={`${statusColorLabel(status)}`}>{status}</p>
+          <p>{new Date(createdAt).toLocaleDateString()}</p>
+        </div>
       </div>
-      <div className={styles.entryDetails}>
-        <p className={`${statusColorLabel(status)}`}>{status}</p>
-        <p>{new Date(createdAt).toLocaleDateString()}</p>
-      </div>
-    </div>
+    </Link>
   );
 };
 

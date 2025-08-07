@@ -128,10 +128,6 @@ const JournalPage = () => {
     };
   }, []);
 
-  const handleClick = () => {
-    // Implement navigation or modal logic here
-  };
-
   return (
     <div className={sharedStyles.pageContainer}>
       <div className={sharedStyles.titleContainer}>
@@ -140,10 +136,9 @@ const JournalPage = () => {
       <div className={sharedStyles.pageContent}>
         <div className={styles.cardsContainer}>
           {journalEntries.map((entry) => (
-            <JournalCard key={entry.id} entry={entry} onClick={handleClick} />
+            <JournalCard key={entry.id} entry={entry} to={`/details/${entry.id}`} />
           ))}
         </div>
-
         <div ref={loaderRef} className={styles.loader}>
           {loading && initialLoad && (
             <div className={sharedStyles.centerLoader}>

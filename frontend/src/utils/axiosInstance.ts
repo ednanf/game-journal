@@ -72,6 +72,12 @@ api.interceptors.request.use(
 export const getUnwrapped = <T = unknown>(url: string, config?: AxiosRequestConfig): Promise<T> =>
   api.get(url, config) as Promise<T>;
 
+export const getUnwrappedWithParams = <T = unknown>(
+  url: string,
+  params?: Record<string, unknown>,
+  config?: AxiosRequestConfig,
+): Promise<T> => api.get(url, { ...config, params }) as Promise<T>;
+
 export const postUnwrapped = <T = unknown, D = unknown>(
   url: string,
   data?: D,
