@@ -49,6 +49,17 @@
     color: var(--color-accent-purple);
 }
 
+.error {
+
+    font-family: 'Quicksand', Arial, sans-serif;
+    color: var(--color-text-secondary);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 60dvh;
+}
+
 .centerLoader {
     display: flex;
     justify-content: center;

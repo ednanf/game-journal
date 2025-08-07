@@ -1,9 +1,11 @@
 import { useEffect, useState, useRef, useCallback } from 'react';
+import { toast } from 'react-toastify';
 import { getUnwrapped } from '../../utils/axiosInstance.ts';
 import JournalCard from '../../components/JournalCard/JournalCard.tsx';
 import { TbPacman } from 'react-icons/tb';
 import { PiGhostBold } from 'react-icons/pi';
 import { GoDotFill } from 'react-icons/go';
+import { VscError } from 'react-icons/vsc';
 import styles from './JournalPage.module.css';
 import sharedStyles from '../shared.module.css';
 
@@ -62,6 +64,7 @@ const JournalPage = () => {
     } catch (err: unknown) {
       const message = err instanceof Error ? err.message : 'Failed to fetch more entries.';
       setError(message);
+      toast.error(message);
     } finally {
       setLoading(false);
     }
@@ -112,6 +115,7 @@ const JournalPage = () => {
         if (!ignore) {
           const message = err instanceof Error ? err.message : 'Failed to fetch journal entries.';
           setError(message);
+          toast.error(message);
         }
       } finally {
         if (!ignore) {
@@ -160,7 +164,12 @@ const JournalPage = () => {
               <p className={styles.endMessage}>Nothing to see here...</p>
             </>
           )}
-          {error && <div className={sharedStyles.error}>{error}</div>}
+          {error && (
+            <div className={sharedStyles.error}>
+              <VscError size={30} />
+              {error}
+            </div>
+          )}
         </div>
       </div>
     </div>
