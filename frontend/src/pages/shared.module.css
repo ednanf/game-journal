@@ -31,9 +31,11 @@
 
 .formButton {
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     margin: 1.5rem 0;
+    gap: 1rem;
 }
 
 .link {

@@ -25,10 +25,10 @@ const SettingsPage = () => {
           <Button type={'button'} to={''} color="cyan" onClick={toggleTheme} disabled={false}>
             {isDarkMode ? 'Light Mode' : 'Dark Mode'}
           </Button>
-          <Button type={'button'} to={''} color="default" disabled={false}>
+          <Button to={''} color="default" disabled={false}>
             Log Out
           </Button>
-          <Button type={'button'} to={''} color="magenta" disabled={false}>
+          <Button to={''} color="magenta" disabled={false}>
             Delete Account
           </Button>
         </div>

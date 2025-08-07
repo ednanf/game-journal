@@ -5,7 +5,7 @@ import styles from './Button.module.css';
 // default color = purple
 type ButtonProps = {
   to?: string;
-  type: 'button' | 'submit' | 'reset';
+  type?: 'button' | 'submit' | 'reset';
   icon?: React.ReactNode;
   color: 'default' | 'cyan' | 'green' | 'magenta' | 'yellow';
   onClick?: () => void;

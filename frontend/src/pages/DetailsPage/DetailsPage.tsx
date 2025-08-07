@@ -125,6 +125,8 @@ const DetailsPage = () => {
     }
   };
 
+  const handleDelete = async () => {};
+
   return (
     <div className={sharedStyles.pageContainer}>
       <div className={sharedStyles.titleContainer}>
@@ -186,11 +188,20 @@ const DetailsPage = () => {
                 />
                 {/* Save button when isEditing === true */}
                 {isEditing && (
-                  <div className={sharedStyles.formButton}>
-                    <Button type="submit" color="green" disabled={isLoading}>
-                      {isLoading ? 'Saving entry...' : 'Save'}
-                    </Button>
-                  </div>
+                  <>
+                    <div className={sharedStyles.formButton}>
+                      <Button type="submit" color="green" disabled={isLoading}>
+                        {isLoading ? 'Saving entry...' : 'Save'}
+                      </Button>
+                      <Button
+                        color={'default'}
+                        disabled={false}
+                        onClick={() => setIsEditing(false)}
+                      >
+                        Cancel
+                      </Button>
+                    </div>
+                  </>
                 )}
               </div>
               {/* Edit button when isEditing === false */}
@@ -203,6 +214,9 @@ const DetailsPage = () => {
                     onClick={() => setIsEditing(true)}
                   >
                     {isLoading ? 'Loading...' : 'Edit'}
+                  </Button>
+                  <Button type={'button'} color={'magenta'} disabled={false} onClick={handleDelete}>
+                    Delete Entry
                   </Button>
                 </div>
               )}
