@@ -6,6 +6,15 @@
     padding: 1rem 0
 }
 
+.emptyMessage {
+    display: flex;
+    flex-direction: column;
+    color: var(--color-text-secondary);
+    justify-content: center;
+    align-items: center;
+    min-height: 60dvh;
+}
+
 .endMessageDecoration {
     color: var(--color-text-secondary);
     display: flex;

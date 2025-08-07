@@ -161,7 +161,15 @@ const JournalPage = () => {
                 <GoDotFill /> <GoDotFill /> <GoDotFill />
                 <PiGhostBold size={30} />
               </p>
-              <p className={styles.endMessage}>Nothing to see here...</p>
+              <p className={styles.endMessage}>Nothing to see beyond here...</p>
+            </>
+          )}
+          {journalEntries.length === 0 && (
+            <>
+              <p className={styles.emptyMessage}>
+                <TbPacman size={60} />
+                <span>Go add some entries!</span>
+              </p>
             </>
           )}
           {error && (
