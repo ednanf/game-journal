@@ -2,15 +2,21 @@ import HeaderButton from './HeaderButton/HeaderButton.tsx';
 import { FaCog } from 'react-icons/fa';
 import styles from './Header.module.css';
 
-const Header = () => {
+type HeaderProps = {
+  token: string | null;
+};
+
+const Header = ({ token }: HeaderProps) => {
   return (
     <header className={styles.header}>
       <span className={styles.logo}>Game Journal</span>
-      <div className={styles.buttonWrapper}>
-        <HeaderButton to={'settings'}>
-          <FaCog />
-        </HeaderButton>
-      </div>
+      {token && (
+        <div className={styles.buttonWrapper}>
+          <HeaderButton to={'settings'}>
+            <FaCog />
+          </HeaderButton>
+        </div>
+      )}
     </header>
   );
 };

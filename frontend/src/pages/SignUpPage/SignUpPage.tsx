@@ -105,6 +105,10 @@ const SignUpPage = () => {
       localStorage.setItem('token', response.token);
       localStorage.setItem('user', response.user);
 
+      // Dispatch a custom event to notify other parts of the app about the local storage change
+      // This is necessary for the NavBar to update its state
+      window.dispatchEvent(new Event('local-storage'));
+
       toast.success('Registration successful. Welcome aboard!');
 
       navigate('/journal');

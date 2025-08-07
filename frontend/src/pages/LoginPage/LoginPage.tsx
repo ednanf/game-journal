@@ -73,6 +73,10 @@ const LoginPage = () => {
       localStorage.setItem('token', response.token);
       localStorage.setItem('user', response.user);
 
+      // Dispatch a custom event to notify other parts of the app about the local storage change
+      // Needed to show the NavBar component after login
+      window.dispatchEvent(new Event('local-storage'));
+
       toast.success('Login successful. Welcome back!');
 
       navigate('/journal');

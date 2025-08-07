@@ -1,10 +1,22 @@
-import { Link } from 'react-router-dom';
+import { useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import appIcon from '../../assets/app-icon.png';
 import styles from './LandingPage.module.css';
 import sharedStyles from '../shared.module.css';
 import { FaGithubSquare } from 'react-icons/fa';
 
 const LandingPage = () => {
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (token) {
+      navigate('/journal', { replace: true }); // Replace the current entry in the history stack
+    }
+  }, [navigate]);
+
+  // This part of the component will only be visible for a fraction of a second
+  // for logged-in users before the redirect happens. For new users, it's all they see.
   return (
     <div className={sharedStyles.pageContainer}>
       <div className={styles.landingPageContent}>
