@@ -1,6 +1,7 @@
 # Game Journal Backend Report
 
 ## Table of Contents
+
 1. [Overview](#overview)
 2. [Technology Stack](#technology-stack)
 3. [Architecture Overview](#architecture-overview)
@@ -21,11 +22,12 @@
 The Game Journal backend is a RESTful API built with Node.js and Express that allows users to maintain a personal journal of games they've played. The system features user authentication, CRUD operations for journal entries, and robust security measures.
 
 **Core Functionality:**
-- User registration and authentication
-- Personal game journal management
-- Secure data isolation between users
-- Input validation and sanitization
-- Error handling and logging
+
+-   User registration and authentication
+-   Personal game journal management
+-   Secure data isolation between users
+-   Input validation and sanitization
+-   Error handling and logging
 
 ---
 
@@ -42,14 +44,15 @@ The Game Journal backend is a RESTful API built with Node.js and Express that al
 ```
 
 **Backend Technologies:**
-- **Runtime**: Node.js
-- **Framework**: Express.js
-- **Language**: TypeScript
-- **Database**: MongoDB with Mongoose ODM
-- **Authentication**: JSON Web Tokens (JWT)
-- **Validation**: Zod schemas
-- **Security**: Helmet, CORS, Rate Limiting, XSS Protection
-- **Password Hashing**: bcryptjs
+
+-   **Runtime**: Node.js
+-   **Framework**: Express.js
+-   **Language**: TypeScript
+-   **Database**: MongoDB with Mongoose ODM
+-   **Authentication**: JSON Web Tokens (JWT)
+-   **Validation**: Zod schemas
+-   **Security**: Helmet, CORS, Rate Limiting, XSS Protection
+-   **Password Hashing**: bcryptjs
 
 ---
 
@@ -183,9 +186,10 @@ When the server starts, it follows this sequence:
 ```
 
 **Key Points:**
-- Database connection is established before the server starts accepting requests
-- If database connection fails, the process exits immediately
-- Environment variables are validated during startup
+
+-   Database connection is established before the server starts accepting requests
+-   If database connection fails, the process exits immediately
+-   Environment variables are validated during startup
 
 ---
 
@@ -302,7 +306,7 @@ If error occurs at any step:
 5. Send HTTP 201 with user email and token
      │
      ▼
-[RESPONSE] 
+[RESPONSE]
 {
   "status": "success",
   "data": {
@@ -314,7 +318,7 @@ If error occurs at any step:
 
 [ERROR SCENARIOS]
 • Email already exists ──► 409 Conflict
-• Invalid email format ──► 400 Bad Request  
+• Invalid email format ──► 400 Bad Request
 • Password too short ──► 400 Bad Request
 • Database error ──► 500 Internal Server Error
 ```
@@ -344,7 +348,7 @@ If error occurs at any step:
    ├─ User not found ──► Return 401 Unauthorized
    └─ User found ──► Continue
 3. Compare password with stored hash
-   ├─ Password invalid ──► Return 401 Unauthorized  
+   ├─ Password invalid ──► Return 401 Unauthorized
    └─ Password valid ──► Continue
 4. Generate JWT token with user._id
 5. Send success response with token
@@ -352,7 +356,7 @@ If error occurs at any step:
      ▼
 [RESPONSE]
 {
-  "status": "success", 
+  "status": "success",
   "data": {
     "message": "User logged in successfully",
     "user": "user@email.com",
@@ -469,7 +473,7 @@ If error occurs at any step:
     "entries": [
       {
         "id": "60d5ecb54b24a1234567890a",
-        "createdBy": "60d5ecb54b24a1234567890b", 
+        "createdBy": "60d5ecb54b24a1234567890b",
         "title": "The Legend of Zelda: Breath of the Wild",
         "platform": "Nintendo Switch",
         "status": "completed",
@@ -484,10 +488,11 @@ If error occurs at any step:
 ```
 
 **Pagination Explanation:**
-- Uses cursor-based pagination (not offset-based)
-- Cursor is the `_id` of the last document from previous page
-- More efficient for large datasets
-- Prevents issues with data shifting between requests
+
+-   Uses cursor-based pagination (not offset-based)
+-   Cursor is the `_id` of the last document from previous page
+-   More efficient for large datasets
+-   Prevents issues with data shifting between requests
 
 #### 2. Create Journal Entry: `POST /api/v1/journal-entries`
 
@@ -498,7 +503,7 @@ If error occurs at any step:
    Headers: { Authorization: "Bearer <jwt_token>" }
    Body: {
      "title": "Cyberpunk 2077",
-     "platform": "PC", 
+     "platform": "PC",
      "status": "started",
      "rating": 7
    }
@@ -512,8 +517,8 @@ If error occurs at any step:
 2. xss() ──────────► Sanitize input against XSS attacks
 3. validateZodSchemas(createJournalEntryBodySchema)
    ├─ title: required, string, 1-100 chars, trimmed
-   ├─ platform: required, string, non-empty, trimmed  
-   ├─ status: optional, enum ["started", "completed", "dropped"]
+   ├─ platform: required, string, non-empty, trimmed
+   ├─ status: optional, enum ["started", "completed", "dropped", "paused", "revisited"]
    └─ rating: optional, number, 0-10 range
      │
      ▼
@@ -535,7 +540,7 @@ If error occurs at any step:
     "entry": {
       "id": "60d5ecb54b24a1234567890d",
       "createdBy": "60d5ecb54b24a1234567890b",
-      "title": "Cyberpunk 2077", 
+      "title": "Cyberpunk 2077",
       "platform": "PC",
       "status": "started",
       "rating": 7,
@@ -685,46 +690,50 @@ If error occurs at any step:
 
 ```typescript
 interface IUser {
-  email: string;        // Unique, validated email
-  password: string;     // Hashed with bcrypt
-  createdAt?: Date;     // Auto-generated
-  updatedAt?: Date;     // Auto-updated
+    email: string; // Unique, validated email
+    password: string; // Hashed with bcrypt
+    createdAt?: Date; // Auto-generated
+    updatedAt?: Date; // Auto-updated
 }
 ```
 
 **Schema Features:**
-- Email uniqueness enforced at database level
-- Password automatically hashed before saving (pre-save hook)
-- Timestamps managed by Mongoose
-- Email validation using validator library
-- Instance methods: `createJWT()`, `comparePassword()`
+
+-   Email uniqueness enforced at database level
+-   Password automatically hashed before saving (pre-save hook)
+-   Timestamps managed by Mongoose
+-   Email validation using validator library
+-   Instance methods: `createJWT()`, `comparePassword()`
 
 **Database Indexes:**
-- Unique index on `email` field
-- Default `_id` index
+
+-   Unique index on `email` field
+-   Default `_id` index
 
 ### Journal Entry Model
 
 ```typescript
 interface IJournalEntry {
-  _id: ObjectId;           // MongoDB-generated unique ID
-  createdBy: ObjectId;     // Reference to User._id
-  title: string;           // Game title (max 100 chars)
-  platform: string;       // Gaming platform
-  status: 'started' | 'completed' | 'dropped';
-  rating?: number;         // 0-10 scale, optional
-  createdAt: Date;         // Auto-generated
-  updatedAt: Date;         // Auto-updated
+    _id: ObjectId; // MongoDB-generated unique ID
+    createdBy: ObjectId; // Reference to User._id
+    title: string; // Game title (max 100 chars)
+    platform: string; // Gaming platform
+    status: 'started' | 'completed' | 'dropped' | 'revisited' | 'paused';
+    rating?: number; // 0-10 scale, optional
+    createdAt: Date; // Auto-generated
+    updatedAt: Date; // Auto-updated
 }
 ```
 
 **Schema Features:**
-- `createdBy` references User model (foreign key)
-- Enum validation on `status` field
-- Range validation on `rating` (0-10)
-- Automatic timestamps
+
+-   `createdBy` references User model (foreign key)
+-   Enum validation on `status` field
+-   Range validation on `rating` (0-10)
+-   Automatic timestamps
 
 **Recommended Database Indexes:**
+
 ```javascript
 // For efficient user-specific queries
 { createdBy: 1, _id: 1 }
@@ -742,7 +751,7 @@ User (1) ──────── (Many) JournalEntry
   _id ←──── createdBy ──────┘
 
 • One user can have many journal entries
-• Each journal entry belongs to exactly one user  
+• Each journal entry belongs to exactly one user
 • Cascade delete: When user is deleted, all their entries are deleted
 • Data isolation: Users can only access their own entries
 ```
@@ -754,67 +763,79 @@ User (1) ──────── (Many) JournalEntry
 The backend implements defense-in-depth security:
 
 ### 1. Network Level
+
 ```
 [Internet] ──► [Rate Limiting] ──► [CORS] ──► [Express App]
 ```
 
 **Rate Limiting:**
-- 300 requests per 15-minute window per IP
-- Prevents brute force attacks and API abuse
-- Returns 429 Too Many Requests when exceeded
+
+-   300 requests per 15-minute window per IP
+-   Prevents brute force attacks and API abuse
+-   Returns 429 Too Many Requests when exceeded
 
 **CORS (Cross-Origin Resource Sharing):**
-- Only allows requests from whitelisted frontend address
-- Restricts HTTP methods to: GET, POST, PATCH, DELETE
-- Prevents unauthorized cross-origin requests
+
+-   Only allows requests from whitelisted frontend address
+-   Restricts HTTP methods to: GET, POST, PATCH, DELETE
+-   Prevents unauthorized cross-origin requests
 
 ### 2. Application Level
+
 ```
 [Request] ──► [Helmet] ──► [XSS Protection] ──► [Input Validation] ──► [Authorization]
 ```
 
 **Helmet:** Sets security headers
-- `X-Content-Type-Options: nosniff`
-- `X-Frame-Options: DENY`
-- `X-XSS-Protection: 1; mode=block`
-- Removes `X-Powered-By` header
+
+-   `X-Content-Type-Options: nosniff`
+-   `X-Frame-Options: DENY`
+-   `X-XSS-Protection: 1; mode=block`
+-   Removes `X-Powered-By` header
 
 **XSS Protection:**
-- Sanitizes all user inputs
-- Removes potentially malicious scripts
-- Applied before validation on all user-facing routes
+
+-   Sanitizes all user inputs
+-   Removes potentially malicious scripts
+-   Applied before validation on all user-facing routes
 
 **Input Validation (Zod):**
-- Schema-based validation
-- Type checking and format validation
-- Automatic sanitization (strips unknown fields)
-- Detailed error messages for developers
+
+-   Schema-based validation
+-   Type checking and format validation
+-   Automatic sanitization (strips unknown fields)
+-   Detailed error messages for developers
 
 **Authorization (JWT):**
-- Stateless authentication
-- Token includes encrypted user ID
-- Verified on every protected request
-- Automatic expiration
+
+-   Stateless authentication
+-   Token includes encrypted user ID
+-   Verified on every protected request
+-   Automatic expiration
 
 ### 3. Data Level
+
 ```
 [Controller] ──► [Ownership Check] ──► [Database Query] ──► [Response]
 ```
 
 **Ownership Enforcement:**
-- All queries include `createdBy: userId` filter
-- Users can only access their own data
-- Prevents horizontal privilege escalation
+
+-   All queries include `createdBy: userId` filter
+-   Users can only access their own data
+-   Prevents horizontal privilege escalation
 
 **Password Security:**
-- Passwords hashed with bcrypt (salt rounds: 12)
-- Plain text passwords never stored
-- Password comparison done through secure bcrypt.compare()
+
+-   Passwords hashed with bcrypt (salt rounds: 12)
+-   Plain text passwords never stored
+-   Password comparison done through secure bcrypt.compare()
 
 **Database Security:**
-- MongoDB ObjectIds provide non-sequential identifiers
-- Mongoose schema validation as last line of defense
-- No direct database queries (all through Mongoose ODM)
+
+-   MongoDB ObjectIds provide non-sequential identifiers
+-   Mongoose schema validation as last line of defense
+-   No direct database queries (all through Mongoose ODM)
 
 ---
 
@@ -850,23 +871,25 @@ CustomError (Base)
 ```
 
 **Error Response Format:**
+
 ```json
 {
-  "status": "error",
-  "data": {
-    "message": "Descriptive error message for the client"
-  }
+    "status": "error",
+    "data": {
+        "message": "Descriptive error message for the client"
+    }
 }
 ```
 
 **Error Handling Examples:**
 
 1. **Validation Error:**
+
 ```javascript
 // Input: { email: "invalid-email", password: "123" }
 // Response: 400 Bad Request
 {
-  "status": "error", 
+  "status": "error",
   "data": {
     "message": "Invalid email. Password must be at least 6 characters long"
   }
@@ -874,6 +897,7 @@ CustomError (Base)
 ```
 
 2. **Authentication Error:**
+
 ```javascript
 // Missing or invalid JWT token
 // Response: 401 Unauthorized
@@ -886,6 +910,7 @@ CustomError (Base)
 ```
 
 3. **Not Found Error:**
+
 ```javascript
 // Accessing non-existent journal entry
 // Response: 404 Not Found
@@ -898,9 +923,10 @@ CustomError (Base)
 ```
 
 **Error Logging:**
-- All errors logged to console with full stack trace
-- Sensitive information never exposed to client
-- Production logs should be sent to external logging service
+
+-   All errors logged to console with full stack trace
+-   Sensitive information never exposed to client
+-   Production logs should be sent to external logging service
 
 ---
 
@@ -909,6 +935,7 @@ CustomError (Base)
 ### JWT (JSON Web Token) Implementation
 
 **Token Structure:**
+
 ```
 Header.Payload.Signature
 
@@ -954,6 +981,7 @@ Signature: HMACSHA256(base64UrlEncode(header) + "." + base64UrlEncode(payload), 
 ```
 
 **Token Generation:**
+
 ```typescript
 // In User model method
 async createJWT(payload = {}) {
@@ -967,23 +995,25 @@ const createJWT = (payload) => {
 ```
 
 **Token Verification:**
+
 ```typescript
 // In authenticate middleware
 const payload = jwt.verify(token, process.env.JWT_SECRET);
 if (isUserPayload(payload)) {
-  req.user = { userId: payload.userId };
-  next();
+    req.user = { userId: payload.userId };
+    next();
 } else {
-  throw new UnauthorizedError('Invalid token structure');
+    throw new UnauthorizedError('Invalid token structure');
 }
 ```
 
 **Security Considerations:**
-- JWT_SECRET must be strong and kept secret
-- Tokens have 7-day expiration (configurable)
-- No token blacklisting (stateless design)
-- Client responsible for token storage and cleanup
-- HTTPS required in production to prevent token interception
+
+-   JWT_SECRET must be strong and kept secret
+-   Tokens have 7-day expiration (configurable)
+-   No token blacklisting (stateless design)
+-   Client responsible for token storage and cleanup
+-   HTTPS required in production to prevent token interception
 
 ---
 
@@ -994,6 +1024,7 @@ if (isUserPayload(payload)) {
 The backend uses Zod for runtime type checking and validation:
 
 **Validation Flow:**
+
 ```
 [Raw Request Body] ──► [XSS Sanitization] ──► [Zod Schema] ──► [Validated Data] ──► [Controller]
                                                     │
@@ -1002,37 +1033,41 @@ The backend uses Zod for runtime type checking and validation:
 ```
 
 **User Registration Schema:**
+
 ```typescript
 const registerUserBodySchema = z.object({
-  email: z.string().email("Must be a valid email"),
-  password: z.string().min(6, "Password must be at least 6 characters")
+    email: z.string().email('Must be a valid email'),
+    password: z.string().min(6, 'Password must be at least 6 characters'),
 });
 
 // Auto-generated TypeScript type:
 type RegisterUserBody = {
-  email: string;
-  password: string;
-}
+    email: string;
+    password: string;
+};
 ```
 
 **Journal Entry Creation Schema:**
+
 ```typescript
 const createJournalEntryBodySchema = z.object({
-  title: z.string().trim().min(1).max(100),
-  platform: z.string().trim().min(1), 
-  status: z.enum(["started", "completed", "dropped"]).optional(),
-  rating: z.number().min(0).max(10).optional()
+    title: z.string().trim().min(1).max(100),
+    platform: z.string().trim().min(1),
+    status: z.enum(['started', 'completed', 'dropped']).optional(),
+    rating: z.number().min(0).max(10).optional(),
 });
 ```
 
 **Validation Middleware Process:**
+
 1. **Input Sanitization**: XSS protection removes malicious content
 2. **Schema Parsing**: Zod validates structure and types
 3. **Data Transformation**: Automatic trimming, type coercion
-4. **Unknown Field Removal**: `.strict()` mode strips extra properties  
+4. **Unknown Field Removal**: `.strict()` mode strips extra properties
 5. **Error Formatting**: Detailed validation messages for developers
 
 **Validation Error Example:**
+
 ```javascript
 // Invalid input
 {
@@ -1064,41 +1099,46 @@ const createJournalEntryBodySchema = z.object({
 ### Database Optimization
 
 **Cursor-Based Pagination:**
+
 ```typescript
 // Instead of offset/limit (slow for large datasets)
 const documents = await Model.find(query)
-  .sort({ _id: 1 })
-  .limit(limit + 1);
+    .sort({ _id: 1 })
+    .limit(limit + 1);
 
 // Uses cursor (efficient for any dataset size)
 const query = cursor ? { _id: { $gt: cursor } } : {};
 const documents = await Model.find({ ...filters, ...query })
-  .sort({ _id: 1 })
-  .limit(limit + 1);
+    .sort({ _id: 1 })
+    .limit(limit + 1);
 ```
 
 **Efficient Queries:**
-- All journal entry queries include `createdBy` filter
-- Compound indexes recommended: `{ createdBy: 1, _id: 1 }`
-- No N+1 queries (single query per operation)
+
+-   All journal entry queries include `createdBy` filter
+-   Compound indexes recommended: `{ createdBy: 1, _id: 1 }`
+-   No N+1 queries (single query per operation)
 
 ### Memory Management
-- Stateless design (no server-side sessions)
-- JWT tokens eliminate session storage
-- Mongoose connection pooling handles database connections
-- Express.js built-in memory management
+
+-   Stateless design (no server-side sessions)
+-   JWT tokens eliminate session storage
+-   Mongoose connection pooling handles database connections
+-   Express.js built-in memory management
 
 ### Security Performance
-- bcrypt hashing is CPU intensive but necessary
-- Rate limiting prevents resource exhaustion
-- Input validation happens before database queries
-- Early authentication failures prevent expensive operations
+
+-   bcrypt hashing is CPU intensive but necessary
+-   Rate limiting prevents resource exhaustion
+-   Input validation happens before database queries
+-   Early authentication failures prevent expensive operations
 
 ---
 
 ## Development and Deployment
 
 ### Environment Variables
+
 ```bash
 # Required for operation
 PORT=3000
@@ -1110,6 +1150,7 @@ NODE_ENV=development
 ```
 
 ### Build Process
+
 ```bash
 # Development
 npm run dev          # Start with hot reload
@@ -1121,10 +1162,11 @@ npm start           # Run compiled JavaScript
 ```
 
 ### Testing Considerations
-- Unit tests for utility functions
-- Integration tests for API endpoints
-- Mock database for testing
-- JWT token generation for authenticated tests
+
+-   Unit tests for utility functions
+-   Integration tests for API endpoints
+-   Mock database for testing
+-   JWT token generation for authenticated tests
 
 ---
 
@@ -1133,26 +1175,29 @@ npm start           # Run compiled JavaScript
 This Game Journal backend demonstrates modern Node.js/Express.js best practices:
 
 **Architecture Strengths:**
-- Clean separation of concerns
-- Comprehensive security layers
-- Robust error handling
-- Type-safe development with TypeScript
-- Scalable pagination system
-- Stateless authentication
+
+-   Clean separation of concerns
+-   Comprehensive security layers
+-   Robust error handling
+-   Type-safe development with TypeScript
+-   Scalable pagination system
+-   Stateless authentication
 
 **Security Features:**
-- Multi-layer input validation
-- XSS protection
-- Rate limiting
-- CORS policy enforcement
-- Secure password hashing
-- Data ownership enforcement
+
+-   Multi-layer input validation
+-   XSS protection
+-   Rate limiting
+-   CORS policy enforcement
+-   Secure password hashing
+-   Data ownership enforcement
 
 **Developer Experience:**
-- Detailed error messages
-- Consistent API responses
-- Type safety with TypeScript
-- Comprehensive logging
-- Clear code organization
+
+-   Detailed error messages
+-   Consistent API responses
+-   Type safety with TypeScript
+-   Comprehensive logging
+-   Clear code organization
 
 The system is production-ready and follows industry best practices for security, performance, and maintainability.
