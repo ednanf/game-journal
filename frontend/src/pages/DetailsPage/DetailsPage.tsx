@@ -6,6 +6,7 @@ import {
   patchUnwrapped,
   deleteUnwrapped,
 } from '../../utils/axiosInstance.ts';
+import formatDisplayDate from '../../utils/formatDisplayDate.ts';
 import TextInput from '../../components/Form/TextInput/TextInput.tsx';
 import DropDown from '../../components/Form/DropDown/DropDown.tsx';
 import Slider from '../../components/Form/Slider/Slider.tsx';
@@ -253,7 +254,7 @@ const DetailsPage = () => {
               )}
             </form>
             <div className={styles.footer}>
-              <p>Last updated: {new Date(formData.updatedAt).toLocaleString()}</p>
+              <p>Last updated: {formatDisplayDate(formData.updatedAt)}</p>
             </div>
           </>
         )}
