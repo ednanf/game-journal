@@ -7,12 +7,13 @@ import Header from '../Header/Header.tsx';
 import NavBar from '../NavBar/NavBar.tsx';
 import styles from './Layout.module.css';
 
-// TODO: Configure toastify theme colors
-
 const Layout = () => {
   const { theme, toggleTheme } = useTheme();
   const [token, setToken] = useState(localStorage.getItem('token'));
 
+  const toastTheme = theme === 'dark' ? 'dark' : 'light';
+
+  // Update token state on localStorage changes
   useEffect(() => {
     const handleStorageChange = () => {
       setToken(localStorage.getItem('token'));
@@ -22,11 +23,12 @@ const Layout = () => {
     // has been changed in the context of another document.
     window.addEventListener('storage', handleStorageChange);
 
-    // We also need a custom event to handle changes within the same tab,
+    // Custom event to handle changes within the same tab,
     // as the 'storage' event doesn't fire for the tab that made the change.
-    // You would dispatch this 'local-storage' event from your login/logout logic.
+    // This 'local-storage' event is dispatched from your login/logout logic.
     window.addEventListener('local-storage', handleStorageChange);
 
+    // Cleanup event listeners on unmount
     return () => {
       window.removeEventListener('storage', handleStorageChange);
       window.removeEventListener('local-storage', handleStorageChange);
@@ -49,7 +51,7 @@ const Layout = () => {
         closeOnClick
         rtl={false}
         pauseOnHover
-        theme="light"
+        theme={toastTheme}
       />
     </div>
   );

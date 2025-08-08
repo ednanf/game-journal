@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { useOutletContext } from 'react-router-dom';
+import { useOutletContext, useNavigate } from 'react-router-dom';
 import { FaGithubSquare } from 'react-icons/fa';
 import Button from '../../components/Button/Button.tsx';
 import styles from './SettingsPage.module.css';
@@ -9,11 +9,19 @@ const SettingsPage = () => {
   const { theme, toggleTheme } = useOutletContext<{ theme: string; toggleTheme: () => void }>();
   const isDarkMode = theme === 'dark';
   const currentUser = localStorage.getItem('user');
+  const navigate = useNavigate();
 
   useEffect(() => {
     document.body.dataset.theme = theme;
     localStorage.setItem('theme', theme);
   }, [theme]);
+
+  const handleLogout = () => {
+    localStorage.removeItem('user');
+    localStorage.removeItem('token');
+    window.dispatchEvent(new Event('local-storage')); // Force re-check of token, updating the UI
+    navigate('/');
+  };
 
   return (
     <div className={sharedStyles.pageContainer}>
@@ -25,7 +33,7 @@ const SettingsPage = () => {
           <Button type={'button'} to={''} color="cyan" onClick={toggleTheme} disabled={false}>
             {isDarkMode ? 'Light Mode' : 'Dark Mode'}
           </Button>
-          <Button to={''} color="default" disabled={false}>
+          <Button onClick={handleLogout} color="default" disabled={false}>
             Log Out
           </Button>
           <Button to={''} color="magenta" disabled={false}>
