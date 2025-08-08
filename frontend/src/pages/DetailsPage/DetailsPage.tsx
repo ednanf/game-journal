@@ -40,8 +40,6 @@ type ServerResponse = {
   entry: JournalEntry;
 };
 
-// TODO: Add creation/update timestamps to the details page
-
 const DetailsPage = () => {
   const [formData, setFormData] = useState<JournalEntry | undefined>(undefined);
   const [errors, setErrors] = useState<FormErrors>({});
