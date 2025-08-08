@@ -684,6 +684,60 @@ If error occurs at any step:
 
 ---
 
+#### 6. Get Journal Entry Statistics: `GET /api/v1/journal-entries/statistics`
+
+Computes per-user statistics for journal entries, returning lifetime totals by status and a year-by-year breakdown.
+
+**Data Flow:**
+
+```
+[CLIENT] GET /api/v1/journal-entries/statistics
+   Headers: { Authorization: "Bearer <jwt_token>" }
+  │
+  ▼
+[MIDDLEWARE CHAIN] (global)
+  │
+  ▼
+[ROUTE-SPECIFIC MIDDLEWARE]
+1. authenticate() ──► Set req.user = { userId }
+  │
+  ▼
+[CONTROLLER] getJournalEntriesStatistics()
+1. Extract userId from req.user
+2. Cast userId (string) → new mongoose.Types.ObjectId(userId)
+3. Run aggregation pipelines:
+   ├─ Lifetime: $match { createdBy: userId }, $group by $status, count
+   └─ Yearly:   $match { createdBy: userId }, $project { year: {$year: "$createdAt"}, status }
+        $group by { year, status }, count
+4. Normalize output so all statuses appear (0 when missing)
+5. Return JSON with lifetime and byYear objects
+  │
+  ▼
+[RESPONSE]
+{
+  "status": "success",
+  "data": {
+    "lifetime": { "started": 0, "completed": 0, "revisited": 0, "paused": 0, "dropped": 0 },
+    "byYear": { "2025": { "started": 0, "completed": 0, "revisited": 0, "paused": 0, "dropped": 0 } }
+  }
+}
+```
+
+**Notes:**
+
+-   Statistics are always scoped to the authenticated user via `{ createdBy: userId }`.
+-   The controller casts the `userId` string to `ObjectId` for correct matching against the `createdBy` field.
+-   Uses MongoDB Aggregation Pipeline operators: `$match`, `$project` (extract `year`), and `$group`.
+-   UTC is used for year extraction by default. If a local time zone is required, consider `$dateToParts` or `$dateTrunc`.
+
+**Performance:**
+
+-   To keep queries fast as data grows, the `JournalEntry` schema defines indexes:
+    -   `{ createdBy: 1 }`
+    -   `{ createdAt: 1 }`
+    -   `{ status: 1 }`
+    -   Composite `{ createdBy: 1, createdAt: 1, status: 1 }`
+
 ## Database Models
 
 ### User Model
