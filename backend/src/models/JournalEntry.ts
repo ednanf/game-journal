@@ -6,7 +6,7 @@ export interface IJournalEntry extends Document {
   createdBy: mongoose.ObjectId;
   title: string;
   platform: string;
-  status: 'started' | 'completed' | 'dropped';
+  status: 'started' | 'completed' | 'dropped' | 'revisited' | 'paused';
   rating?: number;
   createdAt: Date;
   updatedAt: Date;
@@ -45,6 +45,12 @@ const journalEntrySchema = new Schema<IJournalEntry>(
   },
   { timestamps: true },
 );
+
+// Indexing will improve query performance
+journalEntrySchema.index({ createdBy: 1 });
+journalEntrySchema.index({ createdAt: 1 });
+journalEntrySchema.index({ status: 1 });
+journalEntrySchema.index({ createdBy: 1, createdAt: 1, status: 1 }); // Composite for stats
 
 const JournalEntry =
   mongoose.models.JournalEntry || model<IJournalEntry>('JournalEntry', journalEntrySchema);

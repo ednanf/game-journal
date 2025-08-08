@@ -1,3 +1,4 @@
+import mongoose from 'mongoose';
 import { Request, Response, NextFunction } from 'express';
 import { StatusCodes } from 'http-status-codes';
 import JournalEntry, { IJournalEntry } from '../models/JournalEntry.js';
@@ -247,10 +248,74 @@ const deleteJournalEntry = async (req: Request, res: Response, next: NextFunctio
   }
 };
 
+const getJournalEntriesStatistics = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+): Promise<void> => {
+  if (!req.user) {
+    next(new UnauthenticatedError('User not authenticated.'));
+    return;
+  }
+
+  // Always cast userId to ObjectId for MongoDB queries - otherwise it will be a string
+  const userId = new mongoose.Types.ObjectId(req.user.userId);
+
+  try {
+    // Lifetime stats: count by status (include all possible statuses)
+    const lifetimeStats = await JournalEntry.aggregate([
+      { $match: { createdBy: userId } },
+      { $group: { _id: '$status', count: { $sum: 1 } } },
+    ]);
+
+    // Year-by-year stats: count by year and status
+    const yearlyStats = await JournalEntry.aggregate([
+      { $match: { createdBy: userId } },
+      {
+        $project: {
+          year: { $year: '$createdAt' },
+          status: 1,
+        },
+      },
+      {
+        $group: {
+          _id: { year: '$year', status: '$status' },
+          count: { $sum: 1 },
+        },
+      },
+    ]);
+
+    // Format lifetime stats
+    const lifetime: Record<string, number> = {};
+    lifetimeStats.forEach((stat) => {
+      lifetime[stat._id] = stat.count;
+    });
+
+    // Format yearly stats
+    const byYear: Record<string, Record<string, number>> = {};
+    yearlyStats.forEach((stat) => {
+      const { year, status } = stat._id;
+      if (!byYear[year]) byYear[year] = {};
+      byYear[year][status] = stat.count;
+    });
+
+    res.status(StatusCodes.OK).json({
+      status: 'success',
+      data: {
+        lifetime,
+        byYear,
+      },
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 export default {
   getJournalEntries,
   getJournalEntryById,
   createJournalEntry,
   updateJournalEntry,
   deleteJournalEntry,
+  getJournalEntriesStatistics,
 };

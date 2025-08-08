@@ -15,12 +15,15 @@ const {
   createJournalEntry,
   updateJournalEntry,
   deleteJournalEntry,
+  getJournalEntriesStatistics,
 } = journalEntriesController;
 
 router
   .route('/')
   .get(getJournalEntries)
   .post(xss(), validateZodSchemas(createJournalEntryBodySchema), createJournalEntry);
+
+router.get('/statistics', getJournalEntriesStatistics);
 
 router
   .route('/:id')
