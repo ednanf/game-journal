@@ -14,7 +14,7 @@ type JournalEntry = {
   createdBy: string;
   title: string;
   platform: string;
-  status: 'started' | 'completed' | 'dropped';
+  status: 'started' | 'completed' | 'dropped' | 'revisited' | 'paused';
   rating: number;
   createdAt: string;
   updatedAt: string;
