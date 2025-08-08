@@ -1,9 +1,15 @@
 import { useEffect } from 'react';
 import { useOutletContext, useNavigate } from 'react-router-dom';
 import { FaGithubSquare } from 'react-icons/fa';
+import { deleteUnwrapped } from '../../utils/axiosInstance.ts';
 import Button from '../../components/Button/Button.tsx';
 import styles from './SettingsPage.module.css';
 import sharedStyles from '../shared.module.css';
+import { toast } from 'react-toastify';
+
+type ServerResponse = {
+  message: string;
+};
 
 const SettingsPage = () => {
   const { theme, toggleTheme } = useOutletContext<{ theme: string; toggleTheme: () => void }>();
@@ -23,6 +29,22 @@ const SettingsPage = () => {
     navigate('/');
   };
 
+  const handleDeleteAccount = async () => {
+    try {
+      const response: ServerResponse = await deleteUnwrapped('/users/delete');
+
+      localStorage.removeItem('user');
+      localStorage.removeItem('token');
+      window.dispatchEvent(new Event('local-storage')); // Force re-check of token, updating the UI
+
+      toast.success(response.message);
+      navigate('/');
+    } catch (error) {
+      toast.error('Failed to delete account');
+    }
+  };
+
+  // THIS is where your JSX should be returned!
   return (
     <div className={sharedStyles.pageContainer}>
       <div className={sharedStyles.titleContainer}>
@@ -36,7 +58,7 @@ const SettingsPage = () => {
           <Button onClick={handleLogout} color="default" disabled={false}>
             Log Out
           </Button>
-          <Button to={''} color="magenta" disabled={false}>
+          <Button onClick={handleDeleteAccount} color="magenta" disabled={false}>
             Delete Account
           </Button>
         </div>
@@ -57,4 +79,5 @@ const SettingsPage = () => {
     </div>
   );
 };
+
 export default SettingsPage;
