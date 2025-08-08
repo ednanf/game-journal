@@ -139,21 +139,25 @@ const JournalPage = () => {
       </div>
       <div className={sharedStyles.pageContent}>
         <div className={styles.cardsContainer}>
+          {/* Journal entry cards */}
           {journalEntries.map((entry) => (
             <JournalCard key={entry.id} entry={entry} to={`/details/${entry.id}`} />
           ))}
         </div>
         <div ref={loaderRef} className={styles.loader}>
+          {/* Loader for infinite scroll */}
           {loading && initialLoad && (
             <div className={sharedStyles.centerLoader}>
               <div className={sharedStyles.loader}></div>
             </div>
           )}
+          {/* Loader for subsequent entries */}
           {loading && !initialLoad && (
             <div className={sharedStyles.centerLoaderSlim}>
               <div className={sharedStyles.loader}></div>
             </div>
           )}
+          {/* Loader for no more entries */}
           {!hasMore && journalEntries.length > 0 && (
             <>
               <p className={styles.endMessageDecoration}>
@@ -164,12 +168,14 @@ const JournalPage = () => {
               <p className={styles.endMessage}>Nothing to see beyond here...</p>
             </>
           )}
+          {/* Loader for error state */}
           {journalEntries.length === 0 && error && (
             <div className={sharedStyles.error}>
               <VscError size={30} />
               {error}
             </div>
           )}
+          {/* Loader for empty state */}
           {journalEntries.length === 0 && (
             <>
               <p className={styles.emptyMessage}>
