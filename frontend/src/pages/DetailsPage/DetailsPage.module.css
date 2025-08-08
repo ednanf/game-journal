@@ -1,6 +1,17 @@
 .centerLoader {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 70dvh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 70dvh;
+}
+
+.footer {
+  display: flex;
+  justify-content: center;
+  padding-bottom: 1.2rem;
+}
+
+.footer p {
+  color: var(--color-text-secondary);
+  font-size: smaller;
 }

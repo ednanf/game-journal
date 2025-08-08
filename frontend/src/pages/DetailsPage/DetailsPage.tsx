@@ -252,6 +252,9 @@ const DetailsPage = () => {
                 </div>
               )}
             </form>
+            <div className={styles.footer}>
+              <p>Last updated: {new Date(formData.updatedAt).toLocaleString()}</p>
+            </div>
           </>
         )}
       </div>
