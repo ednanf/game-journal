@@ -44,7 +44,6 @@ const SettingsPage = () => {
     }
   };
 
-  // THIS is where your JSX should be returned!
   return (
     <div className={sharedStyles.pageContainer}>
       <div className={sharedStyles.titleContainer}>
@@ -72,7 +71,7 @@ const SettingsPage = () => {
             rel="noopener noreferrer"
             className={styles.githubLink}
           >
-            <FaGithubSquare size={20} className={styles.icon} /> <span>GitHub</span>
+            <FaGithubSquare size={20} className={styles.icon} /> <span>See on GitHub</span>
           </a>
         </div>
       </div>

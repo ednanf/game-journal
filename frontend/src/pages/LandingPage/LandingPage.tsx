@@ -40,7 +40,7 @@ const LandingPage = () => {
             rel="noopener noreferrer"
             className={styles.githubLink}
           >
-            <FaGithubSquare size={20} className={styles.icon} /> <span>GitHub</span>
+            <FaGithubSquare size={20} className={styles.icon} /> <span>See on GitHub</span>
           </a>
         </div>
       </div>
