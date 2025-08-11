@@ -1,10 +1,6 @@
 // This file configures CORS options for the application.
 // It allows requests from specific origins and defines allowed HTTP methods.
-const allowedOrigins = [
-  'http://localhost:5173',
-  'http://10.0.0.102:5173',
-  'https://choice-joint-ghost.ngrok-free.app',
-];
+const allowedOrigins = ['http://localhost:5173', 'http://10.0.0.102:5173'];
 
 const corsOptions = {
   origin: allowedOrigins,

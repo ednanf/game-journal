@@ -80,6 +80,7 @@ const StatisticsPage = () => {
                 title={'Lifetime'}
               />
             </div>
+            {/* Object.entries transforms the object into an array */}
             {Object.entries(statistics.byYear).map(([year, stats]) => (
               <div className={styles.yearlyCardContainer} key={year}>
                 <YearlyCard
