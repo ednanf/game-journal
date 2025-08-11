@@ -1,3 +1,4 @@
+// frontend/src/components/JournalCard/JournalCard.tsx
 import { Link } from 'react-router-dom';
 import styles from './JournalCard.module.css';
 import { FaChevronRight } from 'react-icons/fa6';
@@ -42,10 +43,10 @@ const JournalCard = ({ entry, to }: JournalCardProps) => {
         <div className={styles.mainDetails}>
           <div className={styles.headerContainer}>
             <div className={styles.cardHeader}>
-              <h3>{title}</h3>
-            </div>
-            <div className={styles.cardSubHeader}>
-              <p>{platform}</p>
+              <h3 className={styles.title}>{title}</h3>
+              <div className={styles.cardSubHeader}>
+                <p>{platform}</p>
+              </div>
             </div>
             <div className={styles.cardIcon}>
               <p>

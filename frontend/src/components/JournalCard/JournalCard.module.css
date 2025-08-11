@@ -1,3 +1,4 @@
+/* frontend/src/components/JournalCard/JournalCard.module.css */
 .link {
     display: flex;
     width: 100%;
@@ -26,32 +27,53 @@
 
 .headerContainer {
     display: flex;
-    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
     width: 100%;
 }
 
 .cardHeader {
     display: flex;
+    flex-direction: column;
     justify-content: flex-start;
-    color: var(--color-text-primary)
+    color: var(--color-text-primary);
+    flex-grow: 1;
+    overflow: hidden;
+    padding-right: 0.5rem;
+}
+
+.title {
+    white-space: nowrap;
+    overflow: hidden;
+    position: relative;
+    margin: 0;
+}
+
+/* Fade-out effect */
+.title::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 3rem;
+    height: 100%;
+    background: linear-gradient(to right, transparent, var(--color-surface));
 }
 
 .cardSubHeader p {
     display: flex;
     justify-content: flex-start;
     color: var(--color-text-secondary);
+    margin: 0; /* p has default margins, let's remove them */
 }
 
 .cardIcon {
     display: flex;
     justify-content: center;
     align-items: center;
-    position: absolute;
-    right: 0;
-    top: 50%;
-    transform: translateY(-50%);
     width: 30px;
     height: 30px;
+    flex-shrink: 0; /* Added */
 }
 
 .entryDetails {
