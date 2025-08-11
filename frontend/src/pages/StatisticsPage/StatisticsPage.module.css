@@ -5,3 +5,11 @@
     align-items: center;
     padding: 1rem 0
 }
+
+.yearlyCardContainer {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 1rem 0
+}

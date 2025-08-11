@@ -14,21 +14,16 @@
     align-items: center;
 }
 
-.cardContentGrid {
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    grid-template-rows: repeat(2, auto);
-    gap: 0;
-    width: 100%;
-    min-height: 180px;
+.cardContent {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
-.divider {
+.cardContent > .divider {
     background: var(--color-divider);
     height: 3rem;
     width: 1px;
     border-radius: 1px;
     margin: 0 8px;
-    justify-self: center;
-    align-self: center;
 }

@@ -1,4 +1,4 @@
-import ItemCard from '../ItemCard/ItemCard.tsx';
+import ItemCard from './ItemCard/ItemCard.tsx';
 import styles from './LifetimeCard.module.css';
 
 type LifetimeCardProps = {
