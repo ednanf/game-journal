@@ -169,7 +169,7 @@ const SignUpPage = () => {
       <div className={styles.footer}>
         <p>
           Already have an account?{' '}
-          <Link to={'../login'} className={styles.link}>
+          <Link to={'../login'} className={sharedStyles.link}>
             Log in.
           </Link>
         </p>
