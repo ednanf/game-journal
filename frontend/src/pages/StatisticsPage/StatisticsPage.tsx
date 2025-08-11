@@ -2,6 +2,9 @@ import LifetimeCard from '../../components/Statistics/LifetimeCard/LifetimeCard.
 import YearlyCard from '../../components/Statistics/YearlyCard/YearlyCard.tsx';
 import styles from './StatisticsPage.module.css';
 import sharedStyles from '../shared.module.css';
+import { TbPacman } from 'react-icons/tb';
+import { GoDotFill } from 'react-icons/go';
+import { PiGhostBold } from 'react-icons/pi';
 
 const StatisticsPage = () => {
   return (
@@ -29,6 +32,14 @@ const StatisticsPage = () => {
             started={4}
             title={'2024'}
           />
+        </div>
+        <div>
+          <p className={styles.endMessageDecoration}>
+            <TbPacman size={30} /> <GoDotFill /> <GoDotFill /> <GoDotFill /> <GoDotFill />
+            <GoDotFill /> <GoDotFill /> <GoDotFill />
+            <PiGhostBold size={30} />
+          </p>
+          <p className={styles.endMessage}>Nothing to see beyond here...</p>
         </div>
       </div>
     </div>
