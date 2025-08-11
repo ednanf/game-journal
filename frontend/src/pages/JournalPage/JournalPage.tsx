@@ -2,6 +2,7 @@ import { useEffect, useState, useRef, useCallback } from 'react';
 import { toast } from 'react-toastify';
 import { getUnwrapped } from '../../utils/axiosInstance.ts';
 import JournalCard from '../../components/JournalCard/JournalCard.tsx';
+import Loader from '../../components/Loader/Loader.tsx';
 import { TbPacman } from 'react-icons/tb';
 import { PiGhostBold } from 'react-icons/pi';
 import { GoDotFill } from 'react-icons/go';
@@ -31,7 +32,7 @@ const JournalPage = () => {
   const [cursor, setCursor] = useState<string | null>(null);
   const [hasMore, setHasMore] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [loading, setLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [initialLoad, setInitialLoad] = useState(true);
 
   const observer = useRef<IntersectionObserver | null>(null);
@@ -39,9 +40,9 @@ const JournalPage = () => {
   // Stabilize fetchMoreEntries with useCallback.
   const fetchMoreEntries = useCallback(async () => {
     // Prevent multiple fetches or fetching when there's no more data.
-    if (loading || !hasMore || !cursor) return;
+    if (isLoading || !hasMore || !cursor) return;
 
-    setLoading(true);
+    setIsLoading(true);
     setError(null);
 
     try {
@@ -66,15 +67,15 @@ const JournalPage = () => {
       setError(message);
       toast.error(message);
     } finally {
-      setLoading(false);
+      setIsLoading(false);
     }
-  }, [loading, hasMore, cursor]);
+  }, [isLoading, hasMore, cursor]);
 
   // Use useCallback to memoize the loaderRef function, ensuring it does not change on every render.
   // This prevents unnecessary re-creations of the IntersectionObserver.
   const loaderRef = useCallback(
     (node: HTMLDivElement) => {
-      if (loading) return; // Prevent setting up observer if already loading.
+      if (isLoading) return; // Prevent setting up observer if already loading.
       if (observer.current) observer.current.disconnect(); // Disconnect previous observer if it exists.
 
       // Create a new IntersectionObserver instance.
@@ -89,13 +90,13 @@ const JournalPage = () => {
 
       if (node) observer.current.observe(node);
     },
-    [loading, fetchMoreEntries], // The dependency array is now correct and stable.
+    [isLoading, fetchMoreEntries], // The dependency array is now correct and stable.
   );
 
   // Effect for the initial data load ONLY
   useEffect(() => {
     let ignore = false;
-    setLoading(true);
+    setIsLoading(true);
     setInitialLoad(true);
 
     const fetchInitialEntries = async () => {
@@ -119,7 +120,7 @@ const JournalPage = () => {
         }
       } finally {
         if (!ignore) {
-          setLoading(false);
+          setIsLoading(false);
           setInitialLoad(false);
         }
       }
@@ -146,13 +147,9 @@ const JournalPage = () => {
         </div>
         <div ref={loaderRef} className={styles.loader}>
           {/* Loader for infinite scroll */}
-          {loading && initialLoad && (
-            <div className={sharedStyles.centerLoader}>
-              <div className={sharedStyles.loader}></div>
-            </div>
-          )}
+          {isLoading && initialLoad && <Loader message={'Fetching entries...'} />}
           {/* Loader for subsequent entries */}
-          {loading && !initialLoad && (
+          {isLoading && !initialLoad && (
             <div className={sharedStyles.centerLoaderSlim}>
               <div className={sharedStyles.loader}></div>
             </div>
@@ -176,7 +173,7 @@ const JournalPage = () => {
             </div>
           )}
           {/* Loader for empty state */}
-          {journalEntries.length === 0 && (
+          {!isLoading && journalEntries.length === 0 && (
             <>
               <p className={styles.emptyMessage}>
                 <TbPacman size={60} />

@@ -11,6 +11,7 @@ import TextInput from '../../components/Form/TextInput/TextInput.tsx';
 import DropDown from '../../components/Form/DropDown/DropDown.tsx';
 import Slider from '../../components/Form/Slider/Slider.tsx';
 import Button from '../../components/Button/Button.tsx';
+import Loader from '../../components/Loader/Loader.tsx';
 import { gameStatus } from '../../data/status.ts';
 import { gamingPlatforms } from '../../data/platforms.ts';
 import styles from './DetailsPage.module.css';
@@ -165,9 +166,7 @@ const DetailsPage = () => {
       <div className={sharedStyles.pageContent}>
         {isLoading || !formData ? (
           // using local styles for centering due differences in layout
-          <div className={styles.centerLoader}>
-            <div className={sharedStyles.loader}></div>
-          </div>
+          <Loader />
         ) : (
           <>
             <form onSubmit={handleSubmit}>
