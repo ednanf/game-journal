@@ -1,0 +1,40 @@
+.cardContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 0.5rem 1rem;
+    width: 80px;
+}
+
+.cardTitle {
+    font-family: 'Quicksand', Arial, sans-serif;
+    font-size: small;
+}
+
+.cardValue {
+    font-family: 'Quicksand', Arial, sans-serif;
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-top: 0.25rem;
+}
+
+.started {
+    color: var(--color-accent-green);
+}
+
+.completed {
+    color: var(--color-accent-purple);
+}
+
+.revisited {
+    color: var(--color-accent-cyan);
+}
+
+.paused {
+    color: var(--color-accent-yellow);
+}
+
+.dropped {
+    color: var(--color-accent-magenta);
+}
