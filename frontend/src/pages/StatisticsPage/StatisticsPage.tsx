@@ -3,6 +3,7 @@ import { toast } from 'react-toastify';
 import { getUnwrapped } from '../../utils/axiosInstance.ts';
 import LifetimeCard from '../../components/Statistics/LifetimeCard/LifetimeCard.tsx';
 import YearlyCard from '../../components/Statistics/YearlyCard/YearlyCard.tsx';
+import Loader from '../../components/Loader/Loader.tsx';
 import { TbPacman } from 'react-icons/tb';
 import { GoDotFill } from 'react-icons/go';
 import { PiGhostBold } from 'react-icons/pi';
@@ -66,9 +67,7 @@ const StatisticsPage = () => {
       </div>
       <div className={sharedStyles.pageContent}>
         {isLoading ? (
-          <div className={styles.centerLoader}>
-            <div className={sharedStyles.loader}></div>
-          </div>
+          <Loader message={'Fetching statistics...'} />
         ) : (
           <>
             <div className={styles.lifetimeCardContainer}>
