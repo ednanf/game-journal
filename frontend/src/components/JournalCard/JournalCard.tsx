@@ -56,7 +56,7 @@ const JournalCard = ({ entry, to }: JournalCardProps) => {
         </div>
         <div className={styles.entryDetails}>
           <p className={`${statusColorLabel(status)}`}>{status}</p>
-          <p>{new Date(createdAt).toLocaleDateString()}</p>
+          <p className={styles.date}>{new Date(createdAt).toLocaleDateString()}</p>
         </div>
       </div>
     </Link>
