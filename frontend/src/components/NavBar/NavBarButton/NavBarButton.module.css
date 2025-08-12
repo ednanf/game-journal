@@ -8,7 +8,7 @@
 }
 
 .icon {
-    font-size: 1.25rem;
+    font-size: 1.4rem;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -17,7 +17,9 @@
 }
 
 .text {
-    font-size: 0.7rem;
+    font-size: 0.8rem;
+    font-family: 'Silkscreen', sans-serif;
+    font-weight: normal;
     color: var(--color-text-secondary);
     transition: color 0.2s ease-in-out; /* Added for a smooth transition */
 }
