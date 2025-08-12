@@ -1,4 +1,3 @@
-/* frontend/src/components/JournalCard/JournalCard.module.css */
 .link {
     display: flex;
     width: 100%;
@@ -22,6 +21,7 @@
 .mainDetails {
     display: flex;
     justify-content: space-between;
+    align-items: center;
     width: 100%;
 }
 
@@ -64,16 +64,20 @@
     display: flex;
     justify-content: flex-start;
     color: var(--color-text-secondary);
-    margin: 0; /* p has default margins, let's remove them */
+    margin: 0;
 }
 
 .cardIcon {
+    position: absolute;
+    top: 50%;
+    right: 0.3rem;
+    transform: translateY(-50%);
     display: flex;
     justify-content: center;
     align-items: center;
     width: 30px;
     height: 30px;
-    flex-shrink: 0; /* Added */
+    flex-shrink: 0;
 }
 
 .entryDetails {

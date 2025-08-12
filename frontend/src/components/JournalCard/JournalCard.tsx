@@ -48,11 +48,11 @@ const JournalCard = ({ entry, to }: JournalCardProps) => {
                 <p>{platform}</p>
               </div>
             </div>
-            <div className={styles.cardIcon}>
-              <p>
-                <FaChevronRight />
-              </p>
-            </div>
+          </div>
+          <div className={styles.cardIcon}>
+            <p>
+              <FaChevronRight />
+            </p>
           </div>
         </div>
         <div className={styles.entryDetails}>
