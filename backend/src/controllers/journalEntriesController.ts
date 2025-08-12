@@ -288,12 +288,14 @@ const getJournalEntriesStatistics = async (
     // Format lifetime stats
     const lifetime: Record<string, number> = {};
     lifetimeStats.forEach((stat) => {
+      // eslint-disable-next-line no-underscore-dangle
       lifetime[stat._id] = stat.count;
     });
 
     // Format yearly stats
     const byYear: Record<string, Record<string, number>> = {};
     yearlyStats.forEach((stat) => {
+      // eslint-disable-next-line no-underscore-dangle
       const { year, status } = stat._id;
       if (!byYear[year]) byYear[year] = {};
       byYear[year][status] = stat.count;
