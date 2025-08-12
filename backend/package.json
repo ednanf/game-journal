@@ -1,6 +1,6 @@
 {
   "name": "game-journal-backend",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Backend for Game Journal web application",
   "main": "server.js",
   "type": "module",
