@@ -1,6 +1,5 @@
-// frontend/src/hooks/useTheme.ts
 import { useState, useEffect, useCallback } from 'react';
-import usePrefersColorScheme from './usePrefersColorScheme';
+import usePrefersColorScheme from '../../src/hooks/usePrefersColorScheme.tsx';
 
 type Theme = 'light' | 'dark';
 
@@ -19,7 +18,7 @@ export default function useTheme() {
 
   // Sync theme to <html> element and localStorage
   useEffect(() => {
-    // Target the root <html> element, not the body
+    // Target the root <html> element
     document.documentElement.dataset.theme = theme;
     localStorage.setItem('theme', theme);
   }, [theme]);
