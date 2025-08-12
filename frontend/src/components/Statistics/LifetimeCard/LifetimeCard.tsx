@@ -24,15 +24,15 @@ const LifetimeCard = ({
     </div>
     <div className={styles.cardContentGrid}>
       {/* First row */}
-      <ItemCard title="Started" value={started} color="started" />
+      <ItemCard title="Started" value={started > 0 ? started : 0} color="started" />
       <div className={styles.divider} />
-      <ItemCard title="Completed" value={completed} color="completed" />
+      <ItemCard title="Completed" value={completed > 0 ? completed : 0} color="completed" />
       <div className={styles.divider} />
-      <ItemCard title="Dropped" value={dropped} color="dropped" />
+      <ItemCard title="Dropped" value={dropped > 0 ? dropped : 0} color="dropped" />
       {/* Second row */}
-      <ItemCard title="Paused" value={paused} color="paused" />
+      <ItemCard title="Paused" value={paused > 0 ? paused : 0} color="paused" />
       <div className={styles.divider} />
-      <ItemCard title="Revisited" value={revisited} color="revisited" />
+      <ItemCard title="Revisited" value={revisited > 0 ? revisited : 0} color="revisited" />
       <div className={styles.divider} />
       {/* Empty cell at gridColumn: 5, gridRow: 2 */}
     </div>

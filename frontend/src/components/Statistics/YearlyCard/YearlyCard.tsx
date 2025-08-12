@@ -16,15 +16,15 @@ const YearlyCard = ({ title, started, completed, dropped, paused, revisited }: Y
       <h3>{title}</h3>
     </div>
     <div className={styles.cardContent}>
-      <ItemCardSmall title="Started" value={started} color="started" />
+      <ItemCardSmall title="Started" value={started > 0 ? started : 0} color="started" />
       <div className={styles.divider} />
-      <ItemCardSmall title="Completed" value={completed} color="completed" />
+      <ItemCardSmall title="Completed" value={completed > 0 ? completed : 0} color="completed" />
       <div className={styles.divider} />
-      <ItemCardSmall title="Dropped" value={dropped} color="dropped" />
+      <ItemCardSmall title="Dropped" value={dropped > 0 ? dropped : 0} color="dropped" />
       <div className={styles.divider} />
-      <ItemCardSmall title="Paused" value={paused} color="paused" />
+      <ItemCardSmall title="Paused" value={paused > 0 ? paused : 0} color="paused" />
       <div className={styles.divider} />
-      <ItemCardSmall title="Revisited" value={revisited} color="revisited" />
+      <ItemCardSmall title="Revisited" value={revisited ? revisited : 0} color="revisited" />
     </div>
   </div>
 );
