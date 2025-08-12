@@ -25,6 +25,9 @@ The application is built using TypeScript and the MERN stack (MongoDB, Express, 
 JWT authentication and bcrypt password hashing. Security follows best practices including input validation,
 sanitization, rate limiting, and CORS configuration.
 
+The application is a PWA (Progressive Web App), allowing users to install it on their devices for a
+native-like experience.
+
 ## Live Application
 
 🚀 **[View Live Demo](https://game-journal-seven.vercel.app/)**
@@ -101,6 +104,7 @@ game-journal-backend
 ├── eslint-plugin-import ^2.32.0 (dev)
 ├── prettier ^3.6.2 (dev)
 ├── tsx ^4.20.3 (dev)
+├── vite-plugin-pwa: ^1.0.2 (dev)
 └── typescript ~5.5.0 (dev)
 ```
 
