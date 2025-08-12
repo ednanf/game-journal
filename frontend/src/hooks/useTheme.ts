@@ -14,24 +14,29 @@ function getStoredTheme(): Theme | null {
 }
 
 export default function useTheme() {
-  const systemPref = usePrefersColorScheme() as Theme; // We trust our hook, but you could validate if paranoid
+  const systemPref = usePrefersColorScheme() as Theme;
   const [theme, setTheme] = useState<Theme>(() => getStoredTheme() || systemPref);
 
-  // Sync theme to body and localStorage
+  // Sync theme to <html> element and localStorage
   useEffect(() => {
-    document.body.dataset.theme = theme;
+    // Target the root <html> element, not the body
+    document.documentElement.dataset.theme = theme;
     localStorage.setItem('theme', theme);
   }, [theme]);
 
   // Listen for system preference changes
   useEffect(() => {
-    if (!getStoredTheme() && isTheme(systemPref)) setTheme(systemPref);
+    if (!getStoredTheme() && isTheme(systemPref)) {
+      setTheme(systemPref);
+    }
   }, [systemPref]);
 
   // Listen for localStorage changes (cross-tab)
   useEffect(() => {
     const handler = (e: StorageEvent) => {
-      if (e.key === 'theme' && isTheme(e.newValue)) setTheme(e.newValue);
+      if (e.key === 'theme' && isTheme(e.newValue)) {
+        setTheme(e.newValue);
+      }
     };
     window.addEventListener('storage', handler);
     return () => window.removeEventListener('storage', handler);

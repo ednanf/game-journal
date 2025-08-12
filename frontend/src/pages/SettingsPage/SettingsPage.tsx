@@ -1,4 +1,3 @@
-import { useEffect } from 'react';
 import { useOutletContext, useNavigate } from 'react-router-dom';
 import { FaGithubSquare } from 'react-icons/fa';
 import { deleteUnwrapped } from '../../utils/axiosInstance.ts';
@@ -16,11 +15,6 @@ const SettingsPage = () => {
   const isDarkMode = theme === 'dark';
   const currentUser = localStorage.getItem('user');
   const navigate = useNavigate();
-
-  useEffect(() => {
-    document.body.dataset.theme = theme;
-    localStorage.setItem('theme', theme);
-  }, [theme]);
 
   const handleLogout = () => {
     localStorage.removeItem('user');
@@ -40,7 +34,7 @@ const SettingsPage = () => {
       toast.success(response.message);
       navigate('/');
     } catch (error) {
-      toast.error('Failed to delete account');
+      toast.error(`Failed to delete account: ${(error as Error).message}`);
     }
   };
 
