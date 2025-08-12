@@ -32,7 +32,8 @@ sanitization, rate limiting, and CORS configuration.
 ## API Documentation
 
 - For an in-depth look at the API data flow, please refer to this [report]().
-- See the API documentation at [Scalar]().
+- See the API documentation
+  at [Scalar](https://registry.scalar.com/@ednan-frizzera-dev-team/apis/game-journal-api/latest).
 
 ## Main Technologies
 
