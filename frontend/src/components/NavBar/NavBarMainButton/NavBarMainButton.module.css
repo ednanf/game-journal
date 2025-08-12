@@ -17,6 +17,10 @@
     margin-top: -30px;
     /* Ensures the button will appear above the navbar and its children */
     z-index: 2;
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
 }
 
 .link:active {
@@ -30,6 +34,10 @@
     align-items: center;
     justify-content: center;
     color: var(--color-text-secondary);
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
 }
 
 .text {
@@ -37,6 +45,10 @@
     margin-top: 0.2em;
     display: none;
     color: var(--color-text-secondary);
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
 }
 
 /*@media (max-width: 768px) {*/

@@ -53,8 +53,16 @@ button:disabled:active {
 .icon {
     display: inline-flex;
     margin-right: 0.5rem;
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
 }
 
 .text {
     display: inline-flex;
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
 }

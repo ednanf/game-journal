@@ -16,6 +16,10 @@
     border-radius: 20%;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.40);
     transition: transform 0.08s cubic-bezier(0.4, 0, 0.2, 1);
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
 }
 
 .icon:active {

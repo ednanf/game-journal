@@ -5,6 +5,10 @@
     text-decoration: none;
     color: inherit;
     gap: 0.25em;
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
 }
 
 .icon {
@@ -14,6 +18,10 @@
     justify-content: center;
     color: var(--color-text-secondary);
     transition: color 0.2s ease-in-out; /* Added for a smooth transition */
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
 }
 
 .text {
@@ -22,6 +30,10 @@
     font-weight: normal;
     color: var(--color-text-secondary);
     transition: color 0.2s ease-in-out; /* Added for a smooth transition */
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
 }
 
 .link.active .icon,
