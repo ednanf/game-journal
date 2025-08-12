@@ -27,13 +27,14 @@ sanitization, rate limiting, and CORS configuration.
 
 ## Live Application
 
-🚀 **[View Live Demo]()**
+🚀 **[View Live Demo](https://game-journal-seven.vercel.app/)**
 
 *Note: First load may take a moment as the backend wakes up on Render's free tier.*
 
 ## API Documentation
 
-- For an in-depth look at the API data flow, please refer to this [report]().
+- For an in-depth look at the API data flow, please refer to
+  this [report](https://github.com/ednanf/game-journal/blob/master/docs/BACKEND_REPORT.md).
 - See the API documentation
   at [Scalar](https://registry.scalar.com/@ednan-frizzera-dev-team/apis/game-journal-api/latest).
 
