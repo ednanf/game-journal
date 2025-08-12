@@ -2,37 +2,36 @@
 
 ## Notes
 
-- The backend is hosted on Render and may take a few moments to start up
-  if it has been inactive. Please allow some time for the server to respond on
-  your first request.
-
+- The backend is hosted on Render and takes a moment to wake up after periods
+  of inactivity. Please allow time for the server to respond on your first request.
 - Currently, the auth token is stored in local storage instead of cookies to
-  avoid CORS issues, particularly with WebKit on iOS.
+  avoid CORS complications, particularly with WebKit on iOS.
 
 ## About Me
 
 - **Author**: Ednan Rogério Frizzera Filho
 - [GitHub](https://github.com/ednanf) • [LinkedIn](https://www.linkedin.com/in/ednanrff/)
-- Contact methods available on my GitHub profile!
+- Additional contact info available on my GitHub profile.
 
 ## Objective
 
-- This project is a personal endeavor to create a game journal application
-  that allows users to track their gaming experience, logging their gaming activities with dates and
-  rating them.
-- It is designed to be a simple and intuitive platform, no frills, just a quick way to log activities.
-- The project was built using TypeScript and the MERN stack (MongoDB, Express, React, Node.js).
-- On the backend, it uses JWT for authentication and bcrypt for password hashing, along with best practices for
-  security,
-  such as input validation, sanitization, rate limiting, CORS configuration, and more.
+This project is a personal game journal application that allows users to track their gaming journey by logging
+activities with dates and ratings. It's designed to be a simple, intuitive platform—no frills, just a quick way to
+document your gaming experiences.
 
-## Application
+The application is built using TypeScript and the MERN stack (MongoDB, Express, React, Node.js). The backend implements
+JWT authentication and bcrypt password hashing. Security follows best practices including input validation,
+sanitization, rate limiting, and CORS configuration.
 
-*UNDER DEVELOPMENT*
+## Live Application
+
+🚀 **[View Live Demo]()**
+
+*Note: First load may take a moment as the backend wakes up on Render's free tier.*
 
 ## API Documentation
 
-- For an indepth look at the API data flow, please refer to this [report]().
+- For an in-depth look at the API data flow, please refer to this [report]().
 - See the API documentation at [Scalar]().
 
 ## Main Technologies
