@@ -4,6 +4,7 @@ const allowedOrigins = [
   'http://localhost:5173',
   'http://10.0.0.102:5173',
   'https://game-journal-seven.vercel.app',
+  'https://game-journal-ednan.vercel.app',
 ];
 
 const corsOptions = {
