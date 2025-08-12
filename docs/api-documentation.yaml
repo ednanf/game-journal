@@ -1,0 +1,892 @@
+openapi: 3.0.3
+info:
+  title: Game Journal API
+  description: 'A comprehensive REST API for managing game journal entries. Users
+    can register, authenticate, and manage their personal gaming experiences including
+    tracking games they''ve played, their completion status, ratings, and platforms.
+
+
+    ## Features
+
+    - User registration and authentication using JWT tokens
+
+    - CRUD operations for journal entries
+
+    - Game completion status tracking (started, completed, paused, dropped, revisited)
+
+    - Game rating system (0-10 scale)
+
+    - Platform tracking
+
+    - Pagination support for large datasets
+
+    - Statistics and analytics
+
+    - Security features including rate limiting, XSS protection, and CORS
+
+
+    ## Authentication
+
+    Most endpoints require authentication via JWT Bearer tokens. Obtain a token by
+    registering or logging in.'
+  version: 1.0.0
+  contact:
+    name: Ednan Rogério Frizzera Filho
+    email: support@gamejournal.dev
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+servers:
+- url: http://localhost:3000/api/v1
+  description: Development server
+- url: https://api.gamejournal.dev/api/v1
+  description: Production server
+paths:
+  /users/register:
+    post:
+      summary: Register a new user
+      description: Create a new user account with email and password. Returns a JWT
+        token for immediate authentication.
+      operationId: registerUser
+      tags:
+      - Users
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RegisterUserRequest'
+            examples:
+              valid_registration:
+                summary: Valid user registration
+                value:
+                  email: user@example.com
+                  password: securepassword123
+      responses:
+        '201':
+          description: User registered successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RegisterUserResponse'
+              examples:
+                success:
+                  summary: Successful registration
+                  value:
+                    status: success
+                    data:
+                      message: User registered successfully.
+                      user: user@example.com
+                      token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '409':
+          $ref: '#/components/responses/Conflict'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /users/login:
+    post:
+      summary: Login user
+      description: Authenticate a user with email and password. Returns a JWT token
+        for subsequent API calls.
+      operationId: loginUser
+      tags:
+      - Users
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginUserRequest'
+            examples:
+              valid_login:
+                summary: Valid user login
+                value:
+                  email: user@example.com
+                  password: securepassword123
+      responses:
+        '200':
+          description: User logged in successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoginUserResponse'
+              examples:
+                success:
+                  summary: Successful login
+                  value:
+                    status: success
+                    data:
+                      message: User logged in successfully.
+                      user: user@example.com
+                      token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /users/logout:
+    post:
+      summary: Logout user
+      description: Logout the current user. This is a client-side operation as JWT
+        tokens are stateless.
+      operationId: logoutUser
+      tags:
+      - Users
+      responses:
+        '200':
+          description: User logged out successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LogoutUserResponse'
+              examples:
+                success:
+                  summary: Successful logout
+                  value:
+                    status: success
+                    data:
+                      message: User logged out successfully.
+  /users/delete:
+    delete:
+      summary: Delete user account
+      description: Permanently delete the authenticated user's account and all associated
+        journal entries. This action cannot be undone.
+      operationId: deleteUser
+      tags:
+      - Users
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: User deleted successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeleteUserResponse'
+              examples:
+                success:
+                  summary: Successful deletion
+                  value:
+                    status: success
+                    data:
+                      message: User deleted successfully.
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /journal-entries:
+    get:
+      summary: Get journal entries
+      description: Retrieve a paginated list of journal entries for the authenticated
+        user. Supports cursor-based pagination for efficient large dataset handling.
+      operationId: getJournalEntries
+      tags:
+      - Journal Entries
+      security:
+      - bearerAuth: []
+      parameters:
+      - name: limit
+        in: query
+        description: 'Maximum number of entries to return (default: 10, max: 100)'
+        required: false
+        schema:
+          type: integer
+          minimum: 1
+          maximum: 100
+          default: 10
+        example: 20
+      - name: cursor
+        in: query
+        description: Cursor for pagination (use nextCursor from previous response)
+        required: false
+        schema:
+          type: string
+        example: 507f1f77bcf86cd799439011
+      responses:
+        '200':
+          description: Journal entries retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetJournalEntriesResponse'
+              examples:
+                with_entries:
+                  summary: Response with entries
+                  value:
+                    status: success
+                    data:
+                      message: Journal entries retrieved successfully.
+                      entries:
+                      - id: 507f1f77bcf86cd799439011
+                        createdBy: 507f1f77bcf86cd799439012
+                        title: 'The Legend of Zelda: Breath of the Wild'
+                        platform: Nintendo Switch
+                        status: completed
+                        rating: 9
+                        createdAt: '2024-01-15T10:30:00.000Z'
+                        updatedAt: '2024-01-20T14:22:00.000Z'
+                      nextCursor: 507f1f77bcf86cd799439014
+                empty_response:
+                  summary: No entries found
+                  value:
+                    status: success
+                    data:
+                      message: No journal entries found.
+                      entries: []
+                      nextCursor: null
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+    post:
+      summary: Create journal entry
+      description: Create a new journal entry for the authenticated user. All fields
+        except rating are required.
+      operationId: createJournalEntry
+      tags:
+      - Journal Entries
+      security:
+      - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateJournalEntryRequest'
+            examples:
+              complete_entry:
+                summary: Complete journal entry
+                value:
+                  title: Red Dead Redemption 2
+                  platform: PlayStation 5
+                  status: completed
+                  rating: 10
+              minimal_entry:
+                summary: Minimal required fields
+                value:
+                  title: Elden Ring
+                  platform: PC
+      responses:
+        '201':
+          description: Journal entry created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateJournalEntryResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /journal-entries/statistics:
+    get:
+      summary: Get journal entries statistics
+      description: Retrieve comprehensive statistics about the user's journal entries,
+        including lifetime totals and year-by-year breakdowns by status.
+      operationId: getJournalEntriesStatistics
+      tags:
+      - Journal Entries
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Statistics retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetJournalEntriesStatisticsResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /journal-entries/{id}:
+    get:
+      summary: Get journal entry by ID
+      description: Retrieve a specific journal entry by its unique identifier. Users
+        can only access their own entries.
+      operationId: getJournalEntryById
+      tags:
+      - Journal Entries
+      security:
+      - bearerAuth: []
+      parameters:
+      - name: id
+        in: path
+        description: Unique identifier of the journal entry
+        required: true
+        schema:
+          type: string
+          pattern: ^[0-9a-fA-F]{24}$
+        example: 507f1f77bcf86cd799439011
+      responses:
+        '200':
+          description: Journal entry retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetJournalEntryResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+    patch:
+      summary: Update journal entry
+      description: Partially update a journal entry. Only provided fields will be
+        updated. Users can only update their own entries.
+      operationId: updateJournalEntry
+      tags:
+      - Journal Entries
+      security:
+      - bearerAuth: []
+      parameters:
+      - name: id
+        in: path
+        description: Unique identifier of the journal entry
+        required: true
+        schema:
+          type: string
+          pattern: ^[0-9a-fA-F]{24}$
+        example: 507f1f77bcf86cd799439011
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateJournalEntryRequest'
+      responses:
+        '200':
+          description: Journal entry updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UpdateJournalEntryResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+    delete:
+      summary: Delete journal entry
+      description: Permanently delete a journal entry. Users can only delete their
+        own entries. This action cannot be undone.
+      operationId: deleteJournalEntry
+      tags:
+      - Journal Entries
+      security:
+      - bearerAuth: []
+      parameters:
+      - name: id
+        in: path
+        description: Unique identifier of the journal entry
+        required: true
+        schema:
+          type: string
+          pattern: ^[0-9a-fA-F]{24}$
+        example: 507f1f77bcf86cd799439011
+      responses:
+        '200':
+          description: Journal entry deleted successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeleteJournalEntryResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: JWT token obtained from login or registration
+  schemas:
+    ApiResponse:
+      type: object
+      required:
+      - status
+      - data
+      properties:
+        status:
+          type: string
+          enum:
+          - success
+          - error
+          description: Status of the API response
+        data:
+          type: object
+          description: Response data (varies by endpoint)
+    ErrorResponse:
+      allOf:
+      - $ref: '#/components/schemas/ApiResponse'
+      - type: object
+        properties:
+          status:
+            type: string
+            enum:
+            - error
+          data:
+            type: object
+            required:
+            - message
+            properties:
+              message:
+                type: string
+                description: Error message
+    RegisterUserRequest:
+      type: object
+      required:
+      - email
+      - password
+      properties:
+        email:
+          type: string
+          format: email
+          description: User's email address
+          example: user@example.com
+        password:
+          type: string
+          minLength: 6
+          description: User's password (minimum 6 characters)
+          example: securepassword123
+    LoginUserRequest:
+      $ref: '#/components/schemas/RegisterUserRequest'
+    RegisterUserResponse:
+      allOf:
+      - $ref: '#/components/schemas/ApiResponse'
+      - type: object
+        properties:
+          status:
+            type: string
+            enum:
+            - success
+          data:
+            type: object
+            required:
+            - message
+            - user
+            - token
+            properties:
+              message:
+                type: string
+                example: User registered successfully.
+              user:
+                type: string
+                format: email
+                description: User's email address
+                example: user@example.com
+              token:
+                type: string
+                description: JWT authentication token
+                example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+    LoginUserResponse:
+      allOf:
+      - $ref: '#/components/schemas/ApiResponse'
+      - type: object
+        properties:
+          status:
+            type: string
+            enum:
+            - success
+          data:
+            type: object
+            required:
+            - message
+            - user
+            - token
+            properties:
+              message:
+                type: string
+                example: User logged in successfully.
+              user:
+                type: string
+                format: email
+                description: User's email address
+                example: user@example.com
+              token:
+                type: string
+                description: JWT authentication token
+                example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+    LogoutUserResponse:
+      allOf:
+      - $ref: '#/components/schemas/ApiResponse'
+      - type: object
+        properties:
+          status:
+            type: string
+            enum:
+            - success
+          data:
+            type: object
+            required:
+            - message
+            properties:
+              message:
+                type: string
+                example: User logged out successfully.
+    DeleteUserResponse:
+      allOf:
+      - $ref: '#/components/schemas/ApiResponse'
+      - type: object
+        properties:
+          status:
+            type: string
+            enum:
+            - success
+          data:
+            type: object
+            required:
+            - message
+            properties:
+              message:
+                type: string
+                example: User deleted successfully.
+    JournalEntryStatus:
+      type: string
+      enum:
+      - started
+      - completed
+      - revisited
+      - paused
+      - dropped
+      description: Current status of the game
+      example: completed
+    JournalEntry:
+      type: object
+      required:
+      - id
+      - createdBy
+      - title
+      - platform
+      - status
+      - rating
+      - createdAt
+      - updatedAt
+      properties:
+        id:
+          type: string
+          pattern: ^[0-9a-fA-F]{24}$
+          description: Unique identifier for the journal entry
+          example: 507f1f77bcf86cd799439011
+        createdBy:
+          type: string
+          pattern: ^[0-9a-fA-F]{24}$
+          description: ID of the user who created this entry
+          example: 507f1f77bcf86cd799439012
+        title:
+          type: string
+          maxLength: 100
+          description: Title of the game
+          example: 'The Legend of Zelda: Breath of the Wild'
+        platform:
+          type: string
+          description: Gaming platform
+          example: Nintendo Switch
+        status:
+          $ref: '#/components/schemas/JournalEntryStatus'
+        rating:
+          type: number
+          minimum: 0
+          maximum: 10
+          description: User's rating of the game (0-10)
+          example: 9
+        createdAt:
+          type: string
+          format: date-time
+          description: Entry creation timestamp
+          example: '2024-01-15T10:30:00.000Z'
+        updatedAt:
+          type: string
+          format: date-time
+          description: Entry last update timestamp
+          example: '2024-01-20T14:22:00.000Z'
+    CreateJournalEntryRequest:
+      type: object
+      required:
+      - title
+      - platform
+      properties:
+        title:
+          type: string
+          minLength: 1
+          maxLength: 100
+          description: Title of the game
+          example: 'The Legend of Zelda: Breath of the Wild'
+        platform:
+          type: string
+          minLength: 1
+          description: Gaming platform
+          example: Nintendo Switch
+        status:
+          $ref: '#/components/schemas/JournalEntryStatus'
+        rating:
+          type: number
+          minimum: 0
+          maximum: 10
+          description: User's rating of the game (0-10)
+          example: 9
+    UpdateJournalEntryRequest:
+      type: object
+      properties:
+        title:
+          type: string
+          minLength: 1
+          maxLength: 100
+          description: Title of the game
+          example: 'The Legend of Zelda: Breath of the Wild'
+        platform:
+          type: string
+          minLength: 1
+          description: Gaming platform
+          example: Nintendo Switch
+        status:
+          $ref: '#/components/schemas/JournalEntryStatus'
+        rating:
+          type: number
+          minimum: 0
+          maximum: 10
+          description: User's rating of the game (0-10)
+          example: 9
+    GetJournalEntriesResponse:
+      allOf:
+      - $ref: '#/components/schemas/ApiResponse'
+      - type: object
+        properties:
+          status:
+            type: string
+            enum:
+            - success
+          data:
+            type: object
+            required:
+            - message
+            - entries
+            - nextCursor
+            properties:
+              message:
+                type: string
+                example: Journal entries retrieved successfully.
+              entries:
+                type: array
+                items:
+                  $ref: '#/components/schemas/JournalEntry'
+              nextCursor:
+                type: string
+                nullable: true
+                description: Cursor for next page (null if no more entries)
+                example: 507f1f77bcf86cd799439014
+    GetJournalEntryResponse:
+      allOf:
+      - $ref: '#/components/schemas/ApiResponse'
+      - type: object
+        properties:
+          status:
+            type: string
+            enum:
+            - success
+          data:
+            type: object
+            required:
+            - message
+            - entry
+            properties:
+              message:
+                type: string
+                example: Journal entry retrieved successfully.
+              entry:
+                $ref: '#/components/schemas/JournalEntry'
+    CreateJournalEntryResponse:
+      allOf:
+      - $ref: '#/components/schemas/ApiResponse'
+      - type: object
+        properties:
+          status:
+            type: string
+            enum:
+            - success
+          data:
+            type: object
+            required:
+            - message
+            - entry
+            properties:
+              message:
+                type: string
+                example: Journal entry created successfully.
+              entry:
+                $ref: '#/components/schemas/JournalEntry'
+    UpdateJournalEntryResponse:
+      allOf:
+      - $ref: '#/components/schemas/ApiResponse'
+      - type: object
+        properties:
+          status:
+            type: string
+            enum:
+            - success
+          data:
+            type: object
+            required:
+            - message
+            - entry
+            properties:
+              message:
+                type: string
+                example: Journal entry updated successfully.
+              entry:
+                $ref: '#/components/schemas/JournalEntry'
+    DeleteJournalEntryResponse:
+      allOf:
+      - $ref: '#/components/schemas/ApiResponse'
+      - type: object
+        properties:
+          status:
+            type: string
+            enum:
+            - success
+          data:
+            type: object
+            required:
+            - message
+            properties:
+              message:
+                type: string
+                example: Journal entry deleted successfully.
+    GetJournalEntriesStatisticsResponse:
+      allOf:
+      - $ref: '#/components/schemas/ApiResponse'
+      - type: object
+        properties:
+          status:
+            type: string
+            enum:
+            - success
+          data:
+            type: object
+            required:
+            - lifetime
+            - byYear
+            properties:
+              lifetime:
+                type: object
+                description: Lifetime statistics by status
+                additionalProperties:
+                  type: integer
+                  minimum: 0
+                example:
+                  completed: 15
+                  started: 3
+                  paused: 2
+                  dropped: 1
+                  revisited: 5
+              byYear:
+                type: object
+                description: Year-by-year statistics
+                additionalProperties:
+                  type: object
+                  additionalProperties:
+                    type: integer
+                    minimum: 0
+                example:
+                  '2024':
+                    completed: 8
+                    started: 2
+                    paused: 1
+                  '2023':
+                    completed: 7
+                    started: 1
+                    paused: 1
+                    dropped: 1
+                    revisited: 5
+  responses:
+    BadRequest:
+      description: Bad request - Invalid input data
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          examples:
+            validation_error:
+              summary: Validation error
+              value:
+                status: error
+                data:
+                  message: Password must be at least 6 characters long
+    Unauthorized:
+      description: Unauthorized - Invalid or missing authentication credentials
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          examples:
+            invalid_credentials:
+              summary: Invalid login credentials
+              value:
+                status: error
+                data:
+                  message: Invalid email or password.
+    NotFound:
+      description: Resource not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          examples:
+            entry_not_found:
+              summary: Journal entry not found
+              value:
+                status: error
+                data:
+                  message: Journal entry not found.
+    Conflict:
+      description: Conflict - Resource already exists
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          examples:
+            email_exists:
+              summary: Email already in use
+              value:
+                status: error
+                data:
+                  message: Email already in use.
+    InternalServerError:
+      description: Internal server error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          examples:
+            generic_error:
+              summary: Generic server error
+              value:
+                status: error
+                data:
+                  message: An unexpected error occurred. Please try again later.
+tags:
+- name: Users
+  description: User management and authentication operations
+- name: Journal Entries
+  description: Journal entry CRUD operations and statistics
+security:
+- bearerAuth: []
