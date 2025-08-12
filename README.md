@@ -1,4 +1,3 @@
-
 <img width="134" height="134" alt="app-icon" src="https://github.com/user-attachments/assets/84578ae2-25b7-45f6-907e-5b502b532119" />
 
 # Game Journal
