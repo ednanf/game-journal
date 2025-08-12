@@ -97,7 +97,7 @@
     color: var(--color-accent-green);
     border: 1px solid var(--color-accent-green);
     border-radius: 35px;
-    padding: 0 0.2rem;
+    padding: 0 0.7rem;
 
 }
 
@@ -105,14 +105,14 @@
     color: var(--color-accent-purple);
     border: 1px solid var(--color-accent-purple);
     border-radius: 35px;
-    padding: 0 0.2rem;
+    padding: 0 0.7rem;
 }
 
 .revisited {
     color: var(--color-accent-cyan);
     border: 1px solid var(--color-accent-cyan);
     border-radius: 35px;
-    padding: 0 0.2rem;
+    padding: 0 0.7rem;
 
 }
 
@@ -120,7 +120,7 @@
     color: var(--color-accent-yellow);
     border: 1px solid var(--color-accent-yellow);
     border-radius: 35px;
-    padding: 0 0.2rem;
+    padding: 0 0.7rem;
 
 }
 
@@ -128,5 +128,5 @@
     color: var(--color-accent-magenta);
     border: 1px solid var(--color-accent-magenta);
     border-radius: 35px;
-    padding: 0 0.2rem;
+    padding: 0 0.7rem;
 }
