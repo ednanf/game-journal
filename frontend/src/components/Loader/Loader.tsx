@@ -1,6 +1,5 @@
 import React from 'react';
 import styles from './Loader.module.css';
-import sharedStyles from '../../pages/shared.module.css';
 
 type LoaderProps = {
   className?: string;
@@ -10,7 +9,7 @@ type LoaderProps = {
 
 const Loader: React.FC<LoaderProps> = ({ className = '', style, message }) => (
   <div className={`${styles.centerLoader} ${className}`} style={style}>
-    <div className={sharedStyles.loader}></div>
+    <div className={styles.loader}></div>
     {message && <div className={styles.loaderMessage}>{message}</div>}
   </div>
 );
