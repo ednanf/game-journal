@@ -3,9 +3,8 @@ import { toast } from 'react-toastify';
 import { getUnwrapped } from '../../utils/axiosInstance.ts';
 import JournalCard from '../../components/JournalCard/JournalCard.tsx';
 import Loader from '../../components/Loader/Loader.tsx';
+import EndDecoration from '../../components/EndDecoration/EndDecoration.tsx';
 import { TbPacman } from 'react-icons/tb';
-import { PiGhostBold } from 'react-icons/pi';
-import { GoDotFill } from 'react-icons/go';
 import { VscError } from 'react-icons/vsc';
 import styles from './JournalPage.module.css';
 import sharedStyles from '../shared.module.css';
@@ -156,14 +155,7 @@ const JournalPage = () => {
           )}
           {/* Loader for no more entries */}
           {!hasMore && journalEntries.length > 0 && (
-            <>
-              <p className={styles.endMessageDecoration}>
-                <TbPacman size={30} /> <GoDotFill /> <GoDotFill /> <GoDotFill /> <GoDotFill />
-                <GoDotFill /> <GoDotFill /> <GoDotFill />
-                <PiGhostBold size={30} />
-              </p>
-              <p className={styles.endMessage}>Nothing to see beyond here...</p>
-            </>
+            <EndDecoration message={'Nothing to see beyond here...'} />
           )}
           {/* Loader for error state */}
           {journalEntries.length === 0 && error && (

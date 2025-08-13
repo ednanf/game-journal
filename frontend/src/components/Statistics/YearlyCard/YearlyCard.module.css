@@ -1,29 +1,30 @@
 .cardContainer {
-  background-color: var(--color-surface);
-  width: 90%;
-  max-width: 400px;
-  border-radius: 5px;
-  padding: 0.5rem 1rem 1rem 1rem;
-  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+    background-color: var(--color-surface);
+    width: 90%;
+    max-width: 400px;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    padding: 0.5rem 1rem 1rem 1rem;
+    box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .cardHeader {
-  color: var(--color-text-primary);
-  display: flex;
-  justify-content: center;
-  align-items: center;
+    color: var(--color-text-primary);
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .cardContent {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 .cardContent > .divider {
-  background: var(--color-divider);
-  height: 3rem;
-  width: 1px;
-  border-radius: 1px;
-  margin: 0 8px;
+    background: var(--color-divider);
+    height: 3rem;
+    width: 1px;
+    border-radius: 1px;
+    margin: 0 8px;
 }

@@ -4,9 +4,7 @@ import { getUnwrapped } from '../../utils/axiosInstance.ts';
 import LifetimeCard from '../../components/Statistics/LifetimeCard/LifetimeCard.tsx';
 import YearlyCard from '../../components/Statistics/YearlyCard/YearlyCard.tsx';
 import Loader from '../../components/Loader/Loader.tsx';
-import { TbPacman } from 'react-icons/tb';
-import { GoDotFill } from 'react-icons/go';
-import { PiGhostBold } from 'react-icons/pi';
+import EndDecoration from '../../components/EndDecoration/EndDecoration.tsx';
 import styles from './StatisticsPage.module.css';
 import sharedStyles from '../shared.module.css';
 
@@ -94,12 +92,7 @@ const StatisticsPage = () => {
               </div>
             ))}
             <div>
-              <p className={styles.endMessageDecoration}>
-                <TbPacman size={30} /> <GoDotFill /> <GoDotFill /> <GoDotFill /> <GoDotFill />
-                <GoDotFill /> <GoDotFill /> <GoDotFill />
-                <PiGhostBold size={30} />
-              </p>
-              <p className={styles.endMessage}>Nothing to see beyond here...</p>
+              <EndDecoration message={'Nothing to see beyond here...'} />
             </div>
           </>
         )}
