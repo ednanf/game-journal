@@ -67,10 +67,8 @@ const DetailsPage = () => {
         setIsLoading(false);
       }
     };
-
     void fetchEntry();
   }, [id]);
-
   // Validation function
   const validate = (data: JournalEntry): FormErrors => {
     const newErrors: FormErrors = {};
@@ -119,7 +117,6 @@ const DetailsPage = () => {
           status: formData.status,
           rating: formData.status === 'completed' ? formData.rating : 5,
         };
-
         const updateData = await patchUnwrapped<ServerResponse>(
           `/journal-entries/${id}`,
           dataToPatch,
@@ -157,8 +154,7 @@ const DetailsPage = () => {
       </div>
       <div className={sharedStyles.pageContent}>
         {isLoading || !formData ? (
-          // using local styles for centering due differences in layout
-          <Loader />
+          <Loader message={'Fetching entry details...'} />
         ) : (
           <>
             <form onSubmit={handleSubmit}>
