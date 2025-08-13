@@ -47,7 +47,6 @@ const DetailsPage = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
-  const [deleteConfirmation, setDeleteConfirmation] = useState(false);
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
 
@@ -134,27 +133,20 @@ const DetailsPage = () => {
   };
 
   const handleDelete = async () => {
-    // Set button text to confirm deletion
-    setDeleteConfirmation(true);
-
-    // If the user clicks delete again, proceed with deletion
-    if (!isDeleting && deleteConfirmation) {
-      setIsDeleting(true);
-      try {
-        // Ensure we have an ID to delete
-        if (!id) {
-          toast.error('No entry ID provided for deletion.');
-          return;
-        }
-        const response = await deleteUnwrapped<ServerResponse>(`/journal-entries/${id}`);
-        toast.success(response.message || 'Entry deleted successfully!');
-        navigate('/journal');
-      } catch (error) {
-        toast.error((error as { message: string }).message);
-      }
-      // Reset states after deletion
+    if (!id) {
+      toast.error('No entry ID provided for deletion.');
+      return;
+    }
+    setIsLoading(true);
+    try {
+      const response = await deleteUnwrapped<ServerResponse>(`/journal-entries/${id}`);
+      toast.success(response.message || 'Entry deleted successfully!');
+      navigate('/journal');
+    } catch (error) {
+      toast.error((error as { message: string }).message);
+    } finally {
+      setIsLoading(false);
       setIsDeleting(false);
-      setDeleteConfirmation(false);
     }
   };
 
@@ -236,17 +228,45 @@ const DetailsPage = () => {
               {/* Edit button when isEditing === false */}
               {!isEditing && (
                 <div className={sharedStyles.formButtonGroup}>
-                  <Button
-                    type="button"
-                    color="default"
-                    disabled={isLoading}
-                    onClick={() => setIsEditing(true)}
-                  >
-                    {isLoading ? 'Loading...' : 'Edit'}
-                  </Button>
-                  <Button type={'button'} color={'magenta'} disabled={false} onClick={handleDelete}>
-                    {deleteConfirmation ? 'Are you sure?' : !isDeleting ? 'Delete' : 'Deleting...'}
-                  </Button>
+                  {!isDeleting ? (
+                    <>
+                      <Button
+                        type="button"
+                        color="cyan"
+                        disabled={isLoading}
+                        onClick={() => setIsEditing(true)}
+                      >
+                        {isLoading ? 'Loading...' : 'Edit'}
+                      </Button>
+                      <Button
+                        type="button"
+                        color="magenta"
+                        disabled={isLoading}
+                        onClick={() => setIsDeleting(true)}
+                      >
+                        Delete
+                      </Button>
+                    </>
+                  ) : (
+                    <>
+                      <Button
+                        type="button"
+                        color="default"
+                        disabled={isLoading}
+                        onClick={() => setIsDeleting(false)}
+                      >
+                        Cancel
+                      </Button>
+                      <Button
+                        type="button"
+                        color="magenta"
+                        disabled={isLoading}
+                        onClick={handleDelete}
+                      >
+                        {isLoading ? 'Deleting...' : 'Confirm Delete'}
+                      </Button>
+                    </>
+                  )}
                 </div>
               )}
             </form>
