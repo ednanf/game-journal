@@ -24,6 +24,9 @@ const SettingsPage = () => {
   };
 
   const handleDeleteAccount = async () => {
+    const ok = window.confirm('This action is permanent. Delete your account?');
+    if (!ok) return;
+
     try {
       const response: ServerResponse = await deleteUnwrapped('/users/delete');
 
