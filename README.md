@@ -4,16 +4,16 @@
 
 ## Notes
 
--   The backend is hosted on Render and takes a moment to wake up after periods
-    of inactivity. Please allow time for the server to respond on your first request.
--   Currently, the auth token is stored in local storage instead of cookies to
-    avoid CORS complications, particularly with WebKit on iOS.
+- The backend is hosted on Render and takes a moment to wake up after periods
+  of inactivity. Please allow time for the server to respond on your first request.
+- Currently, the auth token is stored in local storage instead of cookies to
+  avoid CORS complications, particularly with WebKit on iOS.
 
 ## About Me
 
--   **Author**: Ednan Rogério Frizzera Filho
--   [GitHub](https://github.com/ednanf) • [LinkedIn](https://www.linkedin.com/in/ednanrff/)
--   Additional contact info available on my GitHub profile.
+- **Author**: Ednan Rogério Frizzera Filho
+- [GitHub](https://github.com/ednanf) • [LinkedIn](https://www.linkedin.com/in/ednanrff/)
+- Additional contact info available on my GitHub profile.
 
 ## Objective
 
@@ -36,36 +36,36 @@ _Note: First load may take a moment as the backend wakes up on Render's free tie
 
 ## API Documentation
 
--   For an in-depth look at the API data flow, please refer to
-    this [report](https://github.com/ednanf/game-journal/blob/master/docs/BACKEND_REPORT.md).
--   See the API documentation
-    at [Scalar](https://registry.scalar.com/@ednan-frizzera-dev-team/apis/game-journal-api/latest).
+- For an in-depth look at the API data flow, please refer to
+  this [report](https://github.com/ednanf/game-journal/blob/master/docs/BACKEND_REPORT.md).
+- See the API documentation
+  at [Scalar](https://registry.scalar.com/@ednan-frizzera-dev-team/apis/game-journal-api/latest).
 
 ## Main Technologies
 
 ### Languages
 
--   TypeScript
--   HTML
--   CSS
+- TypeScript
+- HTML
+- CSS
 
 ### Backend
 
--   Node.js
--   Express
--   MongoDB
--   JWT
--   bcrypt
+- Node.js
+- Express
+- MongoDB
+- JWT
+- bcrypt
 
 ### Frontend
 
--   React
--   Axios
+- React
+- Axios
 
 ### Hosting
 
--   Backend: [Render](https://render.com/)
--   Frontend: [Vercel](https://vercel.com)
+- Backend: [Render](https://render.com/)
+- Frontend: [Vercel](https://vercel.com)
 
 ## Dependencies
 
@@ -132,3 +132,12 @@ game-journal-frontend
 ├── vite-plugin-pwa: ^1.0.2 (dev)
 └── vite ^7.0.4 (dev)
 ```
+
+## Legal
+
+[![CC BY\-NC\-ND 4\.0](https://img.shields.io/badge/License-CC%20BY--NC--ND%204.0-lightgrey.svg)](https://creativecommons.org/licenses/by-nc-nd/4.0/)
+
+This work is licensed under
+a [Creative Commons Attribution–NonCommercial–NoDerivatives 4\.0 International License](https://creativecommons.org/licenses/by-nc-nd/4.0/).  
+See the full text in `LICENSE` or
+at [https://creativecommons.org/licenses/by-nc-nd/4.0/legalcode](https://creativecommons.org/licenses/by-nc-nd/4.0/legalcode).
