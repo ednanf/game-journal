@@ -6,6 +6,7 @@ const allowedOrigins = [
   'http://10.0.0.102:4173',
   'https://game-journal-seven.vercel.app',
   'https://game-journal-ednan.vercel.app',
+  'https://journal.frizzera.dev',
 ];
 
 const corsOptions = {
