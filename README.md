@@ -30,7 +30,7 @@ native-like experience.
 
 ## Live Application
 
-🚀 **[View Live Demo](https://game-journal-seven.vercel.app/)**
+🚀 **[View Live Demo](https://journal.frizzera.dev/)**
 
 _Note: First load may take a moment as the backend wakes up on Render's free tier._
 
