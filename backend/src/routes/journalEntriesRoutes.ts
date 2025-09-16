@@ -1,5 +1,5 @@
 import express from 'express';
-import { xss } from 'express-xss-sanitizer';
+import sanitizeInput from '../middlewares/sanitizeInput.js';
 import validateObjectId from '../middlewares/validateObjectId.js';
 import journalEntriesController from '../controllers/journalEntriesController.js';
 import validateZodSchemas from '../middlewares/validateZodSchemas.js';
@@ -21,7 +21,7 @@ const {
 router
   .route('/')
   .get(getJournalEntries)
-  .post(xss(), validateZodSchemas(createJournalEntryBodySchema), createJournalEntry);
+  .post(sanitizeInput(), validateZodSchemas(createJournalEntryBodySchema), createJournalEntry);
 
 router.get('/statistics', getJournalEntriesStatistics);
 
@@ -30,7 +30,7 @@ router
   .get(validateObjectId('id'), getJournalEntryById)
   .patch(
     validateObjectId('id'),
-    xss(),
+    sanitizeInput(),
     validateZodSchemas(patchJournalEntryBodySchema),
     updateJournalEntry,
   )
